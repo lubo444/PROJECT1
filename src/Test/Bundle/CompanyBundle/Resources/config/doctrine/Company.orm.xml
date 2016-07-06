@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Test\Bundle\CompanyBundle\Entity\Company" table="company">
+    <id name="idCompany" type="integer" column="id_company">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="title" type="string" column="title" length="127" nullable="false"/>
+    
+    <one-to-many field="offices" target-entity="Office" mapped-by="idCompany" />
+  </entity>
+</doctrine-mapping>

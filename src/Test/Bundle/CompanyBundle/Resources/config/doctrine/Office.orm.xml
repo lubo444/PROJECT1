@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Test\Bundle\CompanyBundle\Entity\Office" table="office">
+    <indexes>
+      <index name="fk__office__company__id_company" columns="id_company"/>
+    </indexes>
+    <id name="idOffice" type="integer" column="id_office">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="address" type="string" column="address" length="255" nullable="false"/>
+    
+    <one-to-many field="openingHours" target-entity="OpeningHours" mapped-by="idOffice" />
+    
+    <many-to-one field="idCompany" target-entity="Company" mapped-by="offices">
+      <join-columns>
+        <join-column name="id_company" referenced-column-name="id_company"/>
+      </join-columns>
+    </many-to-one>
+    
+  </entity>
+</doctrine-mapping>

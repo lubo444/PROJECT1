@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <!-- Company -->
+    
+    <route id="test_company_homepage" path="/">
+        <default key="_controller">TestCompanyBundle:List:companiesList</default>
+    </route>
+    
+    <route id="test_company_create" path="/company/create">
+        <default key="_controller">TestCompanyBundle:Form:registerCompany</default>
+    </route>
+    
+    <route id="test_company_list" path="/company/{companyId}">
+        <default key="_controller">TestCompanyBundle:List:officesList</default>
+        <requirement key="companyId">\d+</requirement>
+    </route>
+    
+    <route id="test_company_delete" path="/company/{companyId}/delete">
+        <default key="_controller">TestCompanyBundle:List:deleteCompany</default>
+        <requirement key="companyId">\d+</requirement>
+    </route>
+    
+    <!-- Office -->
+    
+    <route id="test_office_opnng_hrs" path="/office/{officeId}">
+        <default key="_controller">TestCompanyBundle:Detail:show</default>
+        <requirement key="officeId">\d+</requirement>
+    </route>
+    
+    <route id="test_office_create" path="/company/{companyId}/office/create">
+        <default key="_controller">TestCompanyBundle:Form:registerOffice</default>
+        <requirement key="companyId">\d+</requirement>
+    </route>
+    
+    <route id="test_office_delete" path="/office/{officeId}/delete">
+        <default key="_controller">TestCompanyBundle:List:deleteOffice</default>
+        <requirement key="officeId">\d+</requirement>
+    </route>
+    
+    <!-- Office Openning Hours -->
+    
+    <route id="test_opnng_hours_create" path="/office/{officeId}/opening-hours/create">
+        <default key="_controller">TestCompanyBundle:Form:registerOpeningHours</default>
+        <requirement key="officeId">\d+</requirement>
+    </route>
+    
+    <route id="test_opnng_hours_edit" path="/opening-hours/{openingHoursId}/edit">
+        <default key="_controller">TestCompanyBundle:Form:editOpeningHours</default>
+        <requirement key="openingHoursId">\d+</requirement>
+    </route>
+    
+    <route id="test_opnng_hours_delete" path="/opening-hours/{openingHoursId}/delete">
+        <default key="_controller">TestCompanyBundle:List:deleteOpeningHours</default>
+        <requirement key="openingHoursId">\d+</requirement>
+    </route>
+    
+
+</routes>

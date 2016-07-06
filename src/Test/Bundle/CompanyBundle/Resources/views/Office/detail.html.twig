@@ -1,0 +1,30 @@
+
+
+<div>{{ office.idCompany.title }}</div>
+
+<div>{{ office.address }}</div>
+
+<div>
+---------------------------
+</div>
+
+<div>
+    <a href="{{ url('test_opnng_hours_create', { 'officeId':office.idOffice }) }}">add new hours</a>
+</div>
+
+<div>
+---------------------------
+</div>
+
+<div>
+    <table>
+    {% for day in days %}
+        <tr>
+            <td>{{ daysInWeek[day.dayInWeek] }}</td>
+            <td>{{ day.startAt }}{% if day.lunchStartAt != '' and day.lunchEndAt != '' %} - {{ day.lunchStartAt }}, {{ day.lunchEndAt }}{% endif %} - {{ day.endAt }}</td>
+            <td><a href='{{ url('test_opnng_hours_edit', { 'openingHoursId': day.idOpnngHrs }) }}'>edit</a></td>
+            <td><a href='{{ url('test_opnng_hours_delete', { 'openingHoursId': day.idOpnngHrs }) }}'>delete</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>

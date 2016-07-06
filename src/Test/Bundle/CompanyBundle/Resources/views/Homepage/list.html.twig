@@ -1,0 +1,30 @@
+<div>
+    <a href="{{ url('test_company_create') }}">register new company</a>
+</div>
+
+<div>
+    ---------------------------
+</div>
+
+{% for company in companies %}
+    <div>
+        <h2>
+            <a href='{{ url('test_company_list', { 'companyId': company.idCompany }) }}'>{{ company.title }}</a>
+            <a href='{{ url('test_company_delete', { 'companyId': company.idCompany }) }}'>remove</a>
+        </h2>
+    </div>
+    {% for office in company.offices %}
+        <div>
+            {{ office.address }}
+        </div>
+        {% for hours in office.openingHours %}
+            <div>
+                {% set lunch = '' %}
+                {% if hours.lunchStartAt != '' %}
+                    {% set lunch = hours.lunchStartAt ~ ', ' ~  hours.lunchEndAt ~ ' - ' %}
+                {% endif %}
+                {{ hours.startAt }} - {{ lunch }}{{ hours.endAt }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endfor %}

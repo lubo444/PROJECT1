@@ -4,6 +4,7 @@ namespace Test\Bundle\CompanyBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Test\Bundle\CompanyBundle\Entity\Week;
 
 class DetailController extends Controller {
 
@@ -18,21 +19,11 @@ class DetailController extends Controller {
         );
         
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
-
-        $daysInWeek = array(
-            'Sunday',
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Saturday',
-        );
         
         return $this->render('TestCompanyBundle:Office:detail.html.twig',
             array(
                 'days' => $days,
-                'daysInWeek' => $daysInWeek,
+                'daysInWeek' => Week::getDaysInWeek(),
                 'office' => $office
             )
         );

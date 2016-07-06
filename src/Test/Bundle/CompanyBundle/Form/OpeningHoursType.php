@@ -5,6 +5,7 @@ namespace Test\Bundle\CompanyBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Test\Bundle\CompanyBundle\Entity\Week;
 
 /**
  * Description of OpeningHoursType
@@ -15,17 +16,8 @@ class OpeningHoursType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $daysInWeek = array(
-            'Sunday',
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Saturday',
-        );
         
-        $builder->add('dayInWeek', 'choice', array('choices' => $daysInWeek));
+        $builder->add('dayInWeek', 'choice', array('choices' => Week::getDaysInWeek()));
         $builder->add('startAt', 'text', array('required' => true));
         $builder->add('lunchStartAt', 'text', array('required' => false));
         $builder->add('lunchEndAt', 'text', array('required' => false));

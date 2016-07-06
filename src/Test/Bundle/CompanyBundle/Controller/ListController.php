@@ -4,29 +4,40 @@ namespace Test\Bundle\CompanyBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Test\Bundle\CompanyBundle\Form\FilterType;
+use Test\Bundle\CompanyBundle\Entity\Week;
 
 class ListController extends Controller {
 
-    public function companiesListAction(Request $request)
+    /**
+     * @Template("TestCompanyBundle:Homepage:list.html.twig")
+     * @param Request $request
+     * @return array
+     */
+    public function companiesListAction(Request $request, $page)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $qb = $em->createQueryBuilder();
-        $query = $qb->select('c, o, oh')
-                ->from('TestCompanyBundle:Company', 'c')
-                ->leftJoin('c.offices', 'o')
-                ->leftJoin('o.openingHours', 'oh')
-                ->orderBy('c.title', 'ASC')
-                ->getQuery();
-        $companies = $query->getResult(); 
-        /*
-        echo '<pre>';
-        dump($companies);
-        echo '</pre>';
-        die;/**/
-        //$companies = $em->getRepository('TestCompanyBundle:Company')->findBy(array(), array('title' => 'ASC'));
-
-        return $this->render('TestCompanyBundle:Homepage:list.html.twig', array('companies' => $companies));
+        $form = $this->createForm(new FilterType());
+        $form->handleRequest($request);
+        
+        $filters = [];
+        
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+            
+            $filters['name'] = $data['title'];
+            $filters['day'] = $data['day'];
+            $filters['hour'] = $data['hour'];
+        }
+        
+        $model = $this->get('test_company.web_model');
+        $companies = $model->getCompanies($filters, $page);
+        
+        return [
+            'companies' => $companies,
+            'daysInWeek' => Week::getDaysInWeek(),
+            'form' => $form->createView()
+        ];
     }
 
     public function officesListAction(Request $request, $companyId)

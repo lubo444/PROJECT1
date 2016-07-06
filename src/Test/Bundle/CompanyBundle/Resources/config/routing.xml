@@ -6,8 +6,10 @@
 
     <!-- Company -->
     
-    <route id="test_company_homepage" path="/">
+    <route id="test_company_homepage" path="/{page}">
         <default key="_controller">TestCompanyBundle:List:companiesList</default>
+        <default key="page">1</default>
+        <requirement key="page">\d+</requirement>
     </route>
     
     <route id="test_company_create" path="/company/create">

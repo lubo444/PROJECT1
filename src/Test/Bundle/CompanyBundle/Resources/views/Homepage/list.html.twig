@@ -6,6 +6,8 @@
     ---------------------------
 </div>
 
+{{ form(form) }}
+
 {% for company in companies %}
     <div>
         <h2>
@@ -14,11 +16,12 @@
         </h2>
     </div>
     {% for office in company.offices %}
-        <div>
+        <h3>
             {{ office.address }}
-        </div>
+        </h3>
         {% for hours in office.openingHours %}
             <div>
+                <b>{{ daysInWeek[hours.dayInWeek] }} </b>
                 {% set lunch = '' %}
                 {% if hours.lunchStartAt != '' %}
                     {% set lunch = hours.lunchStartAt ~ ', ' ~  hours.lunchEndAt ~ ' - ' %}

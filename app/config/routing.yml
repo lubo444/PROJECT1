@@ -1,6 +1,6 @@
 test_company:
-    resource: "@TestCompanyBundle/Resources/config/routing.xml"
-    prefix:   /
+    resource: "@TestCompanyBundle/Controller/"
+    type:     annotation
 
 app:
     resource: "@AppBundle/Controller/"

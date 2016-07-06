@@ -4,35 +4,35 @@ namespace Test\Bundle\CompanyBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Test\Bundle\CompanyBundle\Form\FilterType;
 use Test\Bundle\CompanyBundle\Entity\Week;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class ListController extends Controller {
 
     /**
+     * @Route("/{page}", requirements={"page" = "\d+"}, defaults={"page" = 1}, name="test_company_list")
      * @Template("TestCompanyBundle:Homepage:list.html.twig")
-     * @param Request $request
-     * @return array
      */
     public function companiesListAction(Request $request, $page)
     {
         $form = $this->createForm(new FilterType());
         $form->handleRequest($request);
-        
+
         $filters = [];
-        
+
         if ($form->isSubmitted()) {
             $data = $form->getData();
-            
+
             $filters['name'] = $data['title'];
             $filters['day'] = $data['day'];
             $filters['hour'] = $data['hour'];
         }
-        
+
         $model = $this->get('test_company.web_model');
         $companies = $model->getCompanies($filters, $page);
-        
+
         return [
             'companies' => $companies,
             'daysInWeek' => Week::getDaysInWeek(),
@@ -40,15 +40,30 @@ class ListController extends Controller {
         ];
     }
 
+    /**
+     * @Route("/company/{companyId}", requirements={"companyId" = "\d+"}, name="test_office_list")
+     * @Template("TestCompanyBundle:Office:list.html.twig")
+     */
     public function officesListAction(Request $request, $companyId)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $offices = $em->getRepository('TestCompanyBundle:Office')->findBy(array('idCompany' => $companyId));
+        $offices = $em->getRepository('TestCompanyBundle:Office')->findBy([
+            'idCompany' => $companyId
+        ]);
 
-        return $this->render('TestCompanyBundle:Office:list.html.twig', array('offices' => $offices, 'companyId' => $companyId));
+        return [
+            'offices' => $offices,
+            'companyId' => $companyId
+        ];
     }
 
+    /**
+     * @Route("/company/{companyId}/delete",
+     *  requirements={"companyId" = "\d+"},
+     *  name="test_company_delete")
+     * @Template()
+     */
     public function deleteCompanyAction($companyId)
     {
         $em = $this->getDoctrine()->getManager();
@@ -56,9 +71,13 @@ class ListController extends Controller {
         $em->remove($company);
         $em->flush();
 
-        return $this->redirectToRoute('test_company_homepage');
+        return $this->redirectToRoute('test_company_list');
     }
 
+    /**
+     * @Route("/office/{officeId}/delete", requirements={"officeId" = "\d+"}, name="test_office_delete")
+     * @Template()
+     */
     public function deleteOfficeAction($officeId)
     {
         $em = $this->getDoctrine()->getManager();
@@ -69,9 +88,13 @@ class ListController extends Controller {
         $em->remove($office);
         $em->flush();
 
-        return $this->redirectToRoute('test_company_list', array('companyId' => $companyId));
+        return $this->redirectToRoute('test_office_list', array('companyId' => $companyId));
     }
 
+    /**
+     * @Route("/opening-hours/{openingHoursId}/delete", requirements={"openingHoursId" = "\d+"}, name="test_opnng_hours_delete")
+     * @Template()
+     */
     public function deleteOpeningHoursAction($openingHoursId)
     {
         $em = $this->getDoctrine()->getManager();
@@ -82,7 +105,7 @@ class ListController extends Controller {
         $em->remove($openingHours);
         $em->flush();
 
-        return $this->redirectToRoute('test_company_list', array('companyId' => $officeId));
+        return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId));
     }
 
 }

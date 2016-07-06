@@ -8,7 +8,7 @@
 
 {% for office in offices %}
     <div>
-        <a href='{{ url('test_office_opnng_hrs', { 'officeId': office.idOffice }) }}'>{{ office.address }}</a>
+        <a href='{{ url('test_opnng_hrs', { 'officeId': office.idOffice }) }}'>{{ office.address }}</a>
         <a href='{{ url('test_office_delete', { 'officeId': office.idOffice }) }}'>delete</a>
     </div>
 {% endfor %}

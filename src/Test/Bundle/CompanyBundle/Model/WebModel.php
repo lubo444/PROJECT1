@@ -21,13 +21,13 @@ class WebModel {
         return $this->modelManager;
     }
 
-    public function getCompanies($filters = [], $page = 1, $limit = 10)
+    public function getCompanies($filters = [], $page = 1, $limit = 100)
     {
         $qb = $this->getModelManager()->createQueryBuilder();
         $qb->select('c, o, oh')
                 ->from('TestCompanyBundle:Company', 'c')
-                ->innerJoin('c.offices', 'o')
-                ->innerJoin('o.openingHours', 'oh')
+                ->leftJoin('c.offices', 'o')
+                ->leftJoin('o.openingHours', 'oh')
                 ->orderBy('c.title', 'ASC')
                 ->setFirstResult(($page - 1) * $limit)
                 ->setMaxResults($limit);

@@ -3,48 +3,51 @@
 namespace Test\Bundle\CompanyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * OpeningHours
+ * @ORM\Entity
  */
-class OpeningHours
-{
+class OpeningHours {
+
     /**
-     * @var integer
+     * @ORM\Column(type="integer", name="day_in_week", nullable=false)
      */
     private $dayInWeek;
 
     /**
-     * @var string
+     * @ORM\Column(type="string", nullable=true, length=15)
      */
     private $startAt;
 
     /**
-     * @var string
+     * @ORM\Column(type="string", nullable=true, length=15)
      */
     private $endAt;
 
     /**
-     * @var string
+     * @ORM\Column(type="string", nullable=true, length=15)
      */
     private $lunchStartAt;
 
     /**
-     * @var string
+     * @ORM\Column(type="string", nullable=true, length=15)
      */
     private $lunchEndAt;
 
     /**
-     * @var integer
+     * @ORM\Id
+     * @ORM\Column(type="integer", name="id_opnng_hrs", nullable=false, options={"unsigned":true})
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $idOpnngHrs;
 
     /**
-     * @var \Test\Bundle\CompanyBundle\Entity\Office
+     * @ORM\ManyToOne(targetEntity="Office", cascade={"persist"}, fetch="LAZY")
+     * @ORM\JoinColumn(name="id_office", referencedColumnName="id_office")
      */
     private $idOffice;
-
 
     /**
      * Set dayInWeek
@@ -193,4 +196,5 @@ class OpeningHours
     {
         return $this->idOffice;
     }
+
 }

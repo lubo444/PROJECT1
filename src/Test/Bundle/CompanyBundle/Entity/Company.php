@@ -3,29 +3,34 @@
 namespace Test\Bundle\CompanyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Company
+ * @ORM\Entity
  */
-class Company
-{
+class Company {
+
     /**
-     * @var string
+     * @ORM\Column(type="string", nullable=false, length=127)
+     * @Assert\NotBlank
      */
     private $title;
 
     /**
-     * @var integer
+     * @ORM\Id
+     * @ORM\Column(type="integer", name="id_company", nullable=false, options={"unsigned":true})
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $idCompany;
-    
+
     /**
-     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Office", mappedBy="idCompany", cascade={"persist"}, orphanRemoval=true)
      */
     private $offices;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->offices = new ArrayCollection();
     }
 
@@ -61,7 +66,7 @@ class Company
     {
         return $this->idCompany;
     }
-    
+
     /**
      * Get offices
      *
@@ -71,5 +76,5 @@ class Company
     {
         return $this->offices;
     }
-    
+
 }

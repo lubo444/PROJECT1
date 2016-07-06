@@ -1,0 +1,5 @@
+services:
+    test_company.web_model:
+        class:  Test\Bundle\CompanyBundle\Model\WebModel
+        calls:
+            - [setModelManager, ['@doctrine.orm.entity_manager']]

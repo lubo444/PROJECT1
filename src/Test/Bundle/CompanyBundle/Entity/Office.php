@@ -3,33 +3,40 @@
 namespace Test\Bundle\CompanyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Office
+ * @ORM\Entity
  */
-class Office
-{
+class Office {
+
     /**
-     * @var string
+     * @ORM\Column(type="string", nullable=false, length=255)
+     * @Assert\NotBlank
      */
     private $address;
 
     /**
-     * @var integer
+     * @ORM\Id
+     * @ORM\Column(type="integer", name="id_office", nullable=false, options={"unsigned":true})
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $idOffice;
 
     /**
-     * @var \Test\Bundle\CompanyBundle\Entity\Company
+     * @ORM\ManyToOne(targetEntity="Company", cascade={"persist"}, fetch="LAZY")
+     * @ORM\JoinColumn(name="id_company", referencedColumnName="id_company")
      */
     private $idCompany;
 
     /**
-     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="OpeningHours", mappedBy="idOffice", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $openingHours;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->openingHours = new ArrayCollection();
     }
 
@@ -88,7 +95,7 @@ class Office
     {
         return $this->idCompany;
     }
-    
+
     /**
      * Get openingHours
      *
@@ -98,4 +105,5 @@ class Office
     {
         return $this->openingHours;
     }
+
 }

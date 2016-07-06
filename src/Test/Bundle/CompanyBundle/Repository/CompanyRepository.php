@@ -1,29 +1,19 @@
 <?php
 
-namespace Test\Bundle\CompanyBundle\Model;
+namespace Test\Bundle\CompanyBundle\Repository;
+
+use Doctrine\ORM\EntityRepository;
 
 /**
- * Description of WebModel
+ * Description of CompanyRepository
  *
  * @author lubomir.ferenc
  */
-class WebModel {
-
-    private $modelManager;
-
-    public function setModelManager($manager)
-    {
-        $this->modelManager = $manager;
-    }
-
-    public function getModelManager()
-    {
-        return $this->modelManager;
-    }
+class CompanyRepository extends EntityRepository {
 
     public function getCompanies($filters = [], $page = 1, $limit = 100)
     {
-        $qb = $this->getModelManager()->createQueryBuilder();
+        $qb = $this->createQueryBuilder('Company');
         $qb->select('c, o, oh')
                 ->from('TestCompanyBundle:Company', 'c')
                 ->leftJoin('c.offices', 'o')

@@ -29,9 +29,9 @@ class ListController extends Controller {
             $filters['day'] = $data['day'];
             $filters['hour'] = $data['hour'];
         }
-
-        $model = $this->get('test_company.web_model');
-        $companies = $model->getCompanies($filters, $page);
+        
+        $em = $this->getDoctrine()->getManager();
+        $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
 
         return [
             'companies' => $companies,

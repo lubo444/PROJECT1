@@ -17,10 +17,8 @@ class ListController extends Controller {
      */
     public function companiesListAction(Request $request, $page)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw $this->createAccessDeniedException();
-        }
-        
+        $loggedUserId = $this->get('security.context')->getToken()->getUser()->getId();
+        echo $loggedUserId . '' . $this->get('security.context')->getToken()->getUser()->getUsername();
         $form = $this->createForm(new FilterType());
         $form->handleRequest($request);
 
@@ -33,7 +31,7 @@ class ListController extends Controller {
             $filters['day'] = $data['day'];
             $filters['hour'] = $data['hour'];
         }
-        
+
         $em = $this->getDoctrine()->getManager();
         $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
 
@@ -63,15 +61,18 @@ class ListController extends Controller {
     }
 
     /**
-     * @Route("/company/{companyId}/delete",
-     *  requirements={"companyId" = "\d+"},
+     * @Route("/company/{itemId}/delete",
+     *  requirements={"itemId" = "\d+"},
      *  name="test_company_delete")
      * @Template()
      */
-    public function deleteCompanyAction($companyId)
+    public function deleteCompanyAction($itemId)
     {
         $em = $this->getDoctrine()->getManager();
-        $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
+        $company = $em->getRepository('TestCompanyBundle:Company')->find($itemId);
+        
+        $this->get('test.authorization')->checkAccessItem($company);
+
         $em->remove($company);
         $em->flush();
 
@@ -86,6 +87,8 @@ class ListController extends Controller {
     {
         $em = $this->getDoctrine()->getManager();
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
+        
+        $this->get('test.authorization')->checkAccessItem($office);
 
         $companyId = $office->getIdCompany()->getIdCompany();
 
@@ -103,6 +106,8 @@ class ListController extends Controller {
     {
         $em = $this->getDoctrine()->getManager();
         $openingHours = $em->getRepository('TestCompanyBundle:OpeningHours')->find($openingHoursId);
+        
+        $this->get('test.authorization')->checkAccessItem($openingHours);
 
         $officeId = $openingHours->getIdOffice()->getIdOffice();
 
@@ -111,5 +116,4 @@ class ListController extends Controller {
 
         return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId));
     }
-
 }

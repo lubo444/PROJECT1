@@ -1,0 +1,15 @@
+{% if itemId is defined and itemId %}
+<div style="display: inline-block">
+    
+    <a style="display: table-cell;" href="{{ url(routeAction ~ '_edit', { 'itemId':itemId }) }}">EDIT</a>
+    
+    {% if itemActive %}
+        <a style="display: table-cell;"  href="{{ url(routeAction ~ '_delete', { 'itemId':itemId }) }}">DELETE</a>
+    {% endif %}
+    
+    {% if roleAdmin and not itemActive %}
+        <a style="display: table-cell;"  href="{{ url(routeAction ~ '_undelete', { 'itemId':itemId }) }}">UNDELETE</a>
+    {% endif %}
+    
+</div>
+{% endif %}

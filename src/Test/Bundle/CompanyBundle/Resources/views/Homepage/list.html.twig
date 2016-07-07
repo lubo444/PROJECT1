@@ -9,13 +9,13 @@
 {{ form(form) }}
 
 {% for company in companies %}
-    <div>
-        <h2>
-            <a href='{{ url('test_office_list', { 'companyId': company.idCompany }) }}'>{{ company.title }}</a>
-            <a href='{{ url('test_company_delete', { 'companyId': company.idCompany }) }}'>remove</a>
-        </h2>
-    </div>
+    <div style="border: 1px solid gray; display: inline-block;">
+        <a style="display: inline-block; font-size: 30px;" href='{{ url('test_office_list', { 'companyId': company.idCompany }) }}'>{{ company.title }}</a>
+        {{ render(url('test_active_buttons', {'itemId':company.idCompany, 'routeAction':'test_company', 'itemActive':company.active, 'itemCreatedBy':company.createdBy})) }}
+        
+    
     {% for office in company.offices %}
+        <div style="border: 1px solid sandybrown;  display: inline-block;">
         <h3>
             {{ office.address }}
         </h3>
@@ -29,5 +29,7 @@
                 {{ hours.startAt }} - {{ lunch }}{{ hours.endAt }}
             </div>
         {% endfor %}
+        </div>
     {% endfor %}
+    </div>
 {% endfor %}

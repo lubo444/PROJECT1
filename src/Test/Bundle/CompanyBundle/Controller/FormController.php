@@ -22,8 +22,10 @@ class FormController extends Controller {
     public function registerCompanyAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        
+        $loggedUserId = $this->get('security.context')->getToken()->getUser()->getId();
 
-        $company = new Company();
+        $company = new Company($loggedUserId);
         $form = $this->createForm(new CompanyType(), $company);
 
         $form->handleRequest($request);

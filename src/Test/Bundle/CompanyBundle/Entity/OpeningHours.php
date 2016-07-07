@@ -44,7 +44,7 @@ class OpeningHours {
     private $idOpnngHrs;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Office", cascade={"persist"}, fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="Office", cascade={"persist"}, inversedBy="openingHours", fetch="LAZY")
      * @ORM\JoinColumn(name="id_office", referencedColumnName="id_office")
      */
     private $idOffice;

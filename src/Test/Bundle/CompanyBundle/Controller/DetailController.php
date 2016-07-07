@@ -31,5 +31,21 @@ class DetailController extends Controller {
             'office' => $office
         ];
     }
+    
+    /**
+     * @Route("/company/{itemId}", requirements={"itemId" = "\d+"}, name="test_company_edit")
+     * @Template("TestCompanyBundle:Form:rename.html.twig")
+     */
+    public function companyEditAction(Request $request, $itemId)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $company = $em->getRepository('TestCompanyBundle:Company')->find($itemId);
+
+        return [
+            'title' => $company->getTitle()
+        ];
+    }
 
 }

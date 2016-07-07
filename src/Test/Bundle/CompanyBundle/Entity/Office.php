@@ -25,7 +25,7 @@ class Office {
     private $idOffice;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Company", cascade={"persist"}, fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="Company", cascade={"persist"}, inversedBy="offices", fetch="LAZY")
      * @ORM\JoinColumn(name="id_company", referencedColumnName="id_company")
      */
     private $idCompany;

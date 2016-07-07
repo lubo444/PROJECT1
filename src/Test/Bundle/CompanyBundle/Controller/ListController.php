@@ -17,6 +17,10 @@ class ListController extends Controller {
      */
     public function companiesListAction(Request $request, $page)
     {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
+        
         $form = $this->createForm(new FilterType());
         $form->handleRequest($request);
 

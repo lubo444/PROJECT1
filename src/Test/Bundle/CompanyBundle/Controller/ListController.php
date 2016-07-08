@@ -21,6 +21,10 @@ class ListController extends Controller {
         $form->handleRequest($request);
         
         $filters = [];
+        
+        if($this->isGranted('ROLE_ADMIN')){
+            $filters['roleAdmin'] = true;
+        }
 
         if ($form->isSubmitted()) {
             $data = $form->getData();
@@ -28,10 +32,6 @@ class ListController extends Controller {
             $filters['name'] = $data['title'];
             $filters['day'] = $data['day'];
             $filters['hour'] = $data['hour'];
-            
-            if($this->isGranted('ROLE_ADMIN')){
-                $filters['roleAdmin'] = true;
-            }
         }
 
         $em = $this->getDoctrine()->getManager();

@@ -1,21 +1,25 @@
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 <div>
     <a href="{{ url('test_company_create') }}">register new company</a>
 </div>
+<br><br>
+{% endif %}
 
-<div>
-    ---------------------------
-</div>
-
-{{ form(form) }}
+{{ form(form) }}<br><br>
 
 {% for company in companies %}
-    <div>
-        <h2>
-            <a href='{{ url('test_office_list', { 'companyId': company.idCompany }) }}'>{{ company.title }}</a>
-            <a href='{{ url('test_company_delete', { 'companyId': company.idCompany }) }}'>remove</a>
-        </h2>
-    </div>
+    <div style="border: 1px solid gray; max-width: 600px;">
+        <div style="background-color: #ccc;">
+        <a style=" font-size: 30px;" href='{{ url('test_office_list', { 'companyId': company.idCompany }) }}'>{{ company.title }}</a>
+        
+        {{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
+            'routeAction':'test_company',
+            'itemId':company.idCompany,
+            'itemActive':company.active,
+            'itemAuthor':company.createdBy}) }}
+        </div>  
     {% for office in company.offices %}
+        <div style="border: 1px solid sandybrown;  padding-left: 30px;">
         <h3>
             {{ office.address }}
         </h3>
@@ -29,5 +33,7 @@
                 {{ hours.startAt }} - {{ lunch }}{{ hours.endAt }}
             </div>
         {% endfor %}
+        </div>
     {% endfor %}
+    </div>
 {% endfor %}

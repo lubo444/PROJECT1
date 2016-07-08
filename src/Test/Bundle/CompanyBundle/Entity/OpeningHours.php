@@ -44,10 +44,28 @@ class OpeningHours {
     private $idOpnngHrs;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Office", cascade={"persist"}, fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="Office", cascade={"persist"}, inversedBy="openingHours", fetch="LAZY")
      * @ORM\JoinColumn(name="id_office", referencedColumnName="id_office")
      */
     private $idOffice;
+    
+    /**
+     * @ORM\Column(type="integer", nullable=false, options={"unsigned":false})
+     * @Assert\NotBlank
+     */
+    private $createdBy;
+    
+    /**
+     * @ORM\Column(type="integer", nullable=false, options={"unsigned":true})
+     * @Assert\NotBlank
+     */
+    private $active;
+
+    public function __construct($userId)
+    {
+        $this->createdBy = $userId;
+        $this->active = 1;
+    }
 
     /**
      * Set dayInWeek
@@ -195,6 +213,50 @@ class OpeningHours {
     public function getIdOffice()
     {
         return $this->idOffice;
+    }
+    
+    /**
+     * Get createdBy
+     *
+     * @return User 
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+    
+    /**
+     * Set createdBy
+     *
+     * @param string $userId
+     * @return Company
+     */
+    public function setCreatedBy($userId){
+        $this->createdBy = $userId;
+        
+        return $this;
+    }
+    
+    /**
+     * Get active
+     *
+     * @return integer 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+    
+    /**
+     * Set active
+     *
+     * @param string $active
+     * @return Company
+     */
+    public function setActive($active){
+        $this->active = $active;
+        
+        return $this;
     }
 
 }

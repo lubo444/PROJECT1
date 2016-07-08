@@ -54,6 +54,12 @@ class CompanyRepository extends EntityRepository {
                     break;
             }
         }
+        
+        if(!isset($filters['roleAdmin']) || !$filters['roleAdmin']){
+            $qb->andWhere('c.active = 1');
+            $qb->andWhere('o.active = 1 OR o.idOffice IS NULL');
+            $qb->andWhere('oh.active = 1 OR oh.idOpnngHrs IS NULL');
+        }
 
         $query = $qb->getQuery();
         $query->setParameters($parameters);

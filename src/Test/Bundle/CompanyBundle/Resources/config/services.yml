@@ -1,0 +1,6 @@
+services:
+    test.authorization:
+        class:     Test\Bundle\CompanyBundle\Service\Authorization
+        calls:
+            - [setAuthorizationChecker, ['@security.authorization_checker']]
+            - [setSecurityContext, ['@security.context']]

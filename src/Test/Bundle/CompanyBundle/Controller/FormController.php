@@ -17,7 +17,7 @@ class FormController extends Controller {
 
     /**
      * @Route("/company/create", name="test_company_create")
-     * @Template("TestCompanyBundle:Form:registration.html.twig")
+     * @Template("TestCompanyBundle:Form:basic.html.twig")
      */
     public function registerCompanyAction(Request $request)
     {
@@ -46,13 +46,15 @@ class FormController extends Controller {
 
     /**
      * @Route("/company/{companyId}/office/create", requirements={"companyId" = "\d+"}, name="test_office_create")
-     * @Template("TestCompanyBundle:Form:registration.html.twig")
+     * @Template("TestCompanyBundle:Form:basic.html.twig")
      */
     public function registerOfficeAction(Request $request, $companyId)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $office = new Office();
+        $loggedUserId = $this->get('security.context')->getToken()->getUser()->getId();
+        
+        $office = new Office($loggedUserId);
         $form = $this->createForm(new OfficeType(), $office);
 
         $form->handleRequest($request);
@@ -69,21 +71,22 @@ class FormController extends Controller {
             $em->persist($office);
             $em->flush();
 
-            return $this->redirectToRoute('test_company_list', ['companyId' => $companyId]);
+            return $this->redirectToRoute('test_office_list', ['companyId' => $companyId]);
         }
 
         return ['form' => $form->createView()];
     }
 
     /**
-     * @Route("/office/{officeId}/opening-hours/create", requirements={"officeId" = "\d+"}, name="test_opnng_hours_create")
-     * @Template("TestCompanyBundle:Form:registration.html.twig")
+     * @Route("/office/{officeId}/opening-hours/create", requirements={"officeId" = "\d+"}, name="test_opening_hours_create")
+     * @Template("TestCompanyBundle:Form:basic.html.twig")
      */
     public function registerOpeningHoursAction(Request $request, $officeId)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $opnngHours = new OpeningHours();
+        $loggedUserId = $this->get('security.context')->getToken()->getUser()->getId();
+        $opnngHours = new OpeningHours($loggedUserId);
 
         $form = $this->createForm(new OpeningHoursType(), $opnngHours);
 
@@ -115,30 +118,87 @@ class FormController extends Controller {
     }
 
     /**
-     * @Route("/opening-hours/{openingHoursId}/edit", requirements={"openingHoursId" = "\d+"}, name="test_opnng_hours_edit")
-     * @Template("TestCompanyBundle:Form:registration.html.twig")
+     * @Route("/opening-hours/{itemId}/edit", requirements={"itemId" = "\d+"}, name="test_opening_hours_edit")
+     * @Template("TestCompanyBundle:Form:basic.html.twig")
      */
-    public function editOpeningHoursAction(Request $request, $openingHoursId)
+    public function editOpeningHoursAction(Request $request, $itemId)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $opnngHours = $em->getRepository('TestCompanyBundle:OpeningHours')->find($openingHoursId);
+        $opnngHours = $em->getRepository('TestCompanyBundle:OpeningHours')->find($itemId);
 
         $form = $this->createForm(new OpeningHoursType(), $opnngHours);
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             
-            $officeId = $form->getData()->getIdOffice()->getIdOffice();
-            
             if ($form->isSubmitted() && $form->isValid()) {
+                
+                $officeId = $form->getData()->getIdOffice()->getIdOffice();
                 $em->flush();
                 
-                return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId));
+                return $this->redirectToRoute('test_opnng_hrs', ['officeId' => $officeId]);
             }
         }
 
         return ['form' => $form->createView()];
+    }
+    
+    /**
+     * @Route("/company/{itemId}/edit", requirements={"itemId" = "\d+"}, name="test_company_edit")
+     * @Template("TestCompanyBundle:Form:basic.html.twig")
+     */
+    public function companyEditAction(Request $request, $itemId)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        
+        $company = $em->getRepository('TestCompanyBundle:Company')->find($itemId);
+        
+        $form = $this->createForm(new CompanyType(), $company);
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->flush();
+                
+                return $this->redirectToRoute('test_company_list');
+            }
+        }
+
+        return [
+            'form' => $form->createView()
+        ];
+    }
+    
+    /**
+     * @Route("/office/{itemId}/edit", requirements={"itemId" = "\d+"}, name="test_office_edit")
+     * @Template("TestCompanyBundle:Form:basic.html.twig")
+     */
+    public function officeEditAction(Request $request, $itemId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $office = $em->getRepository('TestCompanyBundle:Office')->find($itemId);
+        
+        $form = $this->createForm(new OfficeType(), $office);
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->flush();
+                
+                $companyId = $office->getIdCompany()->getIdCompany();
+                
+                return $this->redirectToRoute('test_office_list', ['companyId' => $companyId]);
+            }
+        }
+
+        return [
+            'form' => $form->createView()
+        ];  
     }
 
 }

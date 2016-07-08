@@ -1,20 +1,13 @@
+<h2>{{ office.idCompany.title }}</h2>
+<h3>{{ office.address }}</h3>
 
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <div>
+        <a href="{{ url('test_opening_hours_create', { 'officeId':office.idOffice }) }}">add new hours</a>
+    </div>
 
-<div>{{ office.idCompany.title }}</div>
-
-<div>{{ office.address }}</div>
-
-<div>
----------------------------
-</div>
-
-<div>
-    <a href="{{ url('test_opnng_hours_create', { 'officeId':office.idOffice }) }}">add new hours</a>
-</div>
-
-<div>
----------------------------
-</div>
+    <br><br>
+{% endif %}
 
 <div>
     <table>
@@ -22,8 +15,11 @@
         <tr>
             <td>{{ daysInWeek[day.dayInWeek] }}</td>
             <td>{{ day.startAt }}{% if day.lunchStartAt != '' and day.lunchEndAt != '' %} - {{ day.lunchStartAt }}, {{ day.lunchEndAt }}{% endif %} - {{ day.endAt }}</td>
-            <td><a href='{{ url('test_opnng_hours_edit', { 'openingHoursId': day.idOpnngHrs }) }}'>edit</a></td>
-            <td><a href='{{ url('test_opnng_hours_delete', { 'openingHoursId': day.idOpnngHrs }) }}'>delete</a></td>
+            <td>{{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
+            'routeAction':'test_opening_hours',
+            'itemId':day.idOpnngHrs,
+            'itemActive':day.active,
+            'itemAuthor':day.createdBy}) }}</td>
         </tr>
     {% endfor %}
     </table>

@@ -1,15 +1,15 @@
-{% if itemId is defined and itemId %}
-<div style="display: inline-block">
+{% if is_granted('IS_AUTHENTICATED_FULLY')
+    and (itemAuthor == app.user.id or is_granted("ROLE_ADMIN")) %}
+
     
-    <a style="display: table-cell;" href="{{ url(routeAction ~ '_edit', { 'itemId':itemId }) }}">EDIT</a>
+    <a href="{{ url(routeAction ~ '_edit', { 'itemId':itemId }) }}">EDIT</a>
     
     {% if itemActive %}
-        <a style="display: table-cell;"  href="{{ url(routeAction ~ '_delete', { 'itemId':itemId }) }}">DELETE</a>
+        <a href="{{ url(routeAction ~ '_delete', { 'itemId':itemId }) }}">DELETE</a>
     {% endif %}
     
-    {% if roleAdmin and not itemActive %}
-        <a style="display: table-cell;"  href="{{ url(routeAction ~ '_undelete', { 'itemId':itemId }) }}">UNDELETE</a>
+    {% if is_granted("ROLE_ADMIN") and not itemActive %}
+        <a href="{{ url(routeAction ~ '_delete', { 'itemId':itemId, 'undelete':1 }) }}">UNDELETE</a>
     {% endif %}
     
-</div>
 {% endif %}

@@ -1,15 +1,22 @@
+<h2>{{ company.title }}</h2>
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 <div>
-    <a href="{{ url('test_office_create', { 'companyId':companyId }) }}">register new office</a>
+    <a href="{{ url('test_office_create', { 'companyId':company.idCompany }) }}">register new office</a>
 </div>
 
-<div>
----------------------------
-</div>
+<br><br>
+{% endif %}
 
 {% for office in offices %}
     <div>
         <a href='{{ url('test_opnng_hrs', { 'officeId': office.idOffice }) }}'>{{ office.address }}</a>
-        <a href='{{ url('test_office_delete', { 'officeId': office.idOffice }) }}'>delete</a>
+
+        {{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
+            'routeAction':'test_office',
+            'itemId':office.idOffice,
+            'itemActive':office.active,
+            'itemAuthor':office.createdBy}) }}
     </div>
 {% endfor %}
 

@@ -1,21 +1,25 @@
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 <div>
     <a href="{{ url('test_company_create') }}">register new company</a>
 </div>
+<br><br>
+{% endif %}
 
-<div>
-    ---------------------------
-</div>
-
-{{ form(form) }}
+{{ form(form) }}<br><br>
 
 {% for company in companies %}
-    <div style="border: 1px solid gray; display: inline-block;">
-        <a style="display: inline-block; font-size: 30px;" href='{{ url('test_office_list', { 'companyId': company.idCompany }) }}'>{{ company.title }}</a>
-        {{ render(url('test_active_buttons', {'itemId':company.idCompany, 'routeAction':'test_company', 'itemActive':company.active, 'itemCreatedBy':company.createdBy})) }}
+    <div style="border: 1px solid gray; max-width: 600px;">
+        <div style="background-color: #ccc;">
+        <a style=" font-size: 30px;" href='{{ url('test_office_list', { 'companyId': company.idCompany }) }}'>{{ company.title }}</a>
         
-    
+        {{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
+            'routeAction':'test_company',
+            'itemId':company.idCompany,
+            'itemActive':company.active,
+            'itemAuthor':company.createdBy}) }}
+        </div>  
     {% for office in company.offices %}
-        <div style="border: 1px solid sandybrown;  display: inline-block;">
+        <div style="border: 1px solid sandybrown;  padding-left: 30px;">
         <h3>
             {{ office.address }}
         </h3>

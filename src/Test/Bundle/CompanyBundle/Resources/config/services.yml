@@ -1,6 +1,9 @@
 services:
     test.authorization:
         class:     Test\Bundle\CompanyBundle\Service\Authorization
-        calls:
-            - [setAuthorizationChecker, ['@security.authorization_checker']]
-            - [setSecurityContext, ['@security.context']]
+        arguments: ['@security.authorization_checker', '@security.context', '@logger']
+        
+    test.error_manager:
+        class:     Test\Bundle\CompanyBundle\Service\ErrorManager
+        arguments: ['@session', '@logger', '@router']
+        

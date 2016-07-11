@@ -82,3 +82,10 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Test\Bundle\CompanyBundle\Entity\User
+    
+    
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/DoctrineMigrations"
+    namespace: Application\Migrations
+    table_name: _versions
+    name: Application Migrations

@@ -3,13 +3,16 @@
 namespace Test\Bundle\CompanyBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Test\Bundle\CompanyBundle\Entity\Company;
+
 
 /**
  * Description of CompanyRepository
  *
  * @author lubomir.ferenc
  */
-class CompanyRepository extends EntityRepository {
+class CompanyRepository extends EntityRepository
+{
 
     public function getCompanies($filters = [], $page = 1, $limit = 100)
     {
@@ -23,24 +26,24 @@ class CompanyRepository extends EntityRepository {
                 ->setMaxResults($limit);
 
         $parameters = [];
-        
+
         foreach ($filters as $filterName => $filterValue) {
-            if($filterValue === null){
+            if ($filterValue === null) {
                 continue;
             }
-        
+
             switch ($filterName) {
                 case 'name':
                     $qb->where('c.title LIKE :name');
                     $qb->orWhere('o.address LIKE :name');
                     $parameters['name'] = '%' . $filterValue . '%';
                     break;
-                
+
                 case 'day':
                     $qb->andWhere('oh.dayInWeek = :day');
                     $parameters['day'] = $filterValue;
                     break;
-                
+
                 case 'hour':
                     $start = $qb->expr()->substring('oh.startAt', 1, 2);
                     $end = $qb->expr()->substring('oh.endAt', 1, 2);
@@ -49,13 +52,13 @@ class CompanyRepository extends EntityRepository {
                     $qb->andWhere($t1);
                     $qb->andWhere($t2);
                     break;
-                
+
                 default:
                     break;
             }
         }
-        
-        if(!isset($filters['roleAdmin']) || !$filters['roleAdmin']){
+
+        if (!isset($filters['roleAdmin']) || !$filters['roleAdmin']) {
             $qb->andWhere('c.active = 1');
             $qb->andWhere('o.active = 1 OR o.idOffice IS NULL');
             $qb->andWhere('oh.active = 1 OR oh.idOpnngHrs IS NULL');
@@ -65,6 +68,21 @@ class CompanyRepository extends EntityRepository {
         $query->setParameters($parameters);
 
         return $query->getResult();
+    }
+
+    public function insertCompanies($companies)
+    {   
+        $em = $this->getEntityManager();
+        
+        foreach ($companies as $company) {
+            $companyNew = new Company($company[0]);
+            $companyNew->setTitle($company[1]);
+            $companyNew->setCreatedAt(new \DateTime());
+            $em->persist($companyNew);
+            $em->flush();
+            $em->clear();
+        }
+        
     }
 
 }

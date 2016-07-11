@@ -56,7 +56,7 @@ class ListController extends Controller {
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
         
         if(!$company || !$company->getActive()){
-            return $this->redirectToRoute('test_company_list');
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
         }
         
         //get data
@@ -97,7 +97,7 @@ class ListController extends Controller {
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
 
         if(!$office || !$office->getActive() || !$office->getIdCompany()->getActive()){
-            return $this->redirectToRoute('test_company_list');
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
         }
         
         //get data
@@ -124,95 +124,5 @@ class ListController extends Controller {
             'daysInWeek' => Week::getDaysInWeek(),
             'office' => $office
         ];
-    }
-
-    /**
-     * @Route("/company/{itemId}/delete/{undelete}",
-     *  requirements={"itemId" = "\d+", "undelete" = "\d+"},
-     *  defaults={"undelete" = null},
-     *  name="test_company_delete")
-     * @Template()
-     */
-    public function deleteCompanyAction($itemId, $undelete)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $company = $em->getRepository('TestCompanyBundle:Company')->find($itemId);
-        
-        $this->get('test.authorization')->checkAccessItem($company);
-
-        if($undelete){
-            if($this->isGranted('ROLE_ADMIN')){
-                $company->setActive(true);
-            }
-        }
-        else{
-            $company->setActive(false);
-        }
-        
-        $em->persist($company);
-        $em->flush();
-
-        return $this->redirectToRoute('test_company_list');
-    }
-
-    /**
-     * @Route("/office/{itemId}/delete/{undelete}",
-     *  requirements={"itemId" = "\d+", "undelete" = "\d+"},
-     *  defaults={"undelete" = null},
-     *  name="test_office_delete")
-     * @Template()
-     */
-    public function deleteOfficeAction($itemId, $undelete)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $office = $em->getRepository('TestCompanyBundle:Office')->find($itemId);
-        
-        $this->get('test.authorization')->checkAccessItem($office);
-        
-        if($undelete){
-            if($this->isGranted('ROLE_ADMIN')){
-                $office->setActive(true);
-            }
-        }
-        else{
-            $office->setActive(false);
-        }
-
-        $companyId = $office->getIdCompany()->getIdCompany();
-
-        $em->persist($office);
-        $em->flush();
-
-        return $this->redirectToRoute('test_office_list', array('companyId' => $companyId));
-    }
-
-    /**
-     * @Route("/opening-hours/{itemId}/delete/{undelete}",
-     *  requirements={"itemId" = "\d+", "undelete" = "\d+"},
-     *  defaults={"undelete" = null},
-     *  name="test_opening_hours_delete")
-     * @Template()
-     */
-    public function deleteOpeningHoursAction($itemId, $undelete)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $openingHours = $em->getRepository('TestCompanyBundle:OpeningHours')->find($itemId);
-        
-        $this->get('test.authorization')->checkAccessItem($openingHours);
-        if($undelete){
-            if($this->isGranted('ROLE_ADMIN')){
-                $openingHours->setActive(true);
-            }
-        }
-        else{
-            $openingHours->setActive(false);
-        }
-
-        $officeId = $openingHours->getIdOffice()->getIdOffice();
-
-        $em->persist($openingHours);
-        $em->flush();
-
-        return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId));
     }
 }

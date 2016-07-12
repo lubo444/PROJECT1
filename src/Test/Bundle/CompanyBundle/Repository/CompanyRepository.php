@@ -17,9 +17,8 @@ class CompanyRepository extends EntityRepository
 
     public function getCompanies($filters = [], $page = 1, $limit = 100)
     {
-        $qb = $this->createQueryBuilder('Company');
+        $qb = $this->createQueryBuilder('c');
         $qb->select('c, o, oh')
-                ->from('TestCompanyBundle:Company', 'c')
                 ->leftJoin('c.offices', 'o')
                 ->leftJoin('o.openingHours', 'oh')
                 ->orderBy('c.title', 'ASC')
@@ -64,7 +63,7 @@ class CompanyRepository extends EntityRepository
             $qb->andWhere('o.active = 1 OR o.idOffice IS NULL');
             $qb->andWhere('oh.active = 1 OR oh.idOpnngHrs IS NULL');
         }
-
+        
         $query = $qb->getQuery();
         $query->setParameters($parameters);
 
@@ -107,9 +106,11 @@ class CompanyRepository extends EntityRepository
                 if ($row['oh' . $i] == '' || $row['ch' . $i] == '') {
                     continue;
                 }
-
+                
+                $dayInWeek = $i%7;
+                
                 $openingHour = new OpeningHours($row['userCreatedBy']);
-                $openingHour->setDayInWeek($row['officeAddress']);
+                $openingHour->setDayInWeek($dayInWeek);
                 $openingHour->setCreatedAt(new \DateTime());
                 $openingHour->setIdOffice($office);
                 $openingHour->setStartAt($row['oh' . $i]);

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use CsvReader;
 
 /**
  * Description of ImportCsvCommand
@@ -41,16 +42,17 @@ class ImportCsvCommand extends ContainerAwareCommand
 
     private function readCsvFile($filename)
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();//$this->getDoctrine()->getManager();
-        $companies = [];
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $rows = [];
         
         if (($handle = fopen($filename, "r")) !== FALSE) {
+        $headers = fgetcsv($handle);
             while(($row = fgetcsv($handle)) !== FALSE) {
-                $companies[] = $row; 
+                $rows[] = array_combine($headers, $row); 
             }
         }
         
-        $em->getRepository('TestCompanyBundle:Company')->insertCompanies($companies);
+        $em->getRepository('TestCompanyBundle:Company')->insertCompanies($rows);
     }
 
 }

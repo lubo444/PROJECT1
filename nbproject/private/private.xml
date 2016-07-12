@@ -6,16 +6,29 @@
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/views/Office/list.html.twig</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/OpeningHours.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/Office.php</file>
+            <file>file:/C:/xampp/htdocs/project1/app/config/routing.yml</file>
+            <file>file:/C:/xampp/htdocs/project1/app/DoctrineMigrations/Version20160711161435.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/DependencyInjection/TestCompanyExtension.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/views/Exception/error404.html.twig</file>
+            <file>file:/C:/xampp/htdocs/project1/app/config/config_dev.yml</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/FormController.php</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Repository/CompanyRepository.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/views/Homepage/list.html.twig</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Form/OfficeType.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Service/Authorization.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Service/ErrorManager.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/Company.php</file>
+            <file>file:/C:/xampp/htdocs/project1/app/config/config.yml</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Command/ImportCsvCommand.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/DeleteController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/app/DoctrineMigrations/Version20160711160903.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Repository/CompanyRepository.php</file>
+            <file>file:/C:/xampp/htdocs/project1/app/DoctrineMigrations/Version20160711155903.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Form/OfficeType.php</file>
+            <file>file:/C:/xampp/htdocs/project1/composer.json</file>
+            <file>file:/C:/xampp/htdocs/project1/app/AppKernel.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/ListController.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/config/services.yml</file>
+            <file>file:/C:/xampp/htdocs/project1/app/DoctrineMigrations/Version20160711155727.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/views/Office/detail.html.twig</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/Company.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Form/OpeningHoursType.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Form/CompanyType.php</file>
         </group>

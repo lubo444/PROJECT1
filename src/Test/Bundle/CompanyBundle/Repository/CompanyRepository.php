@@ -4,7 +4,8 @@ namespace Test\Bundle\CompanyBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Test\Bundle\CompanyBundle\Entity\Company;
-
+use Test\Bundle\CompanyBundle\Entity\Office;
+use Test\Bundle\CompanyBundle\Entity\OpeningHours;
 
 /**
  * Description of CompanyRepository
@@ -70,19 +71,57 @@ class CompanyRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function insertCompanies($companies)
-    {   
+    public function insertCompanies($rows)
+    {
         $em = $this->getEntityManager();
-        
-        foreach ($companies as $company) {
-            $companyNew = new Company($company[0]);
-            $companyNew->setTitle($company[1]);
-            $companyNew->setCreatedAt(new \DateTime());
-            $em->persist($companyNew);
+
+        foreach ($rows as $row) {
+            $company = $em->getRepository('TestCompanyBundle:Company')->findOneBy(
+                    ['title' => $row['companyName']]
+            );
+
+            if (!$company) {
+                $company = new Company($row['userCreatedBy']);
+                $company->setTitle($row['companyName']);
+                $company->setCreatedAt(new \DateTime());
+                $em->persist($company);
+                $em->flush();
+            }
+
+            $office = $em->getRepository('TestCompanyBundle:Office')->findOneBy(
+                    [
+                        'idCompany' => $company->getIdCompany(),
+                        'address' => $row['officeAddress']
+                    ]
+            );
+
+            if (!$office) {
+                $office = new Office($row['userCreatedBy']);
+                $office->setAddress($row['officeAddress']);
+                $office->setCreatedAt(new \DateTime());
+                $office->setIdCompany($company);
+                $em->persist($office);
+                $em->flush();
+            }
+            foreach (range(1, 7) as $i) {
+                if ($row['oh' . $i] == '' || $row['ch' . $i] == '') {
+                    continue;
+                }
+
+                $openingHour = new OpeningHours($row['userCreatedBy']);
+                $openingHour->setDayInWeek($row['officeAddress']);
+                $openingHour->setCreatedAt(new \DateTime());
+                $openingHour->setIdOffice($office);
+                $openingHour->setStartAt($row['oh' . $i]);
+                $openingHour->setEndAt($row['ch' . $i]);
+                $openingHour->setLunchStartAt($row['ls' . $i]);
+                $openingHour->setLunchEndAt($row['le' . $i]);
+                $em->persist($openingHour);
+            }
+
             $em->flush();
             $em->clear();
         }
-        
     }
 
 }

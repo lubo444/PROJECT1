@@ -8,6 +8,7 @@ use Test\Bundle\CompanyBundle\Form\FilterType;
 use Test\Bundle\CompanyBundle\Entity\Week;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Doctrine\Common\Cache\ApcuCache;
 
 class ListController extends Controller {
 
@@ -25,7 +26,7 @@ class ListController extends Controller {
         if($this->isGranted('ROLE_ADMIN')){
             $filters['roleAdmin'] = true;
         }
-
+        
         if ($form->isSubmitted()) {
             $data = $form->getData();
 
@@ -92,35 +93,23 @@ class ListController extends Controller {
     public function openingHoursListAction(Request $request, $officeId)
     {
         $em = $this->getDoctrine()->getManager();
+        $cacheDriver = new ApcuCache();
         
         //check parents active status
-        $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
-
+        $officeCacheId = 'office_' . $officeId;
+        
+        $office = $cacheDriver->fetch($officeCacheId);
+        
+        if(!$office){
+            $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
+            $cacheDriver->save($officeCacheId, $office, 60);
+        }
+        
         if(!$office || !$office->getActive() || !$office->getIdCompany()->getActive()){
             return $this->get('test.error_manager')->getFlashBagError('Object not found!');
         }
         
-        //get data
-        $qb = $em->createQueryBuilder();
-        
-        $qb->select('oh')
-            ->from('TestCompanyBundle:OpeningHours', 'oh')
-            ->innerJoin('oh.idOffice', 'o', 'WITH', 'oh.idOffice = o.idOffice')
-            ->innerJoin('o.idCompany', 'c')
-            ->where('oh.idOffice = :idOffice')
-            ->setParameter('idOffice', $officeId);
-        
-        if(!$this->isGranted('ROLE_ADMIN')){
-            $qb->andWhere('c.active = :active')
-                ->andWhere('o.active = :active')
-                ->andWhere('oh.active = :active')
-                ->setParameter('active', 1);
-        }
-        
-        $days = $qb->getQuery()->getResult();
-
         return [
-            'days' => $days,
             'daysInWeek' => Week::getDaysInWeek(),
             'office' => $office
         ];

@@ -27,13 +27,13 @@ class Office {
     private $idOffice;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Company", cascade={"persist"}, inversedBy="offices", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="Company", cascade={"persist"}, inversedBy="offices", fetch="EAGER")
      * @ORM\JoinColumn(name="id_company", referencedColumnName="id_company")
      */
     private $idCompany;
 
     /**
-     * @ORM\OneToMany(targetEntity="OpeningHours", mappedBy="idOffice", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="OpeningHours", mappedBy="idOffice", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EAGER")
      */
     private $openingHours;
     

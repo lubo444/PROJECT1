@@ -11,7 +11,7 @@
 
 <div>
     <table>
-    {% for day in days %}
+    {% for day in office.openingHours %}
         <tr>
             <td>{{ daysInWeek[day.dayInWeek] }}</td>
             <td>{{ day.startAt }}{% if day.lunchStartAt != '' and day.lunchEndAt != '' %} - {{ day.lunchStartAt }}, {{ day.lunchEndAt }}{% endif %} - {{ day.endAt }}</td>

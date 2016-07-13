@@ -73,6 +73,9 @@ class DeleteController extends Controller
 
         $em->persist($office);
         $em->flush();
+        
+        $cacheManager = $this->get('test.cache_manager');
+        $cacheManager->deleteCachedObject('TestCompanyBundle:Office', $itemId);
 
         return $this->redirectToRoute('test_office_list', array('companyId' => $companyId), 301);
     }

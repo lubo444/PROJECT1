@@ -92,19 +92,11 @@ class ListController extends Controller {
      */
     public function openingHoursListAction(Request $request, $officeId)
     {
-        $em = $this->getDoctrine()->getManager();
-        $cacheDriver = new ApcuCache();
+        $cacheManager = $this->get('test.cache_manager');
+        
+        $office = $cacheManager->getCachedObject('TestCompanyBundle:Office', $officeId);
         
         //check parents active status
-        $officeCacheId = 'office_' . $officeId;
-        
-        $office = $cacheDriver->fetch($officeCacheId);
-        
-        if(!$office){
-            $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
-            $cacheDriver->save($officeCacheId, $office, 60);
-        }
-        
         if(!$office || !$office->getActive() || !$office->getIdCompany()->getActive()){
             return $this->get('test.error_manager')->getFlashBagError('Object not found!');
         }

@@ -7,3 +7,9 @@ services:
         class:     Test\Bundle\CompanyBundle\Service\ErrorManager
         arguments: ['@session', '@logger', '@router']
         
+    test.cache_manager:
+        class:     Test\Bundle\CompanyBundle\Service\CacheManager
+        arguments: ['@test.apcu_cache', '@doctrine.orm.entity_manager']
+        
+    test.apcu_cache:    
+        class:     Doctrine\Common\Cache\ApcuCache

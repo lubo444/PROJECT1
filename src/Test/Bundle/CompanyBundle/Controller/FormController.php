@@ -15,7 +15,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class FormController extends Controller
 {
-
     /**
      * @Route("/company/create", name="test_company_create")
      * @Template("TestCompanyBundle:Form:basic.html.twig")
@@ -125,6 +124,7 @@ class FormController extends Controller
     public function editOpeningHoursAction(Request $request, $itemId)
     {
         $em = $this->getDoctrine()->getManager();
+        $cacheManager = $this->get('test.cache_manager');
 
         $opnngHours = $em->getRepository('TestCompanyBundle:OpeningHours')->find($itemId);
         if (!$opnngHours) {
@@ -139,9 +139,11 @@ class FormController extends Controller
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-
-                $officeId = $form->getData()->getIdOffice()->getIdOffice();
                 $em->flush();
+                
+                $officeId = $form->getData()->getIdOffice()->getIdOffice();
+
+                $cacheManager->updateCachedObject('TestCompanyBundle:Office', $officeId);
 
                 return $this->redirectToRoute('test_opnng_hrs', ['officeId' => $officeId], 201);
             }
@@ -190,6 +192,7 @@ class FormController extends Controller
     public function officeEditAction(Request $request, $itemId)
     {
         $em = $this->getDoctrine()->getManager();
+        $cacheManager = $this->get('test.cache_manager');
 
         $office = $em->getRepository('TestCompanyBundle:Office')->find($itemId);
 
@@ -208,6 +211,8 @@ class FormController extends Controller
                 $em->flush();
 
                 $companyId = $office->getIdCompany()->getIdCompany();
+                
+                $cacheManager->updateCachedObject('TestCompanyBundle:Office', $office->getIdOffice());
 
                 return $this->redirectToRoute('test_office_list', ['companyId' => $companyId], 201);
             }

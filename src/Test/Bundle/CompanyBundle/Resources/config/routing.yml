@@ -1,0 +1,7 @@
+test_company_rest:
+    resource: "@TestCompanyBundle/Controller/"
+    type:     annotation
+
+companies:
+    type:     rest
+    resource: Test\Bundle\CompanyBundle\Controller\CompanyController

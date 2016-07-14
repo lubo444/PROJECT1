@@ -43,12 +43,12 @@ class Company
      * @Assert\NotBlank
      */
     private $active;
-    
+
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
-    
+
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -163,7 +163,7 @@ class Company
             $this->setCreatedAt(new DateTime('now'));
         }
     }
-    
+
     /**
      * Get updatedAt
      *
@@ -186,7 +186,7 @@ class Company
 
         return $this;
     }
-    
+
     /**
      * Get createdAt
      *

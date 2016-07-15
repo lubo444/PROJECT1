@@ -1,4 +1,5 @@
 test_company:
+    type: rest
     resource: "@TestCompanyBundle/Resources/config/routing.yml"
 
 app:

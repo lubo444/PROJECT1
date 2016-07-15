@@ -59,10 +59,9 @@ class Office {
      */
     private $updatedAt;
 
-    public function __construct($userId)
+    public function __construct()
     {
         $this->openingHours = new ArrayCollection();
-        $this->createdBy = $userId;
         $this->active = 1;
     }
 

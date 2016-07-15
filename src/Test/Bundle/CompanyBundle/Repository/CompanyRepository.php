@@ -96,7 +96,8 @@ class CompanyRepository extends EntityRepository
             );
 
             if (!$office) {
-                $office = new Office($row['userCreatedBy']);
+                $office = new Office();
+                $office->setCreatedBy($row['userCreatedBy']);
                 $office->setAddress($row['officeAddress']);
                 $office->setCreatedAt(new \DateTime());
                 $office->setIdCompany($company);

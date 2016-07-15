@@ -3,15 +3,14 @@
 namespace Test\Bundle\CompanyBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use FOS\RestBundle\View\View;
-use FOS\RestBundle\Controller\Annotations\View as AnnoView;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Util\Codes;
 use Symfony\Component\HttpFoundation\Request;
+use Test\Bundle\CompanyBundle\Form\RestCompanyType;
+use Test\Bundle\CompanyBundle\Entity\Company;
 
 class CompanyController extends FOSRestController implements ClassResourceInterface
 {
@@ -62,14 +61,14 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
     /**
      * @ApiDoc()
      */
-    public function postAction(\Symfony\Component\HttpFoundation\Request $request)
+    public function postAction(Request $request)
     {
         //TODO get user id
         $userId = 1;
 
-        $company = new \Test\Bundle\CompanyBundle\Entity\Company();
+        $company = new Company();
         $company->setCreatedBy($userId);
-        $form = $this->get('form.factory')->createNamed('', new \Test\Bundle\CompanyBundle\Form\RestCompanyType(), $company);
+        $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
         $form->submit($request);
 
         if ($form->isValid()) {
@@ -85,5 +84,72 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         return $this->handleView($view);
     }
 
+    /**
+     * @ApiDoc()
+     */
+    public function putAction(Request $request, $companyId)
+    {
+        $title = $request->request->get('title');
+        
+        $em = $this->getDoctrine()->getManager();
+        $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
+        $company->setTitle($title);
+        
+        $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
+        $form->submit($request);
+
+        if ($form->isValid()) {
+            $em->persist($company);
+            $em->flush();
+
+            $view = $this->view(['id' => $company->getIdCompany()], Codes::HTTP_CREATED);
+            return $this->handleView($view);
+        }
+
+        $view = $this->view($form, Codes::HTTP_BAD_REQUEST);
+        return $this->handleView($view);
+    }
+    
+    /**
+     * @ApiDoc()
+     */
+    public function patchAction(Request $request, $companyId)
+    {
+        $title = $request->request->get('title');
+        
+        $em = $this->getDoctrine()->getManager();
+        $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
+        $company->setTitle($title);
+        
+        $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
+        $form->submit($request);
+
+        if ($form->isValid()) {
+            $em->persist($company);
+            $em->flush();
+
+            $view = $this->view(['id' => $company->getIdCompany()], Codes::HTTP_CREATED);
+            return $this->handleView($view);
+        }
+
+        $view = $this->view($form, Codes::HTTP_BAD_REQUEST);
+        return $this->handleView($view);
+    }
+    
+    /**
+     * @ApiDoc()
+     */
+    public function deleteAction(Request $request, $companyId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
+        
+        $em->remove($company);
+        $em->flush();
+
+        $view = $this->view([], Codes::HTTP_OK);
+        return $this->handleView($view);
+    }
+    
 
 }

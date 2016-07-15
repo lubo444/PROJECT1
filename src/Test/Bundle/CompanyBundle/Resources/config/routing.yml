@@ -5,3 +5,8 @@ test_company_rest:
 companies:
     type:     rest
     resource: Test\Bundle\CompanyBundle\Controller\CompanyController
+
+offices:
+    type:     rest
+    parent:   companies
+    resource: Test\Bundle\CompanyBundle\Controller\OfficeController

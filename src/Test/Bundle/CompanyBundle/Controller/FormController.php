@@ -55,7 +55,9 @@ class FormController extends Controller
 
         $loggedUserId = $this->get('test.authorization')->getAuthenticatedUserId();
 
-        $office = new Office($loggedUserId);
+        $office = new Office();
+        $office->setCreatedBy($loggedUserId);
+        
         $form = $this->createForm(new OfficeType(), $office);
 
         $form->handleRequest($request);

@@ -54,10 +54,9 @@ class Company
      */
     private $updatedAt;
 
-    public function __construct($userId)
+    public function __construct()
     {
         $this->offices = new ArrayCollection();
-        $this->createdBy = $userId;
         $this->active = 1;
     }
 
@@ -103,7 +102,7 @@ class Company
     {
         return $this->offices;
     }
-
+    
     /**
      * Get createdBy
      *

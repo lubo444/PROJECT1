@@ -80,7 +80,8 @@ class CompanyRepository extends EntityRepository
             );
 
             if (!$company) {
-                $company = new Company($row['userCreatedBy']);
+                $company = new Company();
+                $company->setCreatedBy($row['userCreatedBy']);
                 $company->setTitle($row['companyName']);
                 $company->setCreatedAt(new \DateTime());
                 $em->persist($company);

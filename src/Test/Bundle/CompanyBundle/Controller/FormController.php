@@ -25,7 +25,8 @@ class FormController extends Controller
 
         $loggedUserId = $this->get('test.authorization')->getAuthenticatedUserId();
 
-        $company = new Company($loggedUserId);
+        $company = new Company();
+        $company->setCreatedBy($loggedUserId);
         $form = $this->createForm(new CompanyType(), $company);
 
         $form->handleRequest($request);

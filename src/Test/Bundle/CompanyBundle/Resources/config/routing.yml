@@ -10,3 +10,8 @@ offices:
     type:     rest
     parent:   companies
     resource: Test\Bundle\CompanyBundle\Controller\OfficeController
+    
+opening_hours:
+    type:     rest
+    parent:   offices
+    resource: Test\Bundle\CompanyBundle\Controller\OpeningHoursController

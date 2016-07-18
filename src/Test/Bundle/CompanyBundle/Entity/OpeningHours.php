@@ -15,16 +15,19 @@ class OpeningHours {
 
     /**
      * @ORM\Column(type="integer", name="day_in_week", nullable=false)
+     * @Assert\NotBlank()
      */
     private $dayInWeek;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=15)
+     * @Assert\NotBlank
+     * @ORM\Column(type="string", nullable=false, length=15)
      */
     private $startAt;
 
     /**
-     * @ORM\Column(type="string", nullable=true, length=15)
+     * @Assert\NotBlank
+     * @ORM\Column(type="string", nullable=false, length=15)
      */
     private $endAt;
 
@@ -73,9 +76,8 @@ class OpeningHours {
      */
     private $updatedAt;
 
-    public function __construct($userId)
+    public function __construct()
     {
-        $this->createdBy = $userId;
         $this->active = 1;
     }
 

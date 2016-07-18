@@ -63,14 +63,10 @@ class FormController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $address = $form->getData()->getAddress();
-
+            $em->persist($office);
+            
             $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
-
-            $office->setIdCompany($company);
-            $office->setAddress($address);
-
-            $em = $this->getDoctrine()->getManager();
+            $company->addOffice($office);
             $em->persist($office);
             $em->flush();
 
@@ -89,29 +85,20 @@ class FormController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $loggedUserId = $this->get('test.authorization')->getAuthenticatedUserId();
-        $opnngHours = new OpeningHours($loggedUserId);
+        $opnngHours = new OpeningHours();
+        $opnngHours->setCreatedBy($loggedUserId);
 
         $form = $this->createForm(new OpeningHoursType(), $opnngHours);
-
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $startAt = $data->getStartAt();
-            $startLunchAt = $data->getLunchStartAt();
-            $endLunchAt = $data->getLunchEndAt();
-            $endAt = $data->getEndAt();
+
+            $em->persist($opnngHours);
 
             $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
 
-            $opnngHours->setIdOffice($office);
-            $opnngHours->setStartAt($startAt);
-            $opnngHours->setLunchStartAt($startLunchAt);
-            $opnngHours->setLunchEndAt($endLunchAt);
-            $opnngHours->setEndAt($endAt);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($opnngHours);
+            $office->addOpeningHour($opnngHours);
+            $em->persist($office);
             $em->flush();
 
             return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId), 201);
@@ -121,10 +108,10 @@ class FormController extends Controller
     }
 
     /**
-     * @Route("/opening-hours/{itemId}/edit", requirements={"itemId" = "\d+"}, name="test_opening_hours_edit")
+     * @Route("/office/{parentItemId}/opening-hours/{itemId}/edit", requirements={"parentItemId" = "\d+", "itemId" = "\d+"}, name="test_opening_hours_edit")
      * @Template("TestCompanyBundle:Form:basic.html.twig")
      */
-    public function editOpeningHoursAction(Request $request, $itemId)
+    public function editOpeningHoursAction(Request $request, $parentItemId, $itemId)
     {
         $em = $this->getDoctrine()->getManager();
         $cacheManager = $this->get('test.cache_manager');
@@ -144,11 +131,9 @@ class FormController extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
                 $em->flush();
                 
-                $officeId = $form->getData()->getIdOffice()->getIdOffice();
+                $cacheManager->updateCachedObject('TestCompanyBundle:Office', $parentItemId);
 
-                $cacheManager->updateCachedObject('TestCompanyBundle:Office', $officeId);
-
-                return $this->redirectToRoute('test_opnng_hrs', ['officeId' => $officeId], 201);
+                return $this->redirectToRoute('test_opnng_hrs', ['officeId' => $parentItemId], 201);
             }
         }
 

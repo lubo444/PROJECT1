@@ -60,25 +60,8 @@ class ListController extends Controller {
             return $this->get('test.error_manager')->getFlashBagError('Object not found!');
         }
         
-        //get data
-        $qb = $em->createQueryBuilder();
-        
-        $qb->select('o')
-            ->from('TestCompanyBundle:Office', 'o')
-            ->innerJoin('o.idCompany', 'c')
-            ->where('o.idCompany = :idCompany')
-            ->setParameter('idCompany', $companyId);
-        
-        if(!$this->isGranted('ROLE_ADMIN')){
-            $qb->andWhere('c.active = :active')
-                ->andWhere('o.active = :active')
-                ->setParameter('active', 1);
-        }
-        
-        $offices = $qb->getQuery()->getResult();
-        
         return [
-            'offices' => $offices,
+            'offices' => $company->getOffices(),
             'company' => $company
         ];
     }
@@ -97,7 +80,7 @@ class ListController extends Controller {
         $office = $cacheManager->getCachedObject('TestCompanyBundle:Office', $officeId);
         
         //check parents active status
-        if(!$office || !$office->getActive() || !$office->getIdCompany()->getActive()){
+        if(!$office || !$office->getActive()){
             return $this->get('test.error_manager')->getFlashBagError('Object not found!');
         }
         

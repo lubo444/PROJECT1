@@ -5,13 +5,15 @@ namespace Test\Bundle\CompanyBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
+use Test\Bundle\CompanyBundle\Entity\OpeningHours;
 use DateTime;
 
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Office {
+class Office
+{
 
     /**
      * @ORM\Column(type="string", nullable=false, length=255)
@@ -27,33 +29,31 @@ class Office {
     private $idOffice;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Company", cascade={"persist"}, inversedBy="offices", fetch="EAGER")
-     * @ORM\JoinColumn(name="id_company", referencedColumnName="id_company")
-     */
-    private $idCompany;
-
-    /**
-     * @ORM\OneToMany(targetEntity="OpeningHours", mappedBy="idOffice", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="OpeningHours", fetch="EAGER")
+     * @ORM\JoinTable(name="offices_opening_hours",
+     *      joinColumns={@ORM\JoinColumn(name="id_office", referencedColumnName="id_office")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="id_opnng_hrs", referencedColumnName="id_opnng_hrs", unique=true)}
+     *      )
      */
     private $openingHours;
-    
+
     /**
      * @ORM\Column(type="integer", nullable=false, options={"unsigned":false})
      * @Assert\NotBlank
      */
     private $createdBy;
-    
+
     /**
      * @ORM\Column(type="integer", nullable=false, options={"unsigned":true})
      * @Assert\NotBlank
      */
     private $active;
-    
+
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
-    
+
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -99,38 +99,43 @@ class Office {
     }
 
     /**
-     * Set idCompany
-     *
-     * @param \Test\Bundle\CompanyBundle\Entity\Company $idCompany
-     * @return Office
-     */
-    public function setIdCompany(\Test\Bundle\CompanyBundle\Entity\Company $idCompany = null)
-    {
-        $this->idCompany = $idCompany;
-
-        return $this;
-    }
-
-    /**
-     * Get idCompany
-     *
-     * @return \Test\Bundle\CompanyBundle\Entity\Company 
-     */
-    public function getIdCompany()
-    {
-        return $this->idCompany;
-    }
-
-    /**
      * Get openingHours
      *
      * @return ArrayCollection 
      */
     public function getOpeningHours()
     {
-        return $this->openingHours;
+        return $this->openingHours->toArray();
     }
-    
+
+    /**
+     * 
+     * @param OpeningHours $openingHours
+     * @return \Test\Bundle\CompanyBundle\Entity\Office
+     */
+    public function addOpeningHour(OpeningHours $openingHours)
+    {
+        if (!$this->openingHours->contains($openingHours)) {
+            $this->openingHours->add($openingHours);
+        }
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @param OpeningHours $openingHours
+     * @return \Test\Bundle\CompanyBundle\Entity\Office
+     */
+    public function removeOpeningHour(OpeningHours $openingHours)
+    {
+        if ($this->openingHours->contains($openingHours)) {
+            $this->openingHours->removeElement($openingHours);
+        }
+
+        return $this;
+    }
+
     /**
      * Get createdBy
      *
@@ -140,19 +145,20 @@ class Office {
     {
         return $this->createdBy;
     }
-    
+
     /**
      * Set createdBy
      *
      * @param string $userId
-     * @return Company
+     * @return Office
      */
-    public function setCreatedBy($userId){
+    public function setCreatedBy($userId)
+    {
         $this->createdBy = $userId;
-        
+
         return $this;
     }
-    
+
     /**
      * Get active
      *
@@ -162,19 +168,20 @@ class Office {
     {
         return $this->active;
     }
-    
+
     /**
      * Set active
      *
      * @param string $active
-     * @return Company
+     * @return Office
      */
-    public function setActive($active){
+    public function setActive($active)
+    {
         $this->active = $active;
-        
+
         return $this;
     }
-    
+
     /**
      *
      * @ORM\PrePersist
@@ -188,7 +195,7 @@ class Office {
             $this->setCreatedAt(new DateTime('now'));
         }
     }
-    
+
     /**
      * Get updatedAt
      *
@@ -203,7 +210,7 @@ class Office {
      * Set updatedAt
      *
      * @param DateTime $updatedAt
-     * @return Company
+     * @return Office
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -211,7 +218,7 @@ class Office {
 
         return $this;
     }
-    
+
     /**
      * Get createdAt
      *
@@ -226,7 +233,7 @@ class Office {
      * Set createdAt
      *
      * @param DateTime $createdAt
-     * @return Company
+     * @return Office
      */
     public function setCreatedAt($createdAt)
     {

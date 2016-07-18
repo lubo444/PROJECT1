@@ -5,6 +5,15 @@
 <br><br>
 {% endif %}
 
+{% if app.session.flashBag.has('error') %}
+    <div style="color: red;">
+        {% for msg in app.session.flashBag.get('error') %}
+            {{ msg }}
+        {% endfor %}
+    </div>
+    <br><br>
+{% endif %}
+
 {{ form(form) }}<br><br>
 
 {% for company in companies %}

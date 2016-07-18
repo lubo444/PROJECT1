@@ -13,8 +13,8 @@ use Test\Bundle\CompanyBundle\Form\OpeningHoursType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class FormController extends Controller {
-
+class FormController extends Controller
+{
     /**
      * @Route("/company/create", name="test_company_create")
      * @Template("TestCompanyBundle:Form:basic.html.twig")
@@ -22,10 +22,11 @@ class FormController extends Controller {
     public function registerCompanyAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        
-        $loggedUserId = $this->get('security.context')->getToken()->getUser()->getId();
 
-        $company = new Company($loggedUserId);
+        $loggedUserId = $this->get('test.authorization')->getAuthenticatedUserId();
+
+        $company = new Company();
+        $company->setCreatedBy($loggedUserId);
         $form = $this->createForm(new CompanyType(), $company);
 
         $form->handleRequest($request);
@@ -38,7 +39,7 @@ class FormController extends Controller {
             $em->persist($company);
             $em->flush();
 
-            return $this->redirectToRoute('test_company_list');
+            return $this->redirectToRoute('test_company_list', array(), 201);
         }
 
         return ['form' => $form->createView()];
@@ -52,9 +53,11 @@ class FormController extends Controller {
     {
         $em = $this->getDoctrine()->getManager();
 
-        $loggedUserId = $this->get('security.context')->getToken()->getUser()->getId();
+        $loggedUserId = $this->get('test.authorization')->getAuthenticatedUserId();
+
+        $office = new Office();
+        $office->setCreatedBy($loggedUserId);
         
-        $office = new Office($loggedUserId);
         $form = $this->createForm(new OfficeType(), $office);
 
         $form->handleRequest($request);
@@ -71,7 +74,7 @@ class FormController extends Controller {
             $em->persist($office);
             $em->flush();
 
-            return $this->redirectToRoute('test_office_list', ['companyId' => $companyId]);
+            return $this->redirectToRoute('test_office_list', ['companyId' => $companyId], 201);
         }
 
         return ['form' => $form->createView()];
@@ -85,7 +88,7 @@ class FormController extends Controller {
     {
         $em = $this->getDoctrine()->getManager();
 
-        $loggedUserId = $this->get('security.context')->getToken()->getUser()->getId();
+        $loggedUserId = $this->get('test.authorization')->getAuthenticatedUserId();
         $opnngHours = new OpeningHours($loggedUserId);
 
         $form = $this->createForm(new OpeningHoursType(), $opnngHours);
@@ -111,7 +114,7 @@ class FormController extends Controller {
             $em->persist($opnngHours);
             $em->flush();
 
-            return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId));
+            return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId), 201);
         }
 
         return ['form' => $form->createView()];
@@ -124,46 +127,59 @@ class FormController extends Controller {
     public function editOpeningHoursAction(Request $request, $itemId)
     {
         $em = $this->getDoctrine()->getManager();
+        $cacheManager = $this->get('test.cache_manager');
 
         $opnngHours = $em->getRepository('TestCompanyBundle:OpeningHours')->find($itemId);
+        if (!$opnngHours) {
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
+        }
+
+        $this->get('test.authorization')->checkAccessItem($opnngHours);
 
         $form = $this->createForm(new OpeningHoursType(), $opnngHours);
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
-            
+
             if ($form->isSubmitted() && $form->isValid()) {
-                
-                $officeId = $form->getData()->getIdOffice()->getIdOffice();
                 $em->flush();
                 
-                return $this->redirectToRoute('test_opnng_hrs', ['officeId' => $officeId]);
+                $officeId = $form->getData()->getIdOffice()->getIdOffice();
+
+                $cacheManager->updateCachedObject('TestCompanyBundle:Office', $officeId);
+
+                return $this->redirectToRoute('test_opnng_hrs', ['officeId' => $officeId], 201);
             }
         }
 
         return ['form' => $form->createView()];
     }
-    
+
     /**
      * @Route("/company/{itemId}/edit", requirements={"itemId" = "\d+"}, name="test_company_edit")
      * @Template("TestCompanyBundle:Form:basic.html.twig")
      */
     public function companyEditAction(Request $request, $itemId)
     {
-
         $em = $this->getDoctrine()->getManager();
-        
+
         $company = $em->getRepository('TestCompanyBundle:Company')->find($itemId);
-        
+
+        if (!$company) {
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
+        }
+
+        $this->get('test.authorization')->checkAccessItem($company);
+
         $form = $this->createForm(new CompanyType(), $company);
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
-            
+
             if ($form->isSubmitted() && $form->isValid()) {
                 $em->flush();
-                
-                return $this->redirectToRoute('test_company_list');
+
+                return $this->redirectToRoute('test_company_list', array(), 201);
             }
         }
 
@@ -171,7 +187,7 @@ class FormController extends Controller {
             'form' => $form->createView()
         ];
     }
-    
+
     /**
      * @Route("/office/{itemId}/edit", requirements={"itemId" = "\d+"}, name="test_office_edit")
      * @Template("TestCompanyBundle:Form:basic.html.twig")
@@ -179,26 +195,35 @@ class FormController extends Controller {
     public function officeEditAction(Request $request, $itemId)
     {
         $em = $this->getDoctrine()->getManager();
-        
+        $cacheManager = $this->get('test.cache_manager');
+
         $office = $em->getRepository('TestCompanyBundle:Office')->find($itemId);
-        
+
+        if (!$office) {
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
+        }
+
+        $this->get('test.authorization')->checkAccessItem($office);
+
         $form = $this->createForm(new OfficeType(), $office);
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
-            
+
             if ($form->isSubmitted() && $form->isValid()) {
                 $em->flush();
-                
+
                 $companyId = $office->getIdCompany()->getIdCompany();
                 
-                return $this->redirectToRoute('test_office_list', ['companyId' => $companyId]);
+                $cacheManager->updateCachedObject('TestCompanyBundle:Office', $office->getIdOffice());
+
+                return $this->redirectToRoute('test_office_list', ['companyId' => $companyId], 201);
             }
         }
 
         return [
             'form' => $form->createView()
-        ];  
+        ];
     }
 
 }

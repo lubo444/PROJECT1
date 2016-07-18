@@ -29,12 +29,13 @@ class OpeningHoursType extends AbstractType {
     {
         $resolver->setDefaults(array(
             'data_class' => 'Test\Bundle\CompanyBundle\Entity\OpeningHours',
+            'csrf_protection' => false,
         ));
     }
 
     public function getName()
     {
-        return 'openingHours';
+        return 'rest_opening_hours';
     }
 
 }

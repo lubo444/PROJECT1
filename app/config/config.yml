@@ -18,7 +18,7 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    #serializer:      { enable_annotations: true }
+    serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
@@ -82,3 +82,29 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Test\Bundle\CompanyBundle\Entity\User
+    
+    
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/DoctrineMigrations"
+    namespace: Application\Migrations
+    table_name: _versions
+    name: Application Migrations
+    
+fos_rest:
+    view:
+        formats:
+            json: true
+            rss: true
+            xml: false
+        templating_formats:
+            json: false
+        force_redirects:
+            json: true
+        failed_validation: HTTP_BAD_REQUEST
+        default_engine: twig
+        
+    format_listener:
+        rules:
+            - { path: '^/', fallback_format: ~, prefer_extension: false, priorities: ['json', 'html'] }
+            
+nelmio_api_doc: ~

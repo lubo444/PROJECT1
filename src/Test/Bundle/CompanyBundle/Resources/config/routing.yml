@@ -1,0 +1,17 @@
+test_company_rest:
+    resource: "@TestCompanyBundle/Controller/"
+    type:     annotation
+
+companies:
+    type:     rest
+    resource: Test\Bundle\CompanyBundle\Controller\CompanyController
+
+offices:
+    type:     rest
+    parent:   companies
+    resource: Test\Bundle\CompanyBundle\Controller\OfficeController
+    
+opening_hours:
+    type:     rest
+    parent:   offices
+    resource: Test\Bundle\CompanyBundle\Controller\OpeningHoursController

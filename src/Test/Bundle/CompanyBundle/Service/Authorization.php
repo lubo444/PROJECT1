@@ -8,39 +8,54 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * @Service("test_authorization")
  */
-class Authorization {
+class Authorization
+{
 
     private $authorizationChecker;
     private $securityContext;
-    
-    public function setAuthorizationChecker($authorizationChecker){
+    private $logger;
+
+    public function __construct($authorizationChecker, $securityContext, $logger)
+    {
         $this->authorizationChecker = $authorizationChecker;
-    }
-    
-    public function setSecurityContext($securityContext){
         $this->securityContext = $securityContext;
+        $this->logger = $logger;
     }
-    
+
     public function checkAccessItem($item)
     {
-        if(!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')){
+        if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $this->logger->error('Access denied, not authenticated user, class: ' . get_class($item) . ', ID ' . $item->getIdentifier());
             throw new AccessDeniedException();
         }
-        
+
         if ($this->securityContext->isGranted('ROLE_ADMIN')) {
             return true;
         }
-        
+
         if ($this->securityContext->isGranted('ROLE_USER')) {
             $createdByUserId = $item->getCreatedBy();
             $loggedUserId = $this->securityContext->getToken()->getUser()->getId();
-            
-            if($createdByUserId == $loggedUserId){
+
+            if ($createdByUserId == $loggedUserId) {
                 return true;
             }
         }
-        
+
+        $this->logger->error('Access denied, class: ' . get_class($item) . ', ID ' . $item->getIdentifier());
         throw new AccessDeniedException();
+    }
+
+    public function getAuthenticatedUserId()
+    {
+        if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $this->logger->error('Access denied, not authenticated user');
+            throw new AccessDeniedException();
+        }
+
+        $authenticatedUserId = $this->securityContext->getToken()->getUser()->getId();
+
+        return $authenticatedUserId;
     }
 
 }

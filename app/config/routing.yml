@@ -1,6 +1,6 @@
 test_company:
-    resource: "@TestCompanyBundle/Controller/"
-    type:     annotation
+    type: rest
+    resource: "@TestCompanyBundle/Resources/config/routing.yml"
 
 app:
     resource: "@AppBundle/Controller/"
@@ -8,3 +8,7 @@ app:
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc

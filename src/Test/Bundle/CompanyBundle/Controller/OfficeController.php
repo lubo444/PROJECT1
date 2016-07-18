@@ -80,12 +80,9 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
      */
     public function putAction(Request $request, $companyId, $officeId)
     {
-        $address = $request->request->get('address');
-        
         $em = $this->getDoctrine()->getManager();
 
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
-        $office->setAddress($address);
         
         $form = $this->get('form.factory')->createNamed(null, new RestOfficeType(), $office);
         $form->submit($request);
@@ -107,12 +104,9 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
      */
     public function patchAction(Request $request, $companyId, $officeId)
     {
-        $address = $request->request->get('address');
-        
         $em = $this->getDoctrine()->getManager();
 
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
-        $office->setAddress($address);
         
         $form = $this->get('form.factory')->createNamed(null, new RestOfficeType(), $office);
         $form->submit($request);
@@ -136,8 +130,8 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
     {
         $em = $this->getDoctrine()->getManager();
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
-        
-        $em->remove($office);
+        $office->setActive(false);
+        $em->persist($office);
         $em->flush();
 
         $view = $this->view([], Codes::HTTP_OK);

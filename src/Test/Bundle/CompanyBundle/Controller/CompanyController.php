@@ -22,7 +22,6 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
     {
         $em = $this->getDoctrine()->getManager();
 
-
         $filters = [];
 
         $page = $request->query->get('page');
@@ -89,12 +88,9 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
      */
     public function putAction(Request $request, $companyId)
     {
-        $title = $request->request->get('title');
-        
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
-        $company->setTitle($title);
-        
+
         $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
         $form->submit($request);
 
@@ -115,11 +111,8 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
      */
     public function patchAction(Request $request, $companyId)
     {
-        $title = $request->request->get('title');
-        
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
-        $company->setTitle($title);
         
         $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
         $form->submit($request);
@@ -143,8 +136,8 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
     {
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
-        
-        $em->remove($company);
+        $company->setActive(false);
+        $em->persist($company);
         $em->flush();
 
         $view = $this->view([], Codes::HTTP_OK);

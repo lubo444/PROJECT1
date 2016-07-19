@@ -45,7 +45,7 @@ security:
             context: test_connect
 
         api:
-            pattern:    ^/api
+            pattern:    ^/
             fos_oauth:  true
             stateless:  true
             anonymous:  false # Needed to allow access to oauth pages

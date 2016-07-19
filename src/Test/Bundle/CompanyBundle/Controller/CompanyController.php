@@ -16,7 +16,6 @@ use Test\Bundle\CompanyBundle\Form\FilterType;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
 
 class CompanyController extends FOSRestController implements ClassResourceInterface
 {
@@ -46,12 +45,22 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
 
         $em = $this->getDoctrine()->getManager();
         $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
-
-        return [
+        
+        //$token = $this->container->get('security.context')->getToken();
+        //$tokenManager = $this->container->get('fos_oauth_server.access_token_manager.default');
+        //$accessToken = $tokenManager->findTokenByToken($token->getToken());
+        
+        //$companies = serialize($companies);
+        
+        $data = [
             'companies' => $companies,
             'daysInWeek' => Week::getDaysInWeek(),
-            'form' => $form->createView(),
+            //'form' => $form->createView(),
         ];
+        
+        ///return $data;
+        
+        return new \Symfony\Component\HttpFoundation\JsonResponse($data, 200);
     }
 
     

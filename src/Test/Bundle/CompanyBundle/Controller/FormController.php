@@ -13,6 +13,9 @@ use Test\Bundle\CompanyBundle\Form\OpeningHoursType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Test\Bundle\CompanyBundle\Form\FilterType;
+use Test\Bundle\CompanyBundle\Entity\Week;
+
 class FormController extends Controller
 {
     /**

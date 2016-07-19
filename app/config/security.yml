@@ -8,7 +8,6 @@ security:
             memory: ~
         fos_userbundle:
             id: fos_user.user_provider.username
-
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -32,8 +31,32 @@ security:
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
 
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            form_login:
+                provider: fos_userbundle
+                check_path: login_check
+                login_path: login
+            anonymous: true
+            context: test_connect
+
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  false # Needed to allow access to oauth pages
+            
     encoders:
         FOS\UserBundle\Model\UserInterface: bcrypt
+        vp\GlobalBundle\Entity\User:
+            algorithm:            pbkdf2
+            hash_algorithm:       sha512
+            encode_as_base64:     true
+            iterations:           1000
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
@@ -44,3 +67,5 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/oauth/v2/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

@@ -14,9 +14,8 @@ use Test\Bundle\CompanyBundle\Form\RestOpeningHoursType;
 use Test\Bundle\CompanyBundle\Entity\OpeningHours;
 use Test\Bundle\CompanyBundle\Entity\Week;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route as BaseRoute;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @RouteResource("OpeningHours")
@@ -25,7 +24,7 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
 {
 
     /**
-     * @Route("/office/{officeId}",
+     * @BaseRoute("/office/{officeId}",
      *  requirements={"officeId" = "\d+"},
      *  name="test_opnng_hrs")
      * @Template("TestCompanyBundle:Office:detail.html.twig")
@@ -48,7 +47,7 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
     }
     
     /**
-     * @Route("/opening-hours/{itemId}/delete/{undelete}",
+     * @BaseRoute("/opening-hours/{itemId}/delete/{undelete}",
      *  requirements={"itemId" = "\d+", "undelete" = "\d+"},
      *  defaults={"undelete" = null},
      *  name="test_opening_hours_delete")

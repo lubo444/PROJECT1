@@ -3,22 +3,25 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/project1/app/config/config.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/app/config/routing.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/FormController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/views/Office/list.html.twig</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/OpeningHours.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/Office.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/OpeningHoursController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/DeleteController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Repository/CompanyRepository.php</file>
             <file>file:/C:/xampp/htdocs/project1/web/app.php</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/config/routing.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Form/RestCompanyType.php</file>
-            <file>file:/C:/xampp/htdocs/project1/composer.json</file>
-            <file>file:/C:/xampp/htdocs/project1/app/AppKernel.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/FormController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/views/Homepage/list.html.twig</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/views/Button/action_buttons.html.twig</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/CompanyController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/OfficeController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Service/Authorization.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/ListController.php</file>
-            <file>file:/C:/xampp/htdocs/project1/app/config/services.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Service/ErrorManager.php</file>
             <file>file:/C:/xampp/htdocs/project1/web/app_dev.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Service/CacheManager.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/views/Office/detail.html.twig</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/Company.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Form/OpeningHoursType.php</file>
         </group>
     </open-files>
 </project-private>

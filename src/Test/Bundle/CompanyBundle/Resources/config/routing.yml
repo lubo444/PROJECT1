@@ -1,17 +1,28 @@
-test_company_rest:
-    resource: "@TestCompanyBundle/Controller/"
+test_company:
+    resource: Test\Bundle\CompanyBundle\Controller\OfficeController
     type:     annotation
+    
+test_office:
+    resource: Test\Bundle\CompanyBundle\Controller\OpeningHoursController
+    type:     annotation
+
+test_company_rest:
+    resource: "@TestCompanyBundle/Controller/Api"
+    type:     annotation
+    prefix:   /api
 
 companies:
     type:     rest
-    resource: Test\Bundle\CompanyBundle\Controller\CompanyController
+    resource: Test\Bundle\CompanyBundle\Controller\Api\CompanyController
+    prefix:   /api
 
 offices:
     type:     rest
     parent:   companies
-    resource: Test\Bundle\CompanyBundle\Controller\OfficeController
+    resource: Test\Bundle\CompanyBundle\Controller\Api\OfficeController
+    prefix:   /api
     
 opening_hours:
     type:     rest
     parent:   offices
-    resource: Test\Bundle\CompanyBundle\Controller\OpeningHoursController
+    resource: Test\Bundle\CompanyBundle\Controller\Api\OpeningHoursController

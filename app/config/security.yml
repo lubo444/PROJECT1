@@ -9,6 +9,27 @@ security:
         fos_userbundle:
             id: fos_user.user_provider.username
     firewalls:
+        
+
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            form_login:
+                provider: fos_userbundle
+                check_path: /oauth/v2/auth_login_check
+                login_path: /oauth/v2/auth_login
+            anonymous: true
+            #context: test_connect
+            
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+            
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  true
+            
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -31,24 +52,9 @@ security:
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
 
-        oauth_token:
-            pattern:    ^/oauth/v2/token
-            security:   false
+        
 
-        oauth_authorize:
-            pattern:    ^/oauth/v2/auth
-            form_login:
-                provider: fos_userbundle
-                check_path: login_check
-                login_path: login
-            anonymous: true
-            context: test_connect
-
-        api:
-            pattern:    ^/
-            fos_oauth:  true
-            stateless:  true
-            anonymous:  false # Needed to allow access to oauth pages
+        
             
     encoders:
         FOS\UserBundle\Model\UserInterface: bcrypt
@@ -68,4 +74,8 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/oauth/v2/, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/companies/[0-9]+$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/companies/[0-9]+/offices/[0-9]+$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        

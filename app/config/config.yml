@@ -98,6 +98,7 @@ fos_rest:
             json: true
             html: true
         templating_formats:
+            html: true
             json: false
         force_redirects:
             html: true
@@ -108,7 +109,8 @@ fos_rest:
         
     format_listener:
         rules:
-            - { path: '^/', fallback_format: ~, prefer_extension: false, priorities: ['json', 'html'] }
+            - { path: '^/api', fallback_format: ~, prefer_extension: false, priorities: ['json'] }
+            - { path: '^/', fallback_format: ~, prefer_extension: false, priorities: ['html'] }
     #format_listener: true
             
     param_fetcher_listener: true

@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Bundle\CompanyBundle\Controller;
+namespace Test\Bundle\CompanyBundle\Controller\Api;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
@@ -21,7 +21,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
 {
     
     /**
-     * @Route("/{page}", requirements={"page" = "\d+"}, defaults={"page" = 1}, name="test_company_list")
+     * @Route("/{page}", requirements={"page" = "\d+"}, defaults={"page" = 1}, name="test_api_company_list")
      * @Template("TestCompanyBundle:Homepage:list.html.twig")
      */
     public function companiesListAction(Request $request, $page)
@@ -55,12 +55,12 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         $data = [
             'companies' => $companies,
             'daysInWeek' => Week::getDaysInWeek(),
-            //'form' => $form->createView(),
+            'form' => $form->createView(),
         ];
         
-        ///return $data;
+        return $data;
         
-        return new \Symfony\Component\HttpFoundation\JsonResponse($data, 200);
+       //return new \Symfony\Component\HttpFoundation\JsonResponse($data, 200);
     }
 
     
@@ -68,7 +68,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
      * @Route("/company/{itemId}/delete/{undelete}",
      *  requirements={"itemId" = "\d+", "undelete" = "\d+"},
      *  defaults={"undelete" = null},
-     *  name="test_company_delete")
+     *  name="test_api_company_delete")
      * @Template()
      */
     public function deleteCompanyAction(Request $request, $itemId, $undelete)

@@ -3,26 +3,30 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/project1/app/config/parameters.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/app/config/config.yml</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/views/Office/list.html.twig</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/OpeningHours.php</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Command/OAuthCreateClientCommand.php</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/routing.yml</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/Office.php</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Command/ImportCsvCommand.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/OpeningHoursController.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/FormController.php</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/config/routing.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/composer.json</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/security.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/app/AppKernel.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/AuthCode.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/CompanyController.php</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/OfficeController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/Client.php</file>
+            <file>file:/C:/xampp/htdocs/project1/app/config/parameters.yml</file>
+            <file>file:/C:/xampp/htdocs/project1/app/config/config.yml</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Command/OAuthCreateClientCommand.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Command/ImportCsvCommand.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Api/OpeningHoursController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/config/routing.yml</file>
+            <file>file:/C:/xampp/htdocs/project1/composer.json</file>
+            <file>file:/C:/xampp/htdocs/project1/app/AppKernel.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Api/OfficeController.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/AccessToken.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/OfficeController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Api/CompanyController.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/RefreshToken.php</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/services.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/Client.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/User.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/config/services.yml</file>
         </group>

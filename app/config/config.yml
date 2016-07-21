@@ -91,17 +91,16 @@ doctrine_migrations:
     namespace: Application\Migrations
     table_name: _versions
     name: Application Migrations
-    
+
 fos_rest:
     view:
         formats:
             json: true
-            html: true
+            rss: true
+            xml: false
         templating_formats:
-            html: true
             json: false
         force_redirects:
-            html: true
             json: true
         failed_validation: HTTP_BAD_REQUEST
         default_engine: twig

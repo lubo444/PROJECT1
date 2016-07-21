@@ -13,7 +13,6 @@ use FOS\RestBundle\Util\Codes;
 use Test\Bundle\CompanyBundle\Form\RestOpeningHoursType;
 use Test\Bundle\CompanyBundle\Entity\OpeningHours;
 use Test\Bundle\CompanyBundle\Entity\Week;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route as BaseRoute;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -32,20 +31,21 @@ class OpeningHoursController extends Controller
     public function openingHoursListAction(Request $request, $officeId)
     {
         $cacheManager = $this->get('test.cache_manager');
-        
+
         $office = $cacheManager->getCachedObject('TestCompanyBundle:Office', $officeId);
-        
+
         //check parents active status
-        if(!$office || !$office->getActive() || !$office->getIdCompany()->getActive()){
+        if (!$office || !$office->getActive() || !$office->getIdCompany()->getActive()) {
             return $this->get('test.error_manager')->getFlashBagError('Object not found!');
         }
-        
-        return [
-            'daysInWeek' => Week::getDaysInWeek(),
-            'office' => $office
-        ];
+
+        return $this->render('TestCompanyBundle:Office:detail.html.twig', [
+                    'daysInWeek' => Week::getDaysInWeek(),
+                    'office' => $office
+                        ]
+        );
     }
-    
+
     /**
      * @BaseRoute("/opening-hours/{itemId}/delete/{undelete}",
      *  requirements={"itemId" = "\d+", "undelete" = "\d+"},
@@ -61,7 +61,7 @@ class OpeningHoursController extends Controller
         if (!$openingHours) {
             return $this->get('test.error_manager')->getFlashBagError('Object not found!');
         }
-        
+
         $this->get('test.authorization')->checkAccessItem($openingHours);
 
         if ($undelete) {
@@ -79,9 +79,5 @@ class OpeningHoursController extends Controller
 
         return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId), 301);
     }
-    
-    
-    
-    
 
 }

@@ -14,95 +14,13 @@ use Test\Bundle\CompanyBundle\Entity\Company;
 use Test\Bundle\CompanyBundle\Entity\Week;
 use Test\Bundle\CompanyBundle\Form\FilterType;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class CompanyController extends FOSRestController implements ClassResourceInterface
 {
     
     /**
-     * @Route("/{page}", requirements={"page" = "\d+"}, defaults={"page" = 1}, name="test_api_company_list")
-     * @Template("TestCompanyBundle:Homepage:list.html.twig")
-     */
-    public function companiesListAction(Request $request, $page)
-    {
-        $form = $this->createForm(new FilterType());
-        $form->handleRequest($request);
-        
-        $filters = [];
-        
-        if($this->isGranted('ROLE_ADMIN')){
-            $filters['roleAdmin'] = true;
-        }
-        
-        if ($form->isSubmitted()) {
-            $data = $form->getData();
-
-            $filters['name'] = $data['title'];
-            $filters['day'] = $data['day'];
-            $filters['hour'] = $data['hour'];
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
-        
-        //$token = $this->container->get('security.context')->getToken();
-        //$tokenManager = $this->container->get('fos_oauth_server.access_token_manager.default');
-        //$accessToken = $tokenManager->findTokenByToken($token->getToken());
-        
-        //$companies = serialize($companies);
-        
-        $data = [
-            'companies' => $companies,
-            'daysInWeek' => Week::getDaysInWeek(),
-            'form' => $form->createView(),
-        ];
-        
-        return $data;
-        
-       //return new \Symfony\Component\HttpFoundation\JsonResponse($data, 200);
-    }
-
-    
-    /**
-     * @Route("/company/{itemId}/delete/{undelete}",
-     *  requirements={"itemId" = "\d+", "undelete" = "\d+"},
-     *  defaults={"undelete" = null},
-     *  name="test_api_company_delete")
-     * @Template()
-     */
-    public function deleteCompanyAction(Request $request, $itemId, $undelete)
-    {
-
-        $em = $this->getDoctrine()->getManager();
-        $company = $em->getRepository('TestCompanyBundle:Company')->find($itemId);
-
-        if (!$company) {
-            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
-        }
-
-        $this->get('test.authorization')->checkAccessItem($company);
-
-        if ($undelete) {
-            if ($this->isGranted('ROLE_ADMIN')) {
-                $company->setActive(true);
-            }
-        } else {
-            $company->setActive(false);
-        }
-
-        $em->persist($company);
-        $em->flush();
-
-        return $this->redirectToRoute('test_company_list');
-    }
-
-    
-    
-    /////////////////////// REST /////////////////////////////
-    
-    /**
      * @ApiDoc()
+     * @Rest\Get("/companies")
      */
     public function cgetAction(Request $request)
     {
@@ -145,6 +63,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
 
     /**
      * @ApiDoc()
+     * @Rest\Post("/companies")
      */
     public function postAction(Request $request)
     {
@@ -171,6 +90,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
 
     /**
      * @ApiDoc()
+     * @Rest\Put("/companies/{companyId}", requirements={"companyId" = "\d+"})
      */
     public function putAction(Request $request, $companyId)
     {
@@ -194,6 +114,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
     
     /**
      * @ApiDoc()
+     * @Rest\Patch("/companies/{companyId}", requirements={"companyId" = "\d+"})
      */
     public function patchAction(Request $request, $companyId)
     {
@@ -217,6 +138,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
     
     /**
      * @ApiDoc()
+     * @Rest\Delete("/companies/{companyId}", requirements={"companyId" = "\d+"})
      */
     public function deleteAction(Request $request, $companyId)
     {

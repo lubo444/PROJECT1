@@ -24,11 +24,19 @@ security:
             pattern:    ^/oauth/v2/token
             security:   false
             
-        api:
+        rest_api_get:
+            methods:    [GET]
             pattern:    ^/api
             fos_oauth:  true
             stateless:  true
             anonymous:  true
+            
+        rest_api_modify:
+            methods:    [DELETE, PUT, POST, PATCH]
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  false
             
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -58,6 +66,10 @@ security:
             
     encoders:
         FOS\UserBundle\Model\UserInterface: bcrypt
+        OAuth2\ServerBundle\Entity\User:
+            algorithm:          sha512
+            encode_as_base64:   true
+            iterations:         5000
         vp\GlobalBundle\Entity\User:
             algorithm:            pbkdf2
             hash_algorithm:       sha512
@@ -74,8 +86,4 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/oauth/v2/, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/companies/[0-9]+$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/companies/[0-9]+/offices/[0-9]+$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         

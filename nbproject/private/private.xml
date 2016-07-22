@@ -13,6 +13,7 @@
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/AuthCode.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/CompanyController.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/Client.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Service/CacheManager.php</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/parameters.yml</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/config.yml</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Command/OAuthCreateClientCommand.php</file>

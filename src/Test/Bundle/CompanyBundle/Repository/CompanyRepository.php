@@ -111,7 +111,8 @@ class CompanyRepository extends EntityRepository
                 
                 $dayInWeek = $i%7;
                 
-                $openingHour = new OpeningHours($row['userCreatedBy']);
+                $openingHour = new OpeningHours();
+                $openingHour->setCreatedBy($row['userCreatedBy']);
                 $openingHour->setDayInWeek($dayInWeek);
                 $openingHour->setCreatedAt(new \DateTime());
                 $openingHour->setIdOffice($office);

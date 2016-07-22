@@ -1,21 +1,19 @@
 <?php
 
-namespace Test\Bundle\CompanyBundle\Controller;
+namespace Test\Bundle\CompanyBundle\Controller\Api;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\View\View;
+use Symfony\Component\HttpFoundation\Request;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\Annotations\RouteResource;
+use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Util\Codes;
-use Symfony\Component\HttpFoundation\Request;
 use Test\Bundle\CompanyBundle\Form\RestOpeningHoursType;
-use Test\Bundle\CompanyBundle\Entity\Company;
-use Test\Bundle\CompanyBundle\Entity\Office;
-use Symfony\Component\Routing\Annotation\Route;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Test\Bundle\CompanyBundle\Entity\OpeningHours;
 use Test\Bundle\CompanyBundle\Entity\Week;
+
 
 /**
  * @RouteResource("OpeningHours")
@@ -23,6 +21,7 @@ use Test\Bundle\CompanyBundle\Entity\Week;
 class OpeningHoursController extends FOSRestController implements ClassResourceInterface
 {
 
+    
     /**
      * @ApiDoc()
      */
@@ -68,7 +67,7 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
 
         $form = $this->get('form.factory')->createNamed(null, new RestOpeningHoursType(), $opnngHrs);
         $form->submit($request);
-        
+
         if ($form->isValid()) {
             $em->persist($opnngHrs);
             $em->flush();
@@ -96,7 +95,7 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
         if ($form->isValid()) {
             $em->merge($opnngHrs);
             $em->flush();
-            
+
             $view = $this->view([], Codes::HTTP_OK);
             return $this->handleView($view);
         }
@@ -116,7 +115,7 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
 
         $form = $this->get('form.factory')->createNamed(null, new RestOpeningHoursType(), $opnngHrs);
         $form->submit($request);
-        
+
         if ($form->isValid()) {
             $em->persist($opnngHrs);
             $em->flush();
@@ -136,7 +135,7 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
     {
         $em = $this->getDoctrine()->getManager();
         $opnngHrs = $em->getRepository('TestCompanyBundle:OpeningHours')->find($opnngHrsId);
-        
+
         $opnngHrs->setActive(false);
 
         $em->persist($opnngHrs);
@@ -145,5 +144,25 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
         $view = $this->view([], Codes::HTTP_OK);
         return $this->handleView($view);
     }
+
+    /**
+     * @ApiDoc()
+     * 
+     * @Rest\Put("/companies/{companyId}/offices/{officeId}/openinghours/{opnngHrsId}/undelete")
+     */
+    public function undeleteAction(Request $request, $companyId, $officeId, $opnngHrsId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $opnngHrs = $em->getRepository('TestCompanyBundle:OpeningHours')->find($opnngHrsId);
+
+        $opnngHrs->setActive(true);
+
+        $em->persist($opnngHrs);
+        $em->flush();
+
+        $view = $this->view([], Codes::HTTP_OK);
+        return $this->handleView($view);
+    }
+    
 
 }

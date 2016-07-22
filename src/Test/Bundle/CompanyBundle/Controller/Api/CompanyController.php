@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Bundle\CompanyBundle\Controller;
+namespace Test\Bundle\CompanyBundle\Controller\Api;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
@@ -11,6 +11,8 @@ use FOS\RestBundle\Util\Codes;
 use Symfony\Component\HttpFoundation\Request;
 use Test\Bundle\CompanyBundle\Form\RestCompanyType;
 use Test\Bundle\CompanyBundle\Entity\Company;
+use Test\Bundle\CompanyBundle\Entity\Week;
+use Test\Bundle\CompanyBundle\Form\FilterType;
 
 class CompanyController extends FOSRestController implements ClassResourceInterface
 {
@@ -38,10 +40,10 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         $filters['hour'] = $request->query->get('hour');
 
         $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
-        
+
         //set object's associations to null (One-To-Many bidirectional - remove one direction)
         //error "A circular reference has been detected"
-        foreach($companies as $company){
+        foreach ($companies as $company) {
             $offices = $company->getOffices();
             foreach ($offices as $office) {
                 $office->setIdCompany(null);
@@ -51,9 +53,9 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
                 }
             }
         }
-        
+
         $view = $this->view($companies, 200);
-        
+
         return $this->handleView($view);
     }
 
@@ -105,7 +107,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         $view = $this->view($form, Codes::HTTP_BAD_REQUEST);
         return $this->handleView($view);
     }
-    
+
     /**
      * @ApiDoc()
      */
@@ -113,7 +115,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
     {
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
-        
+
         $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
         $form->submit($request);
 
@@ -128,7 +130,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         $view = $this->view($form, Codes::HTTP_BAD_REQUEST);
         return $this->handleView($view);
     }
-    
+
     /**
      * @ApiDoc()
      */
@@ -143,6 +145,22 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         $view = $this->view([], Codes::HTTP_OK);
         return $this->handleView($view);
     }
-    
+
+    /**
+     * @ApiDoc()
+     * 
+     * @Rest\Put("/companies/{companyId}/undelete")
+     */
+    public function undeleteAction(Request $request, $companyId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
+        $company->setActive(true);
+        $em->persist($company);
+        $em->flush();
+
+        $view = $this->view([], Codes::HTTP_OK);
+        return $this->handleView($view);
+    }
 
 }

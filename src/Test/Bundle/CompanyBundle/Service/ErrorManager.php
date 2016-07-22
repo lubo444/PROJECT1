@@ -17,9 +17,9 @@ class ErrorManager
         $this->router = $router;
     }
 
-    public function getFlashBagError($msg)
+    public function getFlashBagError($msg, $parameters = [])
     {
-        $this->logger->error($msg);
+        $this->logger->error($msg, $parameters);
         $this->session->getFlashBag()->add('error', $msg);
         
         return new RedirectResponse($this->router->generate('test_company_list'));

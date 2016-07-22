@@ -1,17 +1,16 @@
 <?php
 
-namespace Test\Bundle\CompanyBundle\Controller;
+namespace Test\Bundle\CompanyBundle\Controller\Api;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Util\Codes;
 use Symfony\Component\HttpFoundation\Request;
 use Test\Bundle\CompanyBundle\Form\RestOfficeType;
-use Test\Bundle\CompanyBundle\Entity\Company;
 use Test\Bundle\CompanyBundle\Entity\Office;
+use Symfony\Component\Routing\Annotation\Route;
 
 class OfficeController extends FOSRestController implements ClassResourceInterface
 {
@@ -131,6 +130,23 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
         $em = $this->getDoctrine()->getManager();
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
         $office->setActive(false);
+        $em->persist($office);
+        $em->flush();
+
+        $view = $this->view([], Codes::HTTP_OK);
+        return $this->handleView($view);
+    }
+    
+    /**
+     * @ApiDoc()
+     * 
+     * @Rest\Put("/companies/{companyId}/offices/{officeId}/undelete")
+     */
+    public function undeleteAction(Request $request, $companyId, $officeId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
+        $office->setActive(true);
         $em->persist($office);
         $em->flush();
 

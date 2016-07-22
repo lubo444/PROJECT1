@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Bundle\CompanyBundle\Controller\Web;
+namespace Test\Bundle\CompanyBundle\Controller\Site;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

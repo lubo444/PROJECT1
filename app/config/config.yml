@@ -10,7 +10,7 @@ parameters:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -18,7 +18,9 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    serializer:      { enable_annotations: true }
+    serializer:
+        enabled: true
+        enable_annotations: true
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
@@ -89,7 +91,7 @@ doctrine_migrations:
     namespace: Application\Migrations
     table_name: _versions
     name: Application Migrations
-    
+
 fos_rest:
     view:
         formats:
@@ -102,9 +104,41 @@ fos_rest:
             json: true
         failed_validation: HTTP_BAD_REQUEST
         default_engine: twig
+        view_response_listener: true
         
     format_listener:
         rules:
-            - { path: '^/', fallback_format: ~, prefer_extension: false, priorities: ['json', 'html'] }
+            - { path: '^/api', fallback_format: ~, prefer_extension: false, priorities: ['json'] }
+            - { path: '^/', fallback_format: ~, prefer_extension: false, priorities: ['html'] }
+    #format_listener: true
+            
+    param_fetcher_listener: true
+    body_listener: true
+    
+    routing_loader:
+        default_format: json
+    access_denied_listener:
+        json: true
+    exception:
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+        messages:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
             
 nelmio_api_doc: ~
+
+fos_oauth_server:
+    db_driver: orm
+    client_class:        Test\Bundle\CompanyBundle\Entity\Client
+    access_token_class:  Test\Bundle\CompanyBundle\Entity\AccessToken
+    refresh_token_class: Test\Bundle\CompanyBundle\Entity\RefreshToken
+    auth_code_class:     Test\Bundle\CompanyBundle\Entity\AuthCode
+    service:
+        options:
+            supported_scopes: read
+            
+sensio_framework_extra:
+    view:
+        annotations: false
+    router:  { annotations: true }

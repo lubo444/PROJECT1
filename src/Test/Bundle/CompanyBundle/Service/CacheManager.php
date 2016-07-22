@@ -19,8 +19,9 @@ class CacheManager
 
     public function getCachedObject($className, $objectId, $cachedTime = 60)
     {
-        $objectCacheId = $this->entityManager->getClassMetadata($className)->getName() . $objectId;
-        $object = $this->apcCache->fetch($objectCacheId);
+        $idCachedObj = $this->getIdCacheObj($className, $objectId);
+        
+        $object = $this->apcCache->fetch($idCachedObj);
 
         if (!$object) {
             $object = $this->updateCachedObject($className, $objectId, $cachedTime);
@@ -31,20 +32,26 @@ class CacheManager
 
     public function updateCachedObject($className, $objectId, $cachedTime = 60)
     {
-        $objectCacheId = $this->entityManager->getClassMetadata($className)->getName() . $objectId;
-
+        $idCachedObj = $this->getIdCacheObj($className, $objectId);
+        
         $this->entityManager->clear();
         $object = $this->entityManager->getRepository($className)->find($objectId);
-        $this->apcCache->save($objectCacheId, $object, $cachedTime);
+        
+        $this->apcCache->save($idCachedObj, $object, $cachedTime);
 
         return $object;
     }
 
     public function deleteCachedObject($className, $objectId)
     {
-        $objectCacheId = $this->entityManager->getClassMetadata($className)->getName() . $objectId;
+        $idCachedObj = $this->getIdCacheObj($className, $objectId);
         
-        $this->apcCache->delete($objectCacheId);
+        $this->apcCache->delete($idCachedObj);
+    }
+
+    private function getIdCacheObj($className, $objectId)
+    {
+        return $this->entityManager->getClassMetadata($className)->getName() . $objectId;
     }
 
 }

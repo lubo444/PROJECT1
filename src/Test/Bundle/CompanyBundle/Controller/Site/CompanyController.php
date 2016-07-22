@@ -7,16 +7,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Test\Bundle\CompanyBundle\Entity\Company;
 use Test\Bundle\CompanyBundle\Entity\Week;
 use Test\Bundle\CompanyBundle\Form\FilterType;
-
 use Test\Bundle\CompanyBundle\Form\CompanyType;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class CompanyController extends Controller
 {
-    
-    private function getRoutes(){
+
+    private function getRoutes()
+    {
         $router = $this->container->get('router');
         /** @var $collection \Symfony\Component\Routing\RouteCollection */
         $collection = $router->getRouteCollection();
@@ -25,12 +24,10 @@ class CompanyController extends Controller
         $routes = array();
 
         /** @var $params \Symfony\Component\Routing\Route */
-        foreach ($allRoutes as $route => $params)
-        {
+        foreach ($allRoutes as $route => $params) {
             $defaults = $params->getDefaults();
 
-            if (isset($defaults['_controller']))
-            {
+            if (isset($defaults['_controller'])) {
                 $controllerAction = explode(':', $defaults['_controller']);
                 $controller = $controllerAction[0];
 
@@ -38,14 +35,14 @@ class CompanyController extends Controller
                     $routes[$controller] = array();
                 }
 
-                $routes[$controller][]= $route;
+                $routes[$controller][] = $route;
             }
         }
 
         return $thisRoutes = isset($routes[get_class($this)]) ?
-                                    $routes[get_class($this)] : null ;
+                $routes[get_class($this)] : null;
     }
-    
+
     /**
      * @Route("/{page}", requirements={"page" = "\d+"}, defaults={"page" = 1}, name="test_company_list")
      * @Template("TestCompanyBundle:Homepage:list.html.twig")
@@ -54,13 +51,13 @@ class CompanyController extends Controller
     {
         $form = $this->createForm(new FilterType());
         $form->handleRequest($request);
-        
+
         $filters = [];
-        
-        if($this->isGranted('ROLE_ADMIN')){
+
+        if ($this->isGranted('ROLE_ADMIN')) {
             $filters['roleAdmin'] = true;
         }
-        
+
         if ($form->isSubmitted()) {
             $data = $form->getData();
 
@@ -71,16 +68,14 @@ class CompanyController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
-        
+
         return [
             'companies' => $companies,
             'daysInWeek' => Week::getDaysInWeek(),
             'form' => $form->createView(),
         ];
     }
-    
-    
-    
+
     /**
      * @Route("/company/create", name="test_company_create")
      * @Template("TestCompanyBundle:Form:basic.html.twig")
@@ -110,9 +105,7 @@ class CompanyController extends Controller
 
         return ['form' => $form->createView()];
     }
-    
-    
-    
+
     /**
      * @Route("/company/{itemId}/edit", requirements={"itemId" = "\d+"}, name="test_company_edit")
      * @Template("TestCompanyBundle:Form:basic.html.twig")
@@ -124,7 +117,7 @@ class CompanyController extends Controller
         $company = $em->getRepository('TestCompanyBundle:Company')->find($itemId);
 
         if (!$company) {
-            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!', ['companyId' => $itemId]);
         }
 
         $this->get('test.authorization')->checkAccessItem($company);
@@ -144,7 +137,6 @@ class CompanyController extends Controller
         return ['form' => $form->createView()];
     }
 
-    
     /**
      * @Route("/company/{itemId}/delete/{undelete}",
      *  requirements={"itemId" = "\d+", "undelete" = "\d+"},
@@ -159,7 +151,7 @@ class CompanyController extends Controller
         $company = $em->getRepository('TestCompanyBundle:Company')->find($itemId);
 
         if (!$company) {
-            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!', ['companyId' => $itemId]);
         }
 
         $this->get('test.authorization')->checkAccessItem($company);
@@ -177,6 +169,5 @@ class CompanyController extends Controller
 
         return $this->redirectToRoute('test_company_list');
     }
-
 
 }

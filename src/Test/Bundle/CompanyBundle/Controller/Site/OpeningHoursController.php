@@ -27,7 +27,7 @@ class OpeningHoursController extends Controller
 
         //check parents active status
         if (!$office || !$office->getActive() || !$office->getIdCompany()->getActive()) {
-            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!', ['officeId' => $officeId]);
         }
 
         return [
@@ -89,7 +89,7 @@ class OpeningHoursController extends Controller
 
         $opnngHours = $em->getRepository('TestCompanyBundle:OpeningHours')->find($itemId);
         if (!$opnngHours) {
-            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!', ['openingHoursId' => $itemId]);
         }
 
         $this->get('test.authorization')->checkAccessItem($opnngHours);
@@ -126,7 +126,7 @@ class OpeningHoursController extends Controller
         $openingHours = $em->getRepository('TestCompanyBundle:OpeningHours')->find($itemId);
 
         if (!$openingHours) {
-            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!', ['openingHoursId' => $itemId]);
         }
 
         $this->get('test.authorization')->checkAccessItem($openingHours);

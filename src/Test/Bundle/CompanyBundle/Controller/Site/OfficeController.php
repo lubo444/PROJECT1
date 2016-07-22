@@ -25,7 +25,7 @@ class OfficeController extends Controller
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
 
         if (!$company || !$company->getActive()) {
-            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!', ['officeId' => $itemId]);
         }
 
         //get data
@@ -98,7 +98,7 @@ class OfficeController extends Controller
         $office = $em->getRepository('TestCompanyBundle:Office')->find($itemId);
 
         if (!$office) {
-            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!', ['officeId' => $itemId]);
         }
 
         $this->get('test.authorization')->checkAccessItem($office);
@@ -135,7 +135,7 @@ class OfficeController extends Controller
         $office = $em->getRepository('TestCompanyBundle:Office')->find($itemId);
 
         if (!$office) {
-            return $this->get('test.error_manager')->getFlashBagError('Object not found!');
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!', ['officeId' => $itemId]);
         }
 
         $this->get('test.authorization')->checkAccessItem($office);

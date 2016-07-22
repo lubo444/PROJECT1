@@ -14,13 +14,11 @@ use Test\Bundle\CompanyBundle\Entity\Company;
 use Test\Bundle\CompanyBundle\Entity\Week;
 use Test\Bundle\CompanyBundle\Form\FilterType;
 
-
 class CompanyController extends FOSRestController implements ClassResourceInterface
 {
-    
+
     /**
      * @ApiDoc()
-     * @Rest\Get("/companies")
      */
     public function cgetAction(Request $request)
     {
@@ -42,10 +40,10 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         $filters['hour'] = $request->query->get('hour');
 
         $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
-        
+
         //set object's associations to null (One-To-Many bidirectional - remove one direction)
         //error "A circular reference has been detected"
-        foreach($companies as $company){
+        foreach ($companies as $company) {
             $offices = $company->getOffices();
             foreach ($offices as $office) {
                 $office->setIdCompany(null);
@@ -55,15 +53,14 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
                 }
             }
         }
-        
+
         $view = $this->view($companies, 200);
-        
+
         return $this->handleView($view);
     }
 
     /**
      * @ApiDoc()
-     * @Rest\Post("/companies")
      */
     public function postAction(Request $request)
     {
@@ -90,7 +87,6 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
 
     /**
      * @ApiDoc()
-     * @Rest\Put("/companies/{companyId}", requirements={"companyId" = "\d+"})
      */
     public function putAction(Request $request, $companyId)
     {
@@ -111,16 +107,15 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         $view = $this->view($form, Codes::HTTP_BAD_REQUEST);
         return $this->handleView($view);
     }
-    
+
     /**
      * @ApiDoc()
-     * @Rest\Patch("/companies/{companyId}", requirements={"companyId" = "\d+"})
      */
     public function patchAction(Request $request, $companyId)
     {
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
-        
+
         $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
         $form->submit($request);
 
@@ -135,10 +130,9 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         $view = $this->view($form, Codes::HTTP_BAD_REQUEST);
         return $this->handleView($view);
     }
-    
+
     /**
      * @ApiDoc()
-     * @Rest\Delete("/companies/{companyId}", requirements={"companyId" = "\d+"})
      */
     public function deleteAction(Request $request, $companyId)
     {
@@ -151,7 +145,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         $view = $this->view([], Codes::HTTP_OK);
         return $this->handleView($view);
     }
-    
+
     /**
      * @ApiDoc()
      * 
@@ -168,6 +162,5 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         $view = $this->view([], Codes::HTTP_OK);
         return $this->handleView($view);
     }
-    
 
 }

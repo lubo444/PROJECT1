@@ -25,7 +25,7 @@ class Authorization
     public function checkAccessItem($item)
     {
         if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $this->logger->error('Access denied, not authenticated user, class: ' . get_class($item) . ', ID ' . $item->getIdentifier());
+            $this->logger->error('Access denied, not authenticated user, class: ' . get_class($item) );
             throw new AccessDeniedException();
         }
 
@@ -42,7 +42,7 @@ class Authorization
             }
         }
 
-        $this->logger->error('Access denied, class: ' . get_class($item) . ', ID ' . $item->getIdentifier());
+        $this->logger->error('Access denied, class: ' . get_class($item) );
         throw new AccessDeniedException();
     }
 

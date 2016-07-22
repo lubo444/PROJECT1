@@ -10,6 +10,7 @@ use FOS\RestBundle\Util\Codes;
 use Symfony\Component\HttpFoundation\Request;
 use Test\Bundle\CompanyBundle\Form\RestOfficeType;
 use Test\Bundle\CompanyBundle\Entity\Office;
+use Symfony\Component\Routing\Annotation\Route;
 
 class OfficeController extends FOSRestController implements ClassResourceInterface
 {

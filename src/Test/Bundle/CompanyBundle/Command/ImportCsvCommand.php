@@ -34,25 +34,33 @@ class ImportCsvCommand extends ContainerAwareCommand
         $text = 'Reading ' . $filename . ' file... ';
 
         $output->writeln($text);
-        
-        $this->readCsvFile($filename);
-        
+
+        $rowsInserted = $this->readCsvFile($filename);
+        $output->writeln($rowsInserted . ' items was added.');
+
         $output->writeln('Import finished.');
     }
 
+    /**
+     * 
+     * @param string $filename
+     * @return int $rowsInserted
+     */
     private function readCsvFile($filename)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
         $rows = [];
-        
+
         if (($handle = fopen($filename, "r")) !== FALSE) {
-        $headers = fgetcsv($handle);
-            while(($row = fgetcsv($handle)) !== FALSE) {
-                $rows[] = array_combine($headers, $row); 
+            $headers = fgetcsv($handle);
+            while (($row = fgetcsv($handle)) !== FALSE) {
+                $rows[] = array_combine($headers, $row);
             }
         }
-        
-        $em->getRepository('TestCompanyBundle:Company')->insertCompanies($rows);
+
+        $rowsInserted = $em->getRepository('TestCompanyBundle:Company')->insertCompanies($rows);
+
+        return $rowsInserted;
     }
 
 }

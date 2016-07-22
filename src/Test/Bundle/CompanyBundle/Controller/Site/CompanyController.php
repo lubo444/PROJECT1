@@ -105,7 +105,7 @@ class CompanyController extends Controller
             $em->persist($company);
             $em->flush();
 
-            return $this->redirectToRoute('test_company_list', array(), 201);
+            return $this->redirectToRoute('test_company_list', array(), 301);
         }
 
         return ['form' => $form->createView()];
@@ -137,7 +137,7 @@ class CompanyController extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
                 $em->flush();
 
-                return $this->redirectToRoute('test_company_list', array(), 201);
+                return $this->redirectToRoute('test_company_list', array(), 301);
             }
         }
 

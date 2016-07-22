@@ -63,16 +63,22 @@ class CompanyRepository extends EntityRepository
             $qb->andWhere('o.active = 1 OR o.idOffice IS NULL');
             $qb->andWhere('oh.active = 1 OR oh.idOpnngHrs IS NULL');
         }
-        
+
         $query = $qb->getQuery();
         $query->setParameters($parameters);
 
         return $query->getResult();
     }
 
+    /**
+     * 
+     * @param array $rows - from file
+     * @return int $insertedItems
+     */
     public function insertCompanies($rows)
     {
         $em = $this->getEntityManager();
+        $insertedItems = 0;
 
         foreach ($rows as $row) {
             $company = $em->getRepository('TestCompanyBundle:Company')->findOneBy(
@@ -86,6 +92,7 @@ class CompanyRepository extends EntityRepository
                 $company->setCreatedAt(new \DateTime());
                 $em->persist($company);
                 $em->flush();
+                $insertedItems++;
             }
 
             $office = $em->getRepository('TestCompanyBundle:Office')->findOneBy(
@@ -103,14 +110,16 @@ class CompanyRepository extends EntityRepository
                 $office->setIdCompany($company);
                 $em->persist($office);
                 $em->flush();
+                $insertedItems++;
             }
+
             foreach (range(1, 7) as $i) {
                 if ($row['oh' . $i] == '' || $row['ch' . $i] == '') {
                     continue;
                 }
-                
-                $dayInWeek = $i%7;
-                
+
+                $dayInWeek = $i % 7;
+
                 $openingHour = new OpeningHours();
                 $openingHour->setCreatedBy($row['userCreatedBy']);
                 $openingHour->setDayInWeek($dayInWeek);
@@ -121,11 +130,14 @@ class CompanyRepository extends EntityRepository
                 $openingHour->setLunchStartAt($row['ls' . $i]);
                 $openingHour->setLunchEndAt($row['le' . $i]);
                 $em->persist($openingHour);
+                $insertedItems++;
             }
 
             $em->flush();
             $em->clear();
         }
+
+        return $insertedItems;
     }
 
 }

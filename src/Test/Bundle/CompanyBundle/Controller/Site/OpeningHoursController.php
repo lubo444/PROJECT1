@@ -72,7 +72,7 @@ class OpeningHoursController extends Controller
             $em->persist($opnngHours);
             $em->flush();
 
-            return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId), 201);
+            return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId), 301);
         }
 
         return ['form' => $form->createView()];
@@ -106,7 +106,7 @@ class OpeningHoursController extends Controller
 
                 $cacheManager->updateCachedObject('TestCompanyBundle:Office', $officeId);
 
-                return $this->redirectToRoute('test_opnng_hrs', ['officeId' => $officeId], 201);
+                return $this->redirectToRoute('test_opnng_hrs', ['officeId' => $officeId], 301);
             }
         }
 
@@ -143,6 +143,9 @@ class OpeningHoursController extends Controller
 
         $em->persist($openingHours);
         $em->flush();
+        
+        $cacheManager = $this->get('test.cache_manager');
+        $cacheManager->updateCachedObject('TestCompanyBundle:Office', $officeId);
 
         return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId), 301);
     }

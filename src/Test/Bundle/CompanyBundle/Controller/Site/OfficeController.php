@@ -80,7 +80,7 @@ class OfficeController extends Controller
             $em->persist($office);
             $em->flush();
 
-            return $this->redirectToRoute('test_office_list', ['companyId' => $companyId], 201);
+            return $this->redirectToRoute('test_office_list', ['companyId' => $companyId], 301);
         }
 
         return ['form' => $form->createView()];
@@ -115,7 +115,7 @@ class OfficeController extends Controller
 
                 $cacheManager->updateCachedObject('TestCompanyBundle:Office', $office->getIdOffice());
 
-                return $this->redirectToRoute('test_office_list', ['companyId' => $companyId], 201);
+                return $this->redirectToRoute('test_office_list', ['companyId' => $companyId], 301);
             }
         }
 

@@ -1,5 +1,5 @@
 test_web:
-    resource: "@TestCompanyBundle/Controller/Web"
+    resource: "@TestCompanyBundle/Controller/Site"
     type:     annotation
 
 #rest api

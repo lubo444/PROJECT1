@@ -5,7 +5,6 @@ namespace Test\Bundle\CompanyBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
-use Test\Bundle\CompanyBundle\Entity\Office;
 use DateTime;
 
 /**
@@ -29,11 +28,7 @@ class Company
     private $idCompany;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Office", fetch="EAGER")
-     * @ORM\JoinTable(name="companies_offices",
-     *      joinColumns={@ORM\JoinColumn(name="id_company", referencedColumnName="id_company")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="id_office", referencedColumnName="id_office", unique=true)}
-     *      )
+     * @ORM\OneToMany(targetEntity="Office", mappedBy="idCompany", cascade={"persist"}, orphanRemoval=true)
      */
     private $offices;
 
@@ -105,37 +100,9 @@ class Company
      */
     public function getOffices()
     {
-        return $this->offices->toArray();
+        return $this->offices;
     }
 
-    /**
-     * 
-     * @param Office $office
-     * @return \Test\Bundle\CompanyBundle\Entity\Company
-     */
-    public function addOffice(Office $office)
-    {
-        if (!$this->offices->contains($office)) {
-            $this->offices->add($office);
-        }
-
-        return $this;
-    }
-
-    /**
-     * 
-     * @param Office $office
-     * @return \Test\Bundle\CompanyBundle\Entity\Company
-     */
-    public function removeOffice(Office $office)
-    {
-        if ($this->offices->contains($office)) {
-            $this->offices->removeElement($office);
-        }
-
-        return $this;
-    }
-    
     /**
      * Get createdBy
      *

@@ -1,4 +1,4 @@
-<h2>{#{ office.idCompany.title }#}</h2>
+<h2>{{ office.idCompany.title }}</h2>
 <h3>{{ office.address }}</h3>
 
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -16,7 +16,6 @@
             <td>{{ daysInWeek[day.dayInWeek] }}</td>
             <td>{{ day.startAt }}{% if day.lunchStartAt != '' and day.lunchEndAt != '' %} - {{ day.lunchStartAt }}, {{ day.lunchEndAt }}{% endif %} - {{ day.endAt }}</td>
             <td>{{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
-            'parentItemId':office.idOffice,
             'routeAction':'test_opening_hours',
             'itemId':day.idOpnngHrs,
             'itemActive':day.active,

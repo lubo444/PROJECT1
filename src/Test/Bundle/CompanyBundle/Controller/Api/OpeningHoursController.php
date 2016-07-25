@@ -12,7 +12,6 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Util\Codes;
 use Test\Bundle\CompanyBundle\Form\RestOpeningHoursType;
 use Test\Bundle\CompanyBundle\Entity\OpeningHours;
-use Test\Bundle\CompanyBundle\Entity\Week;
 
 
 /**
@@ -54,10 +53,9 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
      */
     public function postAction(Request $request, $companyId, $officeId)
     {
+        $userId = $this->get('test.authorization')->getAuthenticatedUserId();
+        
         $em = $this->getDoctrine()->getManager();
-
-        //TODO get user id
-        $userId = 1;
 
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
 
@@ -88,6 +86,8 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
         $em = $this->getDoctrine()->getManager();
 
         $opnngHrs = $em->getRepository('TestCompanyBundle:OpeningHours')->find($opnngHrsId);
+        
+        $this->get('test.authorization')->checkAccessItem($opnngHrs);
 
         $form = $this->get('form.factory')->createNamed(null, new RestOpeningHoursType('PUT'), $opnngHrs, ['method' => 'PUT']);
         $form->submit($request);
@@ -113,6 +113,8 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
 
         $opnngHrs = $em->getRepository('TestCompanyBundle:OpeningHours')->find($opnngHrsId);
 
+        $this->get('test.authorization')->checkAccessItem($opnngHrs);
+        
         $form = $this->get('form.factory')->createNamed(null, new RestOpeningHoursType(), $opnngHrs);
         $form->submit($request);
 
@@ -136,6 +138,8 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
         $em = $this->getDoctrine()->getManager();
         $opnngHrs = $em->getRepository('TestCompanyBundle:OpeningHours')->find($opnngHrsId);
 
+        $this->get('test.authorization')->checkAccessItem($opnngHrs);
+        
         $opnngHrs->setActive(false);
 
         $em->persist($opnngHrs);
@@ -152,6 +156,11 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
      */
     public function undeleteAction(Request $request, $companyId, $officeId, $opnngHrsId)
     {
+        if(!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+            $view = $this->view(null, Codes::HTTP_UNAUTHORIZED);
+            return $this->handleView($view);
+        }
+        
         $em = $this->getDoctrine()->getManager();
         $opnngHrs = $em->getRepository('TestCompanyBundle:OpeningHours')->find($opnngHrsId);
 

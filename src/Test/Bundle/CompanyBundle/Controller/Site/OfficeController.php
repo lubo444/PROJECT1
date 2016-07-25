@@ -79,6 +79,8 @@ class OfficeController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($office);
             $em->flush();
+            
+            $this->get('test.cache_manager')->updateCachedObject('TestCompanyBundle:Company', $companyId);
 
             return $this->redirectToRoute('test_office_list', ['companyId' => $companyId], 301);
         }

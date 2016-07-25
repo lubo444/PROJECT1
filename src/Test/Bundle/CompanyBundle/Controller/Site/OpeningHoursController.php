@@ -71,6 +71,8 @@ class OpeningHoursController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($opnngHours);
             $em->flush();
+            
+            $this->get('test.cache_manager')->updateCachedObject('TestCompanyBundle:Office', $officeId);
 
             return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId), 301);
         }

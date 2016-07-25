@@ -48,10 +48,9 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
      */
     public function postAction(Request $request, $companyId)
     {
+        $userId = $this->get('test.authorization')->getAuthenticatedUserId();
+        
         $em = $this->getDoctrine()->getManager();
-
-        //TODO get user id
-        $userId = 1;
 
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
         
@@ -83,6 +82,8 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
 
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
         
+        $this->get('test.authorization')->checkAccessItem($office);
+        
         $form = $this->get('form.factory')->createNamed(null, new RestOfficeType(), $office);
         $form->submit($request);
 
@@ -107,6 +108,8 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
 
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
         
+        $this->get('test.authorization')->checkAccessItem($office);
+        
         $form = $this->get('form.factory')->createNamed(null, new RestOfficeType(), $office);
         $form->submit($request);
 
@@ -129,6 +132,9 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
     {
         $em = $this->getDoctrine()->getManager();
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
+        
+        $this->get('test.authorization')->checkAccessItem($office);
+        
         $office->setActive(false);
         $em->persist($office);
         $em->flush();
@@ -144,6 +150,11 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
      */
     public function undeleteAction(Request $request, $companyId, $officeId)
     {
+        if(!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+            $view = $this->view(null, Codes::HTTP_UNAUTHORIZED);
+            return $this->handleView($view);
+        }
+        
         $em = $this->getDoctrine()->getManager();
         $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
         $office->setActive(true);

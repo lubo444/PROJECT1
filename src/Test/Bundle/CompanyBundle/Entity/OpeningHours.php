@@ -49,6 +49,12 @@ class OpeningHours {
     private $idOpnngHrs;
     
     /**
+     * @ORM\ManyToOne(targetEntity="Office", cascade={"persist"}, inversedBy="openingHours", fetch="LAZY")
+     * @ORM\JoinColumn(name="id_office", referencedColumnName="id_office")
+     */
+    private $idOffice;
+    
+    /**
      * @ORM\Column(type="integer", nullable=false, options={"unsigned":false})
      * @Assert\NotBlank
      */
@@ -198,6 +204,29 @@ class OpeningHours {
     public function getIdOpnngHrs()
     {
         return $this->idOpnngHrs;
+    }
+    
+    /**
+     * Set idOffice
+     *
+     * @param \Test\Bundle\CompanyBundle\Entity\Office $idOffice
+     * @return OpeningHours
+     */
+    public function setIdOffice(\Test\Bundle\CompanyBundle\Entity\Office $idOffice = null)
+    {
+        $this->idOffice = $idOffice;
+
+        return $this;
+    }
+
+    /**
+     * Get idOffice
+     *
+     * @return \Test\Bundle\CompanyBundle\Entity\Office 
+     */
+    public function getIdOffice()
+    {
+        return $this->idOffice;
     }
     
     /**

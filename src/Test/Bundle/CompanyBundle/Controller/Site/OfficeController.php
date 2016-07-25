@@ -35,6 +35,7 @@ class OfficeController extends Controller
                 ->from('TestCompanyBundle:Office', 'o')
                 ->innerJoin('o.idCompany', 'c')
                 ->where('o.idCompany = :idCompany')
+                ->orderBy('o.address', 'ASC')
                 ->setParameter('idCompany', $companyId);
 
         if (!$this->isGranted('ROLE_ADMIN')) {

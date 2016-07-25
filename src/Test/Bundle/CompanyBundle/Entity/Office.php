@@ -33,7 +33,8 @@ class Office {
     private $idCompany;
 
     /**
-     * @ORM\OneToMany(targetEntity="OpeningHours", mappedBy="idOffice", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EAGER")
+     * @ORM\OrderBy({"dayInWeek" = "ASC"})
+     * @ORM\OneToMany(targetEntity="OpeningHours", mappedBy="idOffice", cascade={"persist"}, orphanRemoval=true, fetch="EAGER")
      */
     private $openingHours;
     

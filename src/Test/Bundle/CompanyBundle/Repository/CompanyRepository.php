@@ -22,6 +22,8 @@ class CompanyRepository extends EntityRepository
                 ->leftJoin('c.offices', 'o')
                 ->leftJoin('o.openingHours', 'oh')
                 ->orderBy('c.title', 'ASC')
+                ->addOrderBy('o.address', 'ASC')
+                ->addOrderBy('oh.dayInWeek', 'ASC')
                 ->setFirstResult(($page - 1) * $limit)
                 ->setMaxResults($limit);
 
@@ -58,6 +60,8 @@ class CompanyRepository extends EntityRepository
             }
         }
 
+        //only active items for not admin account
+        //show companies although company hasn't office or openingHours(is NULL)
         if (!isset($filters['roleAdmin']) || !$filters['roleAdmin']) {
             $qb->andWhere('c.active = 1');
             $qb->andWhere('o.active = 1 OR o.idOffice IS NULL');

@@ -18,7 +18,6 @@ security:
                 check_path: /oauth/v2/auth_login_check
                 login_path: /oauth/v2/auth_login
             anonymous: true
-            #context: test_connect
             
         oauth_token:
             pattern:    ^/oauth/v2/token
@@ -60,9 +59,9 @@ security:
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
 
-        
 
         
+            
             
     encoders:
         FOS\UserBundle\Model\UserInterface: bcrypt

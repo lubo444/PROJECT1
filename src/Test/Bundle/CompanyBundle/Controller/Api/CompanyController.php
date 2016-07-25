@@ -11,8 +11,6 @@ use FOS\RestBundle\Util\Codes;
 use Symfony\Component\HttpFoundation\Request;
 use Test\Bundle\CompanyBundle\Form\RestCompanyType;
 use Test\Bundle\CompanyBundle\Entity\Company;
-use Test\Bundle\CompanyBundle\Entity\Week;
-use Test\Bundle\CompanyBundle\Form\FilterType;
 
 class CompanyController extends FOSRestController implements ClassResourceInterface
 {
@@ -30,11 +28,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         if ($page <= 0) {
             $page = 1;
         }
-        /*
-          if ($this->isGranted('ROLE_ADMIN')) {
-          $filters['roleAdmin'] = true;
-          }
-          //* */
+
         $filters['name'] = $request->query->get('name');
         $filters['day'] = $request->query->get('day');
         $filters['hour'] = $request->query->get('hour');
@@ -64,8 +58,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
      */
     public function postAction(Request $request)
     {
-        //TODO get user id
-        $userId = 1;
+        $userId = $this->get('test.authorization')->getAuthenticatedUserId();
 
         $company = new Company();
         $company->setCreatedBy($userId);
@@ -92,6 +85,8 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
     {
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
+        
+        $this->get('test.authorization')->checkAccessItem($company);
 
         $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
         $form->submit($request);
@@ -100,7 +95,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
             $em->persist($company);
             $em->flush();
 
-            $view = $this->view(['id' => $company->getIdCompany()], Codes::HTTP_CREATED);
+            $view = $this->view(['id' => $company->getIdCompany()], Codes::HTTP_OK);
             return $this->handleView($view);
         }
 
@@ -115,6 +110,8 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
     {
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
+        
+        $this->get('test.authorization')->checkAccessItem($company);
 
         $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
         $form->submit($request);
@@ -123,7 +120,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
             $em->persist($company);
             $em->flush();
 
-            $view = $this->view(['id' => $company->getIdCompany()], Codes::HTTP_CREATED);
+            $view = $this->view(['id' => $company->getIdCompany()], Codes::HTTP_OK);
             return $this->handleView($view);
         }
 
@@ -138,6 +135,9 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
     {
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
+        
+        $this->get('test.authorization')->checkAccessItem($company);
+        
         $company->setActive(false);
         $em->persist($company);
         $em->flush();
@@ -153,6 +153,11 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
      */
     public function undeleteAction(Request $request, $companyId)
     {
+        if(!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+            $view = $this->view(null, Codes::HTTP_UNAUTHORIZED);
+            return $this->handleView($view);
+        }
+        
         $em = $this->getDoctrine()->getManager();
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
         $company->setActive(true);

@@ -38,6 +38,12 @@ class Office
     private $openingHours;
 
     /**
+     * @ORM\OrderBy({"dayInWeek" = "ASC"})
+     * @ORM\OneToMany(targetEntity="OpeningHours", mappedBy="idOffice", cascade={"persist"}, orphanRemoval=true, fetch="EAGER")
+     */
+    private $openingHours;
+    
+    /**
      * @ORM\Column(type="integer", nullable=false, options={"unsigned":false})
      * @Assert\NotBlank
      */

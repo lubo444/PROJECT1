@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Test\Bundle\CompanyBundle\Entity\Company;
 use Test\Bundle\CompanyBundle\Entity\Office;
 use Test\Bundle\CompanyBundle\Entity\OpeningHours;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * Description of CompanyRepository
@@ -17,15 +18,38 @@ class CompanyRepository extends EntityRepository
 
     public function getCompanies($filters = [], $page = 1, $limit = 100)
     {
-        $qb = $this->createQueryBuilder('c');
+        $qb = $this->createQueryBuilder('c'); /*
+          $qb->select('c, o, oh')
+          ->leftJoin('c.offices', 'o')
+          ->leftJoin('o.openingHours', 'oh')
+          ->orderBy('c.title', 'ASC')
+          ->addOrderBy('o.address', 'ASC')
+          ->addOrderBy('oh.dayInWeek', 'ASC')
+          ->setFirstResult(($page - 1) * $limit)
+          ->setMaxResults($limit);/* */
+        
         $qb->select('c, o, oh')
-                ->leftJoin('c.offices', 'o')
-                ->leftJoin('o.openingHours', 'oh')
-                ->orderBy('c.title', 'ASC')
+          ->leftJoin('TestCompanyBundle:Office', 'o', 'WITH', 'o.idCompany = c.idCompany')
+          ->leftJoin('TestCompanyBundle:OpeningHours', 'oh', 'WITH', 'o.idOffice = oh.idOffice')
+          
+          ->orderBy('c.title', 'ASC')
+          ->addOrderBy('o.address', 'ASC')
+          ->addOrderBy('oh.dayInWeek', 'ASC')
+          ->setFirstResult(($page - 1) * $limit)
+          ->setMaxResults($limit)/**/;
+        
+        
+/*
+        $qb->select('co, o, oh')
+                ->from('TestCompanyBundle:OpeningHours', 'oh')
+                ->leftJoin('oh.idOffice', 'o')
+                ->leftJoin('o.idCompany', 'co')
+                ->orderBy('co.title', 'ASC')
                 ->addOrderBy('o.address', 'ASC')
                 ->addOrderBy('oh.dayInWeek', 'ASC')
                 ->setFirstResult(($page - 1) * $limit)
-                ->setMaxResults($limit);
+                ->setMaxResults($limit)
+        ;/**/
 
         $parameters = [];
 
@@ -65,13 +89,30 @@ class CompanyRepository extends EntityRepository
         if (!isset($filters['roleAdmin']) || !$filters['roleAdmin']) {
             $qb->andWhere('c.active = 1');
             $qb->andWhere('o.active = 1 OR o.idOffice IS NULL');
-            $qb->andWhere('oh.active = 1 OR oh.idOpnngHrs IS NULL');
+            $qb->andWhere('oh.active = 1 OR oh.idOpnngHrs IS NULL');/**/
         }
 
         $query = $qb->getQuery();
         $query->setParameters($parameters);
+        //$query->setFetchMode('TestCompanyBundle:Office', 'idCompany', \Doctrine\ORM\Mapping\ClassMetadata::FETCH_EAGER);
+        //$query->setFetchMode('TestCompanyBundle:OpeningHours', 'idOffice', \Doctrine\ORM\Mapping\ClassMetadata::FETCH_EAGER);
+        $companies = $query->getResult();
 
-        return $query->getResult();
+/*
+        foreach ($result as $item) {
+            if(get_class($item) == 'TestCompanyBundle:Company'){
+                echo '<pre>';
+                dump($item);
+                echo '</pre>';
+                die;
+            }
+        
+        }
+        echo '<pre>';
+        dump($companies);
+        echo '</pre>';
+        die;/**/
+        return $companies;
     }
 
     /**

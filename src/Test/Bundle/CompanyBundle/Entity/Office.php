@@ -28,16 +28,10 @@ class Office
     private $idOffice;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Company", cascade={"persist"}, inversedBy="offices", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Company", cascade={"persist"}, fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="id_company", referencedColumnName="id_company")
      */
     private $idCompany;
-
-    /**
-     * @ORM\OrderBy({"dayInWeek" = "ASC"})
-     * @ORM\OneToMany(targetEntity="OpeningHours", mappedBy="idOffice", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EAGER")
-     */
-    private $openingHours;
     
     /**
      * @ORM\Column(type="integer", nullable=false, options={"unsigned":false})
@@ -63,7 +57,6 @@ class Office
 
     public function __construct()
     {
-        $this->openingHours = new ArrayCollection();
         $this->active = 1;
     }
 
@@ -121,16 +114,6 @@ class Office
     public function getIdCompany()
     {
         return $this->idCompany;
-    }
-    
-    /**
-     * Get openingHours
-     *
-     * @return ArrayCollection 
-     */
-    public function getOpeningHours()
-    {
-        return $this->openingHours;
     }
 
     /**

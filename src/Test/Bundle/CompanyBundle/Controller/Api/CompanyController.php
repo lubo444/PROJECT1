@@ -35,19 +35,6 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
 
         $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
 
-        //set object's associations to null (One-To-Many bidirectional - remove one direction)
-        //error "A circular reference has been detected"
-        foreach ($companies as $company) {
-            $offices = $company->getOffices();
-            foreach ($offices as $office) {
-                $office->setIdCompany(null);
-                $oh = $office->getOpeningHours();
-                foreach ($oh as $hour) {
-                    $hour->setIdOffice(null);
-                }
-            }
-        }
-
         $view = $this->view($companies, 200);
 
         return $this->handleView($view);

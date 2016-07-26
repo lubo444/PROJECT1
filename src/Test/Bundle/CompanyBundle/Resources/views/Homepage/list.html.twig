@@ -1,48 +1,54 @@
-{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-<div>
-    <a href="{{ url('test_company_create') }}">register new company</a>
-</div>
-<br><br>
-{% endif %}
+{% extends "TestCompanyBundle::layout.html.twig" %}
 
-{% if app.session.flashBag.has('error') %}
-    <div style="color: red;">
-        {% for msg in app.session.flashBag.get('error') %}
-            {{ msg }}
-        {% endfor %}
-    </div>
-    <br><br>
-{% endif %}
+{% block body %}
 
-{{ form(form) }}<br><br>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div>
+            <a href="{{ url('test_company_create') }}">register new company</a>
+        </div>
+        <br><br>
+    {% endif %}
 
-{% for company in companies %}
-    <div style="border: 1px solid gray; max-width: 600px;">
-        <div style="background-color: #ccc;">
-        <a style=" font-size: 30px;" href='{{ url('test_office_list', { 'companyId': company.idCompany }) }}'>{{ company.title }}</a>
-        
-        {{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
+    {% if app.session.flashBag.has('error') %}
+        <div style="color: red;">
+            {% for msg in app.session.flashBag.get('error') %}
+                {{ msg }}
+            {% endfor %}
+        </div>
+        <br><br>
+    {% endif %}
+
+    {{ form(form) }}<br><br>
+
+    {% for item in companies %}
+        <div style="border-bottom: 1px solid gray; max-width: 600px;">
+            {% if item.title is defined %}
+                <div style="background-color: #ccc;">
+                    <a style=" font-size: 30px;" href='{{ url('test_office_list', { 'companyId': item.idCompany }) }}'>{{ item.title }}</a>
+
+                    {{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
             'routeAction':'test_company',
-            'itemId':company.idCompany,
-            'itemActive':company.active,
-            'itemAuthor':company.createdBy}) }}
-        </div>  
-    {% for office in company.offices %}
-        <div style="border: 1px solid sandybrown;  padding-left: 30px;">
-        <h3>
-            {{ office.address }}
-        </h3>
-        {% for hours in office.openingHours %}
-            <div>
-                <b>{{ daysInWeek[hours.dayInWeek] }} </b>
-                {% set lunch = '' %}
-                {% if hours.lunchStartAt != '' %}
-                    {% set lunch = hours.lunchStartAt ~ ', ' ~  hours.lunchEndAt ~ ' - ' %}
-                {% endif %}
-                {{ hours.startAt }} - {{ lunch }}{{ hours.endAt }}
-            </div>
-        {% endfor %}
+            'itemId':item.idCompany,
+            'itemActive':item.active,
+            'itemAuthor':item.createdBy}) }}
+                </div> 
+            {% endif %}
+            {% if item.address is defined %}
+                <div style="background-color: #e5e0c6; font-size: 20px; font-weight: bold; padding-left: 10px;">
+                    {{ item.address }}
+                </div>
+            {% endif %}
+            {% if item.dayInWeek is defined %}
+                <div style="padding-left: 30px;">
+                    <b>{{ daysInWeek[item.dayInWeek] }} </b>
+                    {% set lunch = '' %}
+                    {% if item.lunchStartAt != '' %}
+                        {% set lunch = item.lunchStartAt ~ ', ' ~  item.lunchEndAt ~ ' - ' %}
+                    {% endif %}
+                    {{ item.startAt }} - {{ lunch }}{{ item.endAt }}
+                </div>
+            {% endif %}
         </div>
     {% endfor %}
-    </div>
-{% endfor %}
+
+{% endblock %}

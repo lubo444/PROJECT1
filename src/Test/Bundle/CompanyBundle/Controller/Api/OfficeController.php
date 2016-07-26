@@ -28,17 +28,6 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
             return $this->handleView($this->view());
         }
 
-        //set object's associations to null (One-To-Many bidirectional - remove one direction)
-        //error "A circular reference has been detected"
-        $offices = $company->getOffices();
-        foreach ($offices as $office) {
-            $office->setIdCompany(null);
-            $oh = $office->getOpeningHours();
-            foreach ($oh as $hour) {
-                $hour->setIdOffice(null);
-            }
-        }
-
         $view = $this->view($company, 200);
         return $this->handleView($view);
     }

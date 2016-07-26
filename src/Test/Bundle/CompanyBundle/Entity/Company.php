@@ -28,11 +28,6 @@ class Company
     private $idCompany;
 
     /**
-     * @ORM\OneToMany(targetEntity="Office", mappedBy="idCompany", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $offices;
-
-    /**
      * @ORM\Column(type="integer", nullable=false, options={"unsigned":false})
      * @Assert\NotBlank
      */
@@ -56,7 +51,6 @@ class Company
 
     public function __construct()
     {
-        $this->offices = new ArrayCollection();
         $this->active = 1;
     }
 
@@ -91,16 +85,6 @@ class Company
     public function getIdCompany()
     {
         return $this->idCompany;
-    }
-
-    /**
-     * Get offices
-     *
-     * @return ArrayCollection 
-     */
-    public function getOffices()
-    {
-        return $this->offices;
     }
 
     /**

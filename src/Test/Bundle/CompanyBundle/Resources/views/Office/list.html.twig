@@ -1,22 +1,26 @@
-<h2>{{ company.title }}</h2>
+{% extends "TestCompanyBundle::layout.html.twig" %}
 
-{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-<div>
-    <a href="{{ url('test_office_create', { 'companyId':company.idCompany }) }}">register new office</a>
-</div>
+{% block body %}
+    <h2>{{ company.title }}</h2>
 
-<br><br>
-{% endif %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div>
+            <a href="{{ url('test_office_create', { 'companyId':company.idCompany }) }}">register new office</a>
+        </div>
 
-{% for office in offices %}
-    <div>
-        <a href='{{ url('test_opnng_hrs', { 'officeId': office.idOffice }) }}'>{{ office.address }}</a>
+        <br><br>
+    {% endif %}
 
-        {{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
+    {% for office in offices %}
+        <div>
+            <a href='{{ url('test_opnng_hrs', { 'officeId': office.idOffice }) }}'>{{ office.address }}</a>
+
+            {{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
             'routeAction':'test_office',
             'itemId':office.idOffice,
             'itemActive':office.active,
             'itemAuthor':office.createdBy}) }}
-    </div>
-{% endfor %}
+        </div>
+    {% endfor %}
 
+{% endblock %}

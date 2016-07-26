@@ -35,15 +35,6 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
             return $this->handleView($this->view());
         }
 
-        //set object's associations to null (One-To-Many bidirectional - remove one direction)
-        //error "A circular reference has been detected"
-
-        $office->setIdCompany(null);
-        $oh = $office->getOpeningHours();
-        foreach ($oh as $hour) {
-            $hour->setIdOffice(null);
-        }
-
         $view = $this->view($office, 200);
         return $this->handleView($view);
     }

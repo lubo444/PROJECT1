@@ -28,24 +28,8 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
     {
 
         $em = $this->getDoctrine()->getManager();
-        $office = $em->getRepository('TestCompanyBundle:Office')->find($officeId);
-
-        //company does'n exist
-        if (!$office) {
-            return $this->handleView($this->view());
-        }
         
         $opnngHrs = $em->getRepository('TestCompanyBundle:OpeningHours')->findBy(['idOffice'=>$officeId]);
-        
-        $office->setOpeningHours($opnngHrs);
-        //set object's associations to null (One-To-Many bidirectional - remove one direction)
-        //error "A circular reference has been detected"
-
-        $office->setIdCompany(null);
-        $oh = $office->getOpeningHours();
-        foreach ($oh as $hour) {
-            $hour->setIdOffice(null);
-        }
         
         $view = $this->view($opnngHrs, 200);
         return $this->handleView($view);

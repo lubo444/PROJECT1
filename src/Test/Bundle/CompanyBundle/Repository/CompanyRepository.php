@@ -22,6 +22,7 @@ class CompanyRepository extends EntityRepository
                 ->leftJoin('c.offices', 'o')
                 ->leftJoin('o.openingHours', 'oh')
                 ->orderBy('c.title', 'ASC')
+                ->addOrderBy('oh.dayInWeek', 'ASC')
                 ->setFirstResult(($page - 1) * $limit)
                 ->setMaxResults($limit);
 
@@ -134,7 +135,7 @@ class CompanyRepository extends EntityRepository
             }
 
             $em->flush();
-            $em->clear();
+            //$em->clear();
         }
 
         return $insertedItems;

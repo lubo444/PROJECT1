@@ -113,7 +113,7 @@ class OfficeController extends Controller
 
                 $companyId = $office->getIdCompany()->getIdCompany();
 
-                $cacheManager->updateCachedObject('TestCompanyBundle:Office', $office->getIdOffice());
+                $cacheManager->updateCachedObject('Test\Bundle\CompanyBundle\Entity\Office', $office->getIdOffice());
 
                 return $this->redirectToRoute('test_office_list', ['companyId' => $companyId], 301);
             }
@@ -154,7 +154,7 @@ class OfficeController extends Controller
         $em->flush();
 
         $cacheManager = $this->get('test.cache_manager');
-        $cacheManager->deleteCachedObject('TestCompanyBundle:Office', $itemId);
+        $cacheManager->deleteCachedObject('Test\Bundle\CompanyBundle\Entity\Office', $itemId);
 
         return $this->redirectToRoute('test_office_list', array('companyId' => $companyId), 301);
     }

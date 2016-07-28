@@ -16,6 +16,7 @@ class OpeningHours {
     /**
      * @ORM\Column(type="integer", name="day_in_week", nullable=false)
      * @Assert\NotBlank()
+     * @ORM\OrderBy({"dayInWeek"="ASC"})
      */
     private $dayInWeek;
 
@@ -49,7 +50,7 @@ class OpeningHours {
     private $idOpnngHrs;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Office", cascade={"persist"}, inversedBy="openingHours", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity="Office", cascade={"persist"}, inversedBy="openingHours")
      * @ORM\JoinColumn(name="id_office", referencedColumnName="id_office")
      */
     private $idOffice;

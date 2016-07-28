@@ -17,10 +17,10 @@ class CacheManager
         $this->entityManager = $entityManager;
     }
 
-    public function getCachedObject($className, $objectId, $cachedTime = 60)
+    public function getCachedObject($className, $objectId, $cachedTime = 10)
     {
         $idCachedObj = $this->getIdCacheObj($className, $objectId);
-        
+
         $object = $this->apcCache->fetch($idCachedObj);
 
         if (!$object) {
@@ -30,11 +30,11 @@ class CacheManager
         return $object;
     }
 
-    public function updateCachedObject($className, $objectId, $cachedTime = 60)
+    public function updateCachedObject($className, $objectId, $cachedTime = 10)
     {
         $idCachedObj = $this->getIdCacheObj($className, $objectId);
-        
-        $this->entityManager->clear();
+
+        $this->entityManager->clear($className);
         $object = $this->entityManager->getRepository($className)->find($objectId);
         
         $this->apcCache->save($idCachedObj, $object, $cachedTime);

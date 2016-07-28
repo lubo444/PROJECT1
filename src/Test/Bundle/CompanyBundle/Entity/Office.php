@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use DateTime;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Test\Bundle\CompanyBundle\Repository\OfficeRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Office {
@@ -27,13 +27,14 @@ class Office {
     private $idOffice;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Company", cascade={"persist"}, inversedBy="offices", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Company", cascade={"persist"}, inversedBy="offices")
      * @ORM\JoinColumn(name="id_company", referencedColumnName="id_company")
      */
     private $idCompany;
 
     /**
-     * @ORM\OneToMany(targetEntity="OpeningHours", mappedBy="idOffice", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="OpeningHours", mappedBy="idOffice", cascade={"persist"})
+     * @ORM\OrderBy({"dayInWeek"="ASC"})
      */
     private $openingHours;
     
@@ -129,6 +130,18 @@ class Office {
     public function getOpeningHours()
     {
         return $this->openingHours;
+    }
+    
+    /**
+     * Set openingHours
+     *
+     * @param string $openingHours
+     * @return Company
+     */
+    public function setOpeningHours($openingHours){
+        $this->openingHours = $openingHours;
+        
+        return $this;
     }
     
     /**

@@ -9,14 +9,16 @@
 {% endif %}
 
 {% for office in offices %}
-    <div>
-        <a href='{{ url('test_opnng_hrs', { 'officeId': office.idOffice }) }}'>{{ office.address }}</a>
+    {% if is_granted("ROLE_ADMIN") or office.active %}
+        <div>
+            <a href='{{ url('test_opnng_hrs', { 'officeId': office.idOffice }) }}'>{{ office.address }}</a>
 
-        {{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
-            'routeAction':'test_office',
-            'itemId':office.idOffice,
-            'itemActive':office.active,
-            'itemAuthor':office.createdBy}) }}
-    </div>
+            {{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
+                'routeAction':'test_office',
+                'itemId':office.idOffice,
+                'itemActive':office.active,
+                'itemAuthor':office.createdBy}) }}
+        </div>
+    {% endif %}
 {% endfor %}
 

@@ -22,13 +22,26 @@ class OpeningHoursController extends Controller
     public function openingHoursListAction(Request $request, $officeId)
     {
         $cacheManager = $this->get('test.cache_manager');
+        $office = $cacheManager->getCachedObject('Test\Bundle\CompanyBundle\Entity\Office', $officeId);
+        $companyId = $office->getIdCompany();
+        $em = $this->getDoctrine()->getManager();
 
-        $office = $cacheManager->getCachedObject('TestCompanyBundle:Office', $officeId);
+        $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
+        $office->setIdCompany($company);
 
         //check parents active status
         if (!$office || !$office->getActive() || !$office->getIdCompany()->getActive()) {
             return $this->get('test.error_manager')->getFlashBagError('Object not found!', ['officeId' => $officeId]);
         }
+
+        
+        $criteriaOpnngHrs['idOffice'] = $office->getIdOffice();
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $criteriaOpnngHrs['active'] = 1;
+        }
+
+        $openingHours = $em->getRepository('TestCompanyBundle:OpeningHours')->findBy($criteriaOpnngHrs, ['dayInWeek' => 'ASC']);
+        $office->setOpeningHours($openingHours);
 
         return [
             'daysInWeek' => Week::getDaysInWeek(),
@@ -46,7 +59,7 @@ class OpeningHoursController extends Controller
 
         $loggedUserId = $this->get('test.authorization')->getAuthenticatedUserId();
         $opnngHours = new OpeningHours();
-        
+
         $opnngHours->setCreatedBy($loggedUserId);
 
         $form = $this->createForm(new OpeningHoursType(), $opnngHours);
@@ -71,6 +84,8 @@ class OpeningHoursController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($opnngHours);
             $em->flush();
+
+            $this->get('test.cache_manager')->updateCachedObject('Test\Bundle\CompanyBundle\Entity\Office', $officeId);
 
             return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId), 301);
         }
@@ -104,7 +119,7 @@ class OpeningHoursController extends Controller
 
                 $officeId = $form->getData()->getIdOffice()->getIdOffice();
 
-                $cacheManager->updateCachedObject('TestCompanyBundle:Office', $officeId);
+                $cacheManager->updateCachedObject('Test\Bundle\CompanyBundle\Entity\Office', $officeId);
 
                 return $this->redirectToRoute('test_opnng_hrs', ['officeId' => $officeId], 301);
             }
@@ -143,9 +158,9 @@ class OpeningHoursController extends Controller
 
         $em->persist($openingHours);
         $em->flush();
-        
+
         $cacheManager = $this->get('test.cache_manager');
-        $cacheManager->updateCachedObject('TestCompanyBundle:Office', $officeId);
+        $cacheManager->updateCachedObject('Test\Bundle\CompanyBundle\Entity\Office', $officeId);
 
         return $this->redirectToRoute('test_opnng_hrs', array('officeId' => $officeId), 301);
     }

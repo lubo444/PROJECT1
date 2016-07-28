@@ -11,16 +11,16 @@
 
 <div>
     <table>
-    {% for day in office.openingHours %}
-        <tr>
-            <td>{{ daysInWeek[day.dayInWeek] }}</td>
-            <td>{{ day.startAt }}{% if day.lunchStartAt != '' and day.lunchEndAt != '' %} - {{ day.lunchStartAt }}, {{ day.lunchEndAt }}{% endif %} - {{ day.endAt }}</td>
-            <td>{{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
+        {% for day in office.openingHours %}
+            <tr>
+                <td>{{ daysInWeek[day.dayInWeek] }}</td>
+                <td>{{ day.startAt }}{% if day.lunchStartAt != '' and day.lunchEndAt != '' %} - {{ day.lunchStartAt }}, {{ day.lunchEndAt }}{% endif %} - {{ day.endAt }}</td>
+                <td>{{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
             'routeAction':'test_opening_hours',
             'itemId':day.idOpnngHrs,
             'itemActive':day.active,
             'itemAuthor':day.createdBy}) }}</td>
-        </tr>
-    {% endfor %}
+            </tr>
+        {% endfor %}
     </table>
 </div>

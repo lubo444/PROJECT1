@@ -28,7 +28,7 @@ class Company
     private $idCompany;
 
     /**
-     * @ORM\OneToMany(targetEntity="Office", mappedBy="idCompany", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Office", mappedBy="idCompany", cascade={"persist"}, fetch="EAGER", orphanRemoval=true,)
      */
     private $offices;
 
@@ -60,6 +60,10 @@ class Company
         $this->active = 1;
     }
 
+    public function setOffices($offices){
+        $this->offices = $offices;
+    }
+    
     /**
      * Set title
      *

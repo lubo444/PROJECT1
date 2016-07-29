@@ -1,3 +1,5 @@
+{% extends "TestCompanyBundle::layout.html.twig" %}
+{% block content %}
 <h2>{{ company.title }}</h2>
 
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -22,3 +24,4 @@
     {% endif %}
 {% endfor %}
 
+{% endblock %}

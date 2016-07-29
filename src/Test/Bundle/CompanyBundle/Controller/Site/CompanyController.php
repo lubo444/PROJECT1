@@ -67,7 +67,8 @@ class CompanyController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
+        //$companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
+        $companies = $em->getRepository('TestCompanyBundle:Company')->findAll();
 
         return [
             'companies' => $companies,

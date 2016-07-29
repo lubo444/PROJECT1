@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityRepository;
 use Test\Bundle\CompanyBundle\Entity\Company;
 use Test\Bundle\CompanyBundle\Entity\Office;
 use Test\Bundle\CompanyBundle\Entity\OpeningHours;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 /**
  * Description of CompanyRepository
@@ -20,14 +22,20 @@ class CompanyRepository extends EntityRepository
         $qb = $this->createQueryBuilder('c');
         $qb->select('c, o, oh')
                 ->leftJoin('c.offices', 'o')
-                ->leftJoin('o.openingHours', 'oh')
+                ->leftJoin('o.openingHours', 'oh');
+        /*
                 ->orderBy('c.title', 'ASC')
                 ->addOrderBy('oh.dayInWeek', 'ASC')
                 ->setFirstResult(($page - 1) * $limit)
                 ->setMaxResults($limit);
+        /**/
+        
+        $qb  
+                ->orderBy('c.title', 'ASC')
+                ->setMaxResults($limit);
 
         $parameters = [];
-
+/*
         foreach ($filters as $filterName => $filterValue) {
             if ($filterValue === null) {
                 continue;
@@ -64,11 +72,28 @@ class CompanyRepository extends EntityRepository
             $qb->andWhere('o.active = 1 OR o.idOffice IS NULL');
             $qb->andWhere('oh.active = 1 OR oh.idOpnngHrs IS NULL');
         }
-
+/**/
         $query = $qb->getQuery();
+        //$query->setFetchMode('Test\Bundle\CompanyBundle\Entity\Office', 'idCompany', ClassMetadata::FETCH_EXTRA_LAZY);
         $query->setParameters($parameters);
 
-        return $query->getResult();
+        $companies = $query->getResult();
+        /*
+        foreach ($companies as $company) {
+            $offices = $company->getOffices();
+            foreach ($offices as $office) {
+                $office->setIdCompany(null);
+                $oh = $office->getOpeningHours();
+                foreach ($oh as $hour) {
+                    $hour->setIdOffice(null);
+                }
+            }
+        }/***/
+        /*
+        \Doctrine\Common\Util\Debug::dump($companies, 6);
+        die;/**/
+        
+        return $companies;//$query->getResult();
     }
 
     /**

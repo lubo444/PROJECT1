@@ -19,17 +19,20 @@ use Test\Bundle\CompanyBundle\Entity\OpeningHours;
  */
 class OpeningHoursController extends FOSRestController implements ClassResourceInterface
 {
-
-    
     /**
      * @ApiDoc()
      */
     public function cgetAction(Request $request, $companyId, $officeId)
     {
-
         $em = $this->getDoctrine()->getManager();
         
-        $opnngHrs = $em->getRepository('TestCompanyBundle:OpeningHours')->findBy(['idOffice'=>$officeId]);
+        $criteria['idOffice'] = $officeId;
+        
+        if(!$this->get('test.authorization')->isUserLoggedIn() || !$this->isGranted('ROLE_ADMIN')){
+            $criteria['active'] = 1;
+        }
+
+        $opnngHrs = $em->getRepository('TestCompanyBundle:OpeningHours')->findBy($criteria, ['dayInWeek'=>'ASC']);
         
         $view = $this->view($opnngHrs, 200);
         return $this->handleView($view);

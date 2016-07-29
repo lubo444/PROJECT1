@@ -57,5 +57,14 @@ class Authorization
 
         return $authenticatedUserId;
     }
+    
+    public function isUserLoggedIn()
+    {
+        if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return true;
+        }
+
+        return false;
+    }
 
 }

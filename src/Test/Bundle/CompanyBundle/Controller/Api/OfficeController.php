@@ -21,25 +21,16 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
     public function cgetAction(Request $request, $companyId)
     {
         $em = $this->getDoctrine()->getManager();
-        $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
-
-        //company does'n exist
-        if (!$company) {
-            return $this->handleView($this->view());
+        
+        $criteria['idCompany'] = $companyId;
+        
+        if(!$this->get('test.authorization')->isUserLoggedIn() || !$this->isGranted('ROLE_ADMIN')){
+            $criteria['active'] = 1;
         }
-
-        //set object's associations to null (One-To-Many bidirectional - remove one direction)
-        //error "A circular reference has been detected"
-        $offices = $company->getOffices();
-        foreach ($offices as $office) {
-            $office->setIdCompany(null);
-            $oh = $office->getOpeningHours();
-            foreach ($oh as $hour) {
-                $hour->setIdOffice(null);
-            }
-        }
-
-        $view = $this->view($company, 200);
+        
+        $offices = $em->getRepository('TestCompanyBundle:Office')->findBy($criteria, ['address'=>'ASC']);
+        
+        $view = $this->view($offices, 200);
         return $this->handleView($view);
     }
 

@@ -28,7 +28,7 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
             $criteria['active'] = 1;
         }
         
-        $offices = $em->getRepository('TestCompanyBundle:Office')->findBy($criteria, ['address'=>'ASC']);
+        $offices = $em->getRepository('TestCompanyBundle:Office')->getOfficeDetails($companyId);
         
         $view = $this->view($offices, 200);
         return $this->handleView($view);

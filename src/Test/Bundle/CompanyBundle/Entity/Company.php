@@ -28,7 +28,7 @@ class Company
     private $idCompany;
 
     /**
-     * @ORM\OneToMany(targetEntity="Office", mappedBy="idCompany", cascade={"persist"}, fetch="EAGER", orphanRemoval=true,)
+     * @ORM\OneToMany(targetEntity="Office", mappedBy="idCompany", cascade={"persist"}, fetch="EAGER", orphanRemoval=true)
      */
     private $offices;
 

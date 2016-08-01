@@ -3,6 +3,7 @@
 namespace Test\Bundle\CompanyBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 
 /**
  * Description of OfficeRepository
@@ -11,31 +12,31 @@ use Doctrine\ORM\EntityRepository;
  */
 class OfficeRepository extends EntityRepository
 {
-/*
-    public function getOfficeDetails($idOffice, $containInactive = false)
+
+    public function getOfficeDetails($companyId, $containInactive = false)
     {
         $qb = $this->createQueryBuilder('o');
         $qb->select('o, oh');
         $qb->leftJoin('o.openingHours', 'oh');
-        $qb->where('o.idOffice = :idOffice');
+        $qb->where('o.idCompany = :idCompany');
         $qb->orderBy('o.address', 'ASC');
         $qb->addOrderBy('oh.dayInWeek', 'ASC');
-
-        $parameters = ['idOffice'=>$idOffice];
+        
+        $parameters = ['idCompany' => $companyId];
         if (!$containInactive) {
-            $qb->andWhere('oh.active=:active');
+            $qb->andWhere('oh.active=:active OR oh.active IS NULL');
             $parameters['active'] = 1;
         }
-        
+
         $query = $qb->getQuery();
-        
+
         if (is_array($parameters)) {
             $query->setParameters($parameters);
         }
 
-        $result = $query->getResult();
-        
+        $result = $query->getResult(Query::HYDRATE_ARRAY);
+
         return $result;
-    }/**/
+    }
 
 }

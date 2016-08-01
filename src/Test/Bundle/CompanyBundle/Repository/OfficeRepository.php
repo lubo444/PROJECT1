@@ -38,5 +38,36 @@ class OfficeRepository extends EntityRepository
 
         return $result;
     }
+    
+    public function getOpeningHours($officeId, $containInactive = false)
+    {
+        
+        $qb = $this->createQueryBuilder('o');
+        $qb->select('o, oh');
+        $qb->leftJoin('o.openingHours', 'oh');
+        $qb->where('o.idOffice = :idOffice');
+        $qb->addOrderBy('oh.dayInWeek', 'ASC');
+        
+        $parameters = ['idOffice' => $officeId];
+        if (!$containInactive) {
+            $qb->andWhere('oh.active=:active OR oh.active IS NULL');
+            $parameters['active'] = 1;
+        }
+
+        $query = $qb->getQuery();
+        
+        if (!$containInactive) {
+            $qb->andWhere('oh.active=:active OR oh.active IS NULL');
+            $parameters['active'] = 1;/**/
+        }
+
+        if (is_array($parameters)) {
+            $query->setParameters($parameters);
+        }
+
+        $result = $query->getResult(Query::HYDRATE_ARRAY);
+
+        return $result;
+    }
 
 }

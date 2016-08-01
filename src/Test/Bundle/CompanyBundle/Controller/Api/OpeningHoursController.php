@@ -32,8 +32,10 @@ class OpeningHoursController extends FOSRestController implements ClassResourceI
             $criteria['active'] = 1;
         }
 
-        $opnngHrs = $em->getRepository('TestCompanyBundle:OpeningHours')->findBy($criteria, ['dayInWeek'=>'ASC']);
         
+        $off = $em->getRepository('TestCompanyBundle:Office')->getOpeningHours($officeId);
+        //$opnngHrs = $em->getRepository('TestCompanyBundle:OpeningHours')->findBy($criteria, ['dayInWeek'=>'ASC']);
+        $opnngHrs = $off[0]['openingHours'];
         $view = $this->view($opnngHrs, 200);
         return $this->handleView($view);
     }

@@ -22,12 +22,14 @@ class OpeningHoursController extends Controller
     public function openingHoursListAction(Request $request, $officeId)
     {
         $cacheManager = $this->get('test.cache_manager');
-        $office = $cacheManager->getCachedObject('Test\Bundle\CompanyBundle\Entity\Office', $officeId);
-        $companyId = $office->getIdCompany();
         $em = $this->getDoctrine()->getManager();
+        /*
+        $office = $cacheManager->getCachedObject('Test\Bundle\CompanyBundle\Entity\Office', $officeId);
+        //$companyId = $office->getIdCompany();
+        
 
-        $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
-        $office->setIdCompany($company);
+        //$company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
+        //$office->setIdCompany($company);
 
         //check parents active status
         if (!$office || !$office->getActive() || !$office->getIdCompany()->getActive()) {
@@ -38,14 +40,26 @@ class OpeningHoursController extends Controller
         $criteriaOpnngHrs['idOffice'] = $office->getIdOffice();
         if (!$this->isGranted('ROLE_ADMIN')) {
             $criteriaOpnngHrs['active'] = 1;
-        }
+        }/**/
 
-        $openingHours = $em->getRepository('TestCompanyBundle:OpeningHours')->findBy($criteriaOpnngHrs, ['dayInWeek' => 'ASC']);
-        $office->setOpeningHours($openingHours);
+        $off = $em->getRepository('TestCompanyBundle:Office')->getOpeningHours($officeId);
+        
+        /*
+        $openingHours = $em->getRepository('TestCompanyBundle:OpeningHours')->//findBy($criteriaOpnngHrs, ['dayInWeek' => 'ASC']);
+                createQueryBuilder('oh')
+                ->select('oh, o') 
+                ->leftJoin('TestCompanyBundle:Office', 'o')
+         ->where('oh.idOffice = :idOffice'); 
+        $query = $openingHours->getQuery();
+        //$query->setFetchMode('Test\Bundle\CompanyBundle\Entity\Office', 'idCompany', ClassMetadata::FETCH_EXTRA_LAZY);
+        $query->setParameters(['idOffice'=>$officeId]);
+/**/
 
+        //$office->setOpeningHours($openingHours);
+        
         return [
             'daysInWeek' => Week::getDaysInWeek(),
-            'office' => $office
+            'office' => $off[0]
         ];
     }
 

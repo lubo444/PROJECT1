@@ -9,6 +9,7 @@
             <file>file:/C:/xampp/htdocs/project1/app/config/config_test.yml</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/Office.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/DependencyInjection/TestCompanyExtension.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/views/layout.html.twig</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/config_dev.yml</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/views/Homepage/list.html.twig</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Site/CompanyController.php</file>

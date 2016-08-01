@@ -29,23 +29,15 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
             $page = 1;
         }
         
-        
-        $companies = $em->getRepository('TestCompanyBundle:Company')->findAll();
-        echo '<pre>';
-        \Doctrine\Common\Util\Debug::dump ($companies,6);
-        echo '</pre>';
-        die;/**/
+        $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
+
         if(!$this->get('test.authorization')->isUserLoggedIn() || !$this->isGranted('ROLE_ADMIN')){
             $filters['roleAdmin'] = true;
         }
-        
-        
 
         $filters['name'] = $request->query->get('name');
         $filters['day'] = $request->query->get('day');
         $filters['hour'] = $request->query->get('hour');
-
-        $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
 
         $view = $this->view($companies, 200);
 

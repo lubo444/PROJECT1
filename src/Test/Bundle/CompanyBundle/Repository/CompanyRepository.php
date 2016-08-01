@@ -22,20 +22,15 @@ class CompanyRepository extends EntityRepository
         $qb = $this->createQueryBuilder('c');
         $qb->select('c, o, oh')
                 ->leftJoin('c.offices', 'o')
-                ->leftJoin('o.openingHours', 'oh');
-        /*
+                ->leftJoin('o.openingHours', 'oh')
                 ->orderBy('c.title', 'ASC')
                 ->addOrderBy('oh.dayInWeek', 'ASC')
                 ->setFirstResult(($page - 1) * $limit)
                 ->setMaxResults($limit);
-        /**/
         
-        $qb  
-                ->orderBy('c.title', 'ASC')
-                ->setMaxResults($limit);
 
         $parameters = [];
-/*
+
         foreach ($filters as $filterName => $filterValue) {
             if ($filterValue === null) {
                 continue;
@@ -77,7 +72,7 @@ class CompanyRepository extends EntityRepository
         //$query->setFetchMode('Test\Bundle\CompanyBundle\Entity\Office', 'idCompany', ClassMetadata::FETCH_EXTRA_LAZY);
         $query->setParameters($parameters);
 
-        $companies = $query->getResult();
+        $companies = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         /*
         foreach ($companies as $company) {
             $offices = $company->getOffices();

@@ -23,6 +23,14 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         $em = $this->getDoctrine()->getManager();
 
         $filters = [];
+        
+        if($this->get('test.authorization')->isUserLoggedIn() && $this->isGranted('ROLE_ADMIN')){
+            $filters['roleAdmin'] = true;
+        }
+
+        $filters['name'] = $request->query->get('name');
+        $filters['day'] = $request->query->get('day');
+        $filters['hour'] = $request->query->get('hour');
 
         $page = $request->query->get('page');
         if ($page <= 0) {
@@ -30,14 +38,6 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         }
         
         $companies = $em->getRepository('TestCompanyBundle:Company')->getCompanies($filters, $page);
-
-        if(!$this->get('test.authorization')->isUserLoggedIn() || !$this->isGranted('ROLE_ADMIN')){
-            $filters['roleAdmin'] = true;
-        }
-
-        $filters['name'] = $request->query->get('name');
-        $filters['day'] = $request->query->get('day');
-        $filters['hour'] = $request->query->get('hour');
 
         $view = $this->view($companies, 200);
 

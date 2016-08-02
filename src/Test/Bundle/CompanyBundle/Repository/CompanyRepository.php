@@ -67,28 +67,14 @@ class CompanyRepository extends EntityRepository
             $qb->andWhere('o.active = 1 OR o.idOffice IS NULL');
             $qb->andWhere('oh.active = 1 OR oh.idOpnngHrs IS NULL');
         }
-/**/
+        
         $query = $qb->getQuery();
-        //$query->setFetchMode('Test\Bundle\CompanyBundle\Entity\Office', 'idCompany', ClassMetadata::FETCH_EXTRA_LAZY);
+        
         $query->setParameters($parameters);
 
         $companies = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-        /*
-        foreach ($companies as $company) {
-            $offices = $company->getOffices();
-            foreach ($offices as $office) {
-                $office->setIdCompany(null);
-                $oh = $office->getOpeningHours();
-                foreach ($oh as $hour) {
-                    $hour->setIdOffice(null);
-                }
-            }
-        }/***/
-        /*
-        \Doctrine\Common\Util\Debug::dump($companies, 6);
-        die;/**/
         
-        return $companies;//$query->getResult();
+        return $companies;
     }
 
     /**

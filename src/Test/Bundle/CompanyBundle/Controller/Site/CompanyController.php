@@ -124,7 +124,7 @@ class CompanyController extends Controller
 
         $this->get('test.authorization')->checkAccessItem($company);
 
-        $form = $this->createForm(new CompanyType(), $company);
+        $form = $this->createForm(CompanyType::class, $company, ['block_name' => 'company']);
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);

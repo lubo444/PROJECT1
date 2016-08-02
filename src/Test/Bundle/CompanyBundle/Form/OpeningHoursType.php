@@ -42,9 +42,4 @@ class OpeningHoursType extends AbstractType {
         ));
     }
 
-    public function getName()
-    {
-        return 'rest_opening_hours';
-    }
-
 }

@@ -24,8 +24,8 @@ class OfficeController extends Controller
         //check parents active status
         $company = $em->getRepository('TestCompanyBundle:Company')->find($companyId);
 
-        if (!$company || !$company->getActive()) {
-            return $this->get('test.error_manager')->getFlashBagError('Object not found!', ['officeId' => $itemId]);
+        if ((!$company || !$company->getActive()) && !$this->isGranted('ROLE_ADMIN')) {
+            return $this->get('test.error_manager')->getFlashBagError('Object not found!', ['companyId' => $companyId]);
         }
 
         //get data

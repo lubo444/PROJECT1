@@ -14,35 +14,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class CompanyController extends Controller
 {
 
-    private function getRoutes()
-    {
-        $router = $this->container->get('router');
-        /** @var $collection \Symfony\Component\Routing\RouteCollection */
-        $collection = $router->getRouteCollection();
-        $allRoutes = $collection->all();
-
-        $routes = array();
-
-        /** @var $params \Symfony\Component\Routing\Route */
-        foreach ($allRoutes as $route => $params) {
-            $defaults = $params->getDefaults();
-
-            if (isset($defaults['_controller'])) {
-                $controllerAction = explode(':', $defaults['_controller']);
-                $controller = $controllerAction[0];
-
-                if (!isset($routes[$controller])) {
-                    $routes[$controller] = array();
-                }
-
-                $routes[$controller][] = $route;
-            }
-        }
-
-        return $thisRoutes = isset($routes[get_class($this)]) ?
-                $routes[get_class($this)] : null;
-    }
-
     /**
      * @Route("/{page}", requirements={"page" = "\d+"}, defaults={"page" = 1}, name="test_company_list")
      * @Template("TestCompanyBundle:Homepage:list.html.twig")

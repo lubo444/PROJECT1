@@ -19,7 +19,7 @@ class FilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $data = $builder->getData();
-        $daysChoices = array_flip($data['daysInWeek']);
+        $daysChoices = array_merge(["" => NULL], array_flip($data['daysInWeek']));
         
         $builder
                 ->setMethod('GET')

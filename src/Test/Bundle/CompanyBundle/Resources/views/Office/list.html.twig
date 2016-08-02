@@ -3,11 +3,9 @@
 <h2>{{ company.title }}</h2>
 
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-<div>
+<div class="block">
     <a href="{{ url('test_office_create', { 'companyId':company.idCompany }) }}">register new office</a>
 </div>
-
-<br><br>
 {% endif %}
 
 {% for office in offices %}

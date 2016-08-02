@@ -53,7 +53,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
 
         $company = new Company();
         $company->setCreatedBy($userId);
-        $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
+        $form = $this->get('form.factory')->createNamed(null, RestCompanyType::class, $company, ['block_name' => 'rest_companies']);
         $form->submit($request);
 
         if ($form->isValid()) {
@@ -79,7 +79,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         
         $this->get('test.authorization')->checkAccessItem($company);
 
-        $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
+        $form = $this->get('form.factory')->createNamed(null, RestCompanyType::class, $company, ['block_name' => 'rest_companies']);
         $form->submit($request);
 
         if ($form->isValid()) {
@@ -104,7 +104,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
         
         $this->get('test.authorization')->checkAccessItem($company);
 
-        $form = $this->get('form.factory')->createNamed(null, new RestCompanyType(), $company);
+        $form = $this->get('form.factory')->createNamed(null, RestCompanyType::class, $company, ['block_name' => 'rest_companies']);
         $form->submit($request);
 
         if ($form->isValid()) {
@@ -144,7 +144,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
      */
     public function undeleteAction(Request $request, $companyId)
     {
-        if(!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
             $view = $this->view(null, Codes::HTTP_UNAUTHORIZED);
             return $this->handleView($view);
         }

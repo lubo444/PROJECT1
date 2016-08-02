@@ -29,43 +29,34 @@ class OfficeRepository extends EntityRepository
         }
 
         $query = $qb->getQuery();
-
-        if (is_array($parameters)) {
-            $query->setParameters($parameters);
-        }
+        $query->setParameters($parameters);
 
         $result = $query->getResult(Query::HYDRATE_ARRAY);
 
         return $result;
     }
     
-    public function getOpeningHours($officeId, $containInactive = false)
+    public function getOpeningHours($officeId, $showInactive = false)
     {
-        
         $qb = $this->createQueryBuilder('o');
-        $qb->select('o, oh');
+        $qb->select('oh, o, c');
         $qb->leftJoin('o.openingHours', 'oh');
+        $qb->leftJoin('o.idCompany', 'c');
         $qb->where('o.idOffice = :idOffice');
         $qb->addOrderBy('oh.dayInWeek', 'ASC');
         
         $parameters = ['idOffice' => $officeId];
-        if (!$containInactive) {
-            $qb->andWhere('oh.active=:active OR oh.active IS NULL');
+        if (!$showInactive) {
+            $qb->andWhere('c.active=:active');
+            $qb->andWhere('o.active=:active');
+            $qb->andWhere('oh.active=:active');
             $parameters['active'] = 1;
         }
 
         $query = $qb->getQuery();
-        
-        if (!$containInactive) {
-            $qb->andWhere('oh.active=:active OR oh.active IS NULL');
-            $parameters['active'] = 1;/**/
-        }
+        $query->setParameters($parameters);
 
-        if (is_array($parameters)) {
-            $query->setParameters($parameters);
-        }
-
-        $result = $query->getResult(Query::HYDRATE_ARRAY);
+        $result = $query->getSingleResult(Query::HYDRATE_ARRAY);
 
         return $result;
     }

@@ -1,34 +1,27 @@
 {% extends "TestCompanyBundle::layout.html.twig" %}
 {% block content %}
+    <h2>{{ office.idCompany.title }}</h2>
+    <h3>{{ office.address }}</h3>
 
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="block">
+            <a href="{{ url('test_opening_hours_create', { 'officeId':office.idOffice }) }}">add new hours</a>
+        </div>
+    {% endif %}
 
-
-
-
-<h2>{#{ office.idCompany.title }#}</h2>
-<h3>{{ office.address }}</h3>
-
-{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    <div>
-        <a href="{{ url('test_opening_hours_create', { 'officeId':office.idOffice }) }}">add new hours</a>
-    </div>
-
-    <br><br>
-{% endif %}
-
-<div>
-    <table>
-        {% for day in office.openingHours %}
-            <tr>
-                <td>{{ daysInWeek[day.dayInWeek] }}</td>
-                <td>{{ day.startAt }}{% if day.lunchStartAt != '' and day.lunchEndAt != '' %} - {{ day.lunchStartAt }}, {{ day.lunchEndAt }}{% endif %} - {{ day.endAt }}</td>
-                <td>{{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
+    <div class="block">
+        <table>
+            {% for day in office.openingHours %}
+                <tr>
+                    <td>{{ daysInWeek[day.dayInWeek] }}</td>
+                    <td>{{ day.startAt }}{% if day.lunchStartAt != '' and day.lunchEndAt != '' %} - {{ day.lunchStartAt }}, {{ day.lunchEndAt }}{% endif %} - {{ day.endAt }}</td>
+                    <td>{{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
             'routeAction':'test_opening_hours',
             'itemId':day.idOpnngHrs,
             'itemActive':day.active,
             'itemAuthor':day.createdBy}) }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-</div>
-    {% endblock %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

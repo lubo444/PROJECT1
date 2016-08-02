@@ -12,13 +12,13 @@ class Authorization
 {
 
     private $authorizationChecker;
-    private $securityContext;
+    private $storage;
     private $logger;
 
-    public function __construct($authorizationChecker, $securityContext, $logger)
+    public function __construct($authorizationChecker, $storage, $logger)
     {
         $this->authorizationChecker = $authorizationChecker;
-        $this->securityContext = $securityContext;
+        $this->storage = $storage;
         $this->logger = $logger;
     }
 
@@ -29,13 +29,13 @@ class Authorization
             throw new AccessDeniedException();
         }
 
-        if ($this->securityContext->isGranted('ROLE_ADMIN')) {
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             return true;
         }
 
-        if ($this->securityContext->isGranted('ROLE_USER')) {
+        if ($this->$authorizationChecker->isGranted('ROLE_USER')) {
             $createdByUserId = $item->getCreatedBy();
-            $loggedUserId = $this->securityContext->getToken()->getUser()->getId();
+            $loggedUserId = $this->storage->getToken()->getUser()->getId();
 
             if ($createdByUserId == $loggedUserId) {
                 return true;
@@ -53,7 +53,7 @@ class Authorization
             throw new AccessDeniedException();
         }
 
-        $authenticatedUserId = $this->securityContext->getToken()->getUser()->getId();
+        $authenticatedUserId = $this->storage->getToken()->getUser()->getId();
 
         return $authenticatedUserId;
     }

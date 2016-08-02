@@ -49,7 +49,7 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
         $office->setIdCompany($company);
         $office->setCreatedBy($userId);
         
-        $form = $this->get('form.factory')->createNamed(null, new RestOfficeType(), $office);
+        $form = $this->get('form.factory')->createNamed(null, RestOfficeType::class, $office, ['block_name' => 'rest_office']);
         $form->submit($request);
 
         if ($form->isValid()) {
@@ -75,7 +75,7 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
         
         $this->get('test.authorization')->checkAccessItem($office);
         
-        $form = $this->get('form.factory')->createNamed(null, new RestOfficeType(), $office);
+        $form = $this->get('form.factory')->createNamed(null, RestOfficeType::class, $office, ['block_name' => 'rest_office']);
         $form->submit($request);
 
         if ($form->isValid()) {
@@ -101,7 +101,7 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
         
         $this->get('test.authorization')->checkAccessItem($office);
         
-        $form = $this->get('form.factory')->createNamed(null, new RestOfficeType(), $office);
+        $form = $this->get('form.factory')->createNamed(null, RestOfficeType::class, $office, ['block_name' => 'rest_office']);
         $form->submit($request);
 
         if ($form->isValid()) {
@@ -141,7 +141,7 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
      */
     public function undeleteAction(Request $request, $companyId, $officeId)
     {
-        if(!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
             $view = $this->view(null, Codes::HTTP_UNAUTHORIZED);
             return $this->handleView($view);
         }

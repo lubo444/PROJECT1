@@ -1,0 +1,30 @@
+.block{
+    padding: 20px;
+    display: block;
+}
+
+h2, h3{
+    padding-left: 15px;
+}
+
+.error{
+    color: red;
+}
+
+.block-company{
+    border: 1px solid gray;
+    max-width: 600px;
+}
+
+.bg-gray{
+    background-color: #ccc;
+}
+
+.font-30{
+    font-size: 30px;
+}
+
+.list-pad-brown{
+    border: 1px solid sandybrown;
+    padding-left: 30px;
+}

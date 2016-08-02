@@ -1,7 +1,7 @@
 services:
     test.authorization:
         class:     Test\Bundle\CompanyBundle\Service\Authorization
-        arguments: ['@security.authorization_checker', '@security.context', '@logger']
+        arguments: ['@security.authorization_checker', '@security.token_storage', '@logger']
         
     test.error_manager:
         class:     Test\Bundle\CompanyBundle\Service\ErrorManager

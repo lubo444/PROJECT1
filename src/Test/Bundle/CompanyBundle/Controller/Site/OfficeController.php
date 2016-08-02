@@ -64,7 +64,7 @@ class OfficeController extends Controller
         $office = new Office();
         $office->setCreatedBy($loggedUserId);
 
-        $form = $this->createForm(new OfficeType(), $office);
+        $form = $this->createForm(new OfficeType(), $office, ['block_name' => 'office']);
 
         $form->handleRequest($request);
 
@@ -103,7 +103,7 @@ class OfficeController extends Controller
 
         $this->get('test.authorization')->checkAccessItem($office);
 
-        $form = $this->createForm(new OfficeType(), $office);
+        $form = $this->createForm(new OfficeType(), $office, ['block_name' => 'office']);
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);

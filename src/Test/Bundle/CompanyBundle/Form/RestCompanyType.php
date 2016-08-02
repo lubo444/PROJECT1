@@ -5,6 +5,7 @@ namespace Test\Bundle\CompanyBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Description of RestCompanyType
@@ -15,7 +16,7 @@ class RestCompanyType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title', 'text', array('required' => true));
+        $builder->add('title', TextType::class, array('required' => true));
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -24,11 +25,6 @@ class RestCompanyType extends AbstractType {
             'data_class' => 'Test\Bundle\CompanyBundle\Entity\Company',
             'csrf_protection' => false,
         ));
-    }
-
-    public function getName()
-    {
-        return 'rest_companies';
     }
 
 }

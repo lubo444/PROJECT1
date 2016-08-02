@@ -5,6 +5,8 @@ namespace Test\Bundle\CompanyBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Description of CompanyType
@@ -15,8 +17,8 @@ class CompanyType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title', 'text', array('required' => true));
-        $builder->add('add', 'submit');
+        $builder->add('title', TextType::class, array('required' => true));
+        $builder->add('add', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -25,10 +27,4 @@ class CompanyType extends AbstractType {
             'data_class' => 'Test\Bundle\CompanyBundle\Entity\Company',
         ));
     }
-
-    public function getName()
-    {
-        return 'company';
-    }
-
 }

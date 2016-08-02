@@ -1,27 +1,25 @@
 {% extends "TestCompanyBundle::layout.html.twig" %}
 {% block content %}
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-<div>
+<div class="block">
     <a href="{{ url('test_company_create') }}">register new company</a>
 </div>
-<br><br>
 {% endif %}
 
 {% if app.session.flashBag.has('error') %}
-    <div style="color: red;">
+    <div class="block error">
         {% for msg in app.session.flashBag.get('error') %}
             {{ msg }}
         {% endfor %}
     </div>
-    <br><br>
 {% endif %}
 
-{{ form(form) }}<br><br>
+{{ form(form) }}
 
 {% for company in companies %}
-    <div style="border: 1px solid gray; max-width: 600px;">
-        <div style="background-color: #ccc;">
-        <a style=" font-size: 30px;" href='{{ url('test_office_list', { 'companyId': company.idCompany }) }}'>{{ company.title }}</a>
+    <div class="block-company">
+        <div class="bg-gray">
+        <a class="font-30" href='{{ url('test_office_list', { 'companyId': company.idCompany }) }}'>{{ company.title }}</a>
         
         {{ include('TestCompanyBundle::Button/action_buttons.html.twig', {
             'routeAction':'test_company',
@@ -30,7 +28,7 @@
             'itemAuthor':company.createdBy}) }}
         </div>  
     {% for office in company.offices %}
-        <div style="border: 1px solid sandybrown;  padding-left: 30px;">
+        <div class="list-pad-brown">
         <h3>
             {{ office.address }}
         </h3>

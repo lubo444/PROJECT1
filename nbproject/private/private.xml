@@ -18,6 +18,7 @@
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Service/CacheManager.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Entity/Company.php</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/config.yml</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Command/ImportCsvCommand.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Site/OpeningHoursController.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Api/OpeningHoursController.php</file>
             <file>file:/C:/xampp/htdocs/project1/web/app.php</file>

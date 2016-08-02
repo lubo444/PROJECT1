@@ -5,6 +5,8 @@ namespace Test\Bundle\CompanyBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Description of OfficeType
@@ -15,8 +17,8 @@ class OfficeType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('address', 'text', array('required' => true));
-        $builder->add('add', 'submit');
+        $builder->add('address', TextType::class, array('required' => true));
+        $builder->add('add', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -24,11 +26,6 @@ class OfficeType extends AbstractType {
         $resolver->setDefaults(array(
             'data_class' => 'Test\Bundle\CompanyBundle\Entity\Office',
         ));
-    }
-
-    public function getName()
-    {
-        return 'office';
     }
 
 }

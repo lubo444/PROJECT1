@@ -8,6 +8,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Test\Bundle\CompanyBundle\Entity\Week;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Description of RestOpeningHoursType
@@ -16,8 +18,9 @@ use Symfony\Component\Form\FormEvent;
  */
 class RestOpeningHoursType extends AbstractType
 {
+
     private $method;
-    
+
     public function __construct($method = null)
     {
         $this->method = $method;
@@ -26,7 +29,9 @@ class RestOpeningHoursType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $required = true;
-        
+        $daysInWeek = Week::getDaysInWeek();
+        $daysChoices = array_flip($daysInWeek);
+
         if ($this->method == 'PUT') {
             $required = false;
             $builder->addEventListener(
@@ -35,13 +40,17 @@ class RestOpeningHoursType extends AbstractType
             }
             );
         }
-        
-        $builder->add('dayInWeek', 'choice', array('choices' => Week::getDaysInWeek(), 'required' => true));
-        $builder->add('startAt', 'text', array('required' => true));
-        $builder->add('lunchStartAt', 'text', array('required' => false));
-        $builder->add('lunchEndAt', 'text', array('required' => false));
-        $builder->add('endAt', 'text', array('required' => true));
 
+        $builder
+                ->add('dayInWeek', ChoiceType::class, [
+                    'required' => true,
+                    'choices' => $daysChoices,
+                    'choices_as_values' => true]
+                )
+                ->add('startAt', TextType::class, array('required' => true))
+                ->add('lunchStartAt', TextType::class, array('required' => false))
+                ->add('lunchEndAt', TextType::class, array('required' => false))
+                ->add('endAt', TextType::class, array('required' => true));
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -52,11 +61,6 @@ class RestOpeningHoursType extends AbstractType
         ));
     }
 
-    public function getName()
-    {
-        return 'rest_opening_hours';
-    }
-
     /**
      * remove not filled items from form, required for PUT method
      * @param FormEvent $event
@@ -64,7 +68,7 @@ class RestOpeningHoursType extends AbstractType
     public function onPreSubmit(FormEvent $event)
     {
         $params = $event->getData();
-        
+
         if (!isset($params['lunchStartAt'])) {
             $event->getForm()->remove('lunchStartAt');
         }

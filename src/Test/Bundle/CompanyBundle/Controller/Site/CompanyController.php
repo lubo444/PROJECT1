@@ -49,7 +49,9 @@ class CompanyController extends Controller
      */
     public function companiesListAction(Request $request, $page)
     {
-        $form = $this->createForm(new FilterType());
+        $daysInWeek = Week::getDaysInWeek();
+
+        $form = $this->createForm(FilterType::class, ['daysInWeek' => $daysInWeek], ['block_name' => 'filter']);
         $form->handleRequest($request);
 
         $filters = [];
@@ -88,7 +90,7 @@ class CompanyController extends Controller
 
         $company = new Company();
         $company->setCreatedBy($loggedUserId);
-        $form = $this->createForm(new CompanyType(), $company);
+        $form = $this->createForm (CompanyType::class, $company, ['block_name' => 'filter']);
 
         $form->handleRequest($request);
 

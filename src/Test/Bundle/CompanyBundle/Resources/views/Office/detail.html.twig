@@ -5,7 +5,7 @@
 
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <div class="block">
-            <a href="{{ url('test_opening_hours_create', { 'officeId':office.idOffice }) }}">add new hours</a>
+            <a href="{{ url('test_opening_hours_create', { 'officeId':office.idOffice }) }}">{{ 'add_new_day'|trans }}</a>
         </div>
     {% endif %}
 

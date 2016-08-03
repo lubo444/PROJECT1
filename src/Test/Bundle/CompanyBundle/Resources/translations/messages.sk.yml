@@ -1,0 +1,24 @@
+Day: Deň
+Hour: Hodina
+Title: Názov
+Monday: Pondelok
+Tuesday: Utorok
+Wednesday: Streda
+Thursday: Štvrtok
+Friday: Piatok
+Saturday: Sobota
+Sunday: Nedeľa
+add_new_company: Pridať novú spoločnosť
+add_new_office: Pridať novú pobočku
+add_new_day: Pridať nový deň
+edit: Upraviť
+delete: Odstrániť
+undelete: Obnoviť
+Filter: Filtrovať
+add_edit: Pridať / upraviť
+day_in_week: Deň
+start_at: Otvorené od
+end_at: Otvorené do
+lunch_starts_at: Obednajšia prestávka od
+lunch_ends_at: Obednajšia prestávka do
+Address: Adresa

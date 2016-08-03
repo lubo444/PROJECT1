@@ -15,23 +15,53 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
  *
  * @author lubomir.ferenc
  */
-class OpeningHoursType extends AbstractType {
+class OpeningHoursType extends AbstractType
+{
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $daysInWeek = array_flip(Week::getDaysInWeek());
-        
+
         $builder
                 ->add('dayInWeek', ChoiceType::class, [
                     'required' => true,
                     'choices' => $daysInWeek,
-                    'choices_as_values' => true]
+                    'choices_as_values' => true,
+                    'translation_domain' => 'messages',
+                    'label' => 'day_in_week'
+                        ]
                 )
-                ->add('startAt', TextType::class, array('required' => true))
-                ->add('lunchStartAt', TextType::class, array('required' => false))
-                ->add('lunchEndAt', TextType::class, array('required' => false))
-                ->add('endAt', TextType::class, array('required' => true))
-                ->add('add', SubmitType::class);
+                ->add('startAt', TextType::class, [
+                    'required' => true,
+                    'translation_domain' => 'messages',
+                    'label' => 'start_at'
+                        ]
+                )
+                ->add('lunchStartAt', TextType::class, [
+                    'required' => false,
+                    'translation_domain' => 'messages',
+                    'label' => 'lunch_starts_at'
+                        ]
+                )
+                ->add('lunchEndAt', TextType::class, [
+                    'required' => false,
+                    'translation_domain' => 'messages',
+                    'label' => 'lunch_ends_at'
+                        ]
+                )
+                ->add('endAt', TextType::class, [
+                    'required' => true,
+                    'translation_domain' => 'messages',
+                    'label' => 'end_at'
+                        ]
+                )
+                ->add('add_edit', SubmitType::class, [
+                    'translation_domain' => 'messages',
+                    'label' => 'day_in_week',
+                    'label' => 'add_edit'
+                        ]
+                )
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

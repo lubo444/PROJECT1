@@ -4,7 +4,7 @@
 
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 <div class="block">
-    <a href="{{ url('test_office_create', { 'companyId':company.idCompany }) }}">register new office</a>
+    <a href="{{ url('test_office_create', { 'companyId':company.idCompany }) }}">{{ 'add_new_office'|trans }}</a>
 </div>
 {% endif %}
 

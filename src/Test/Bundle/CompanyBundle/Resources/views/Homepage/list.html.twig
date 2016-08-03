@@ -1,8 +1,9 @@
 {% extends "TestCompanyBundle::layout.html.twig" %}
+
 {% block content %}
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 <div class="block">
-    <a href="{{ url('test_company_create') }}">register new company</a>
+    <a href="{{ url('test_company_create') }}">{{ 'add_new_company'|trans }}</a>
 </div>
 {% endif %}
 

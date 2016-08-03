@@ -13,12 +13,19 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
  *
  * @author lubomir.ferenc
  */
-class CompanyType extends AbstractType {
+class CompanyType extends AbstractType
+{
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title', TextType::class, array('required' => true));
-        $builder->add('add', SubmitType::class);
+        $builder
+                ->add('title', TextType::class, ['required' => true])
+                ->add('add_edit', SubmitType::class, [
+                    'translation_domain' => 'messages',
+                    'label' => 'add_edit'
+                        ]
+                )
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -27,4 +34,5 @@ class CompanyType extends AbstractType {
             'data_class' => 'Test\Bundle\CompanyBundle\Entity\Company',
         ));
     }
+
 }

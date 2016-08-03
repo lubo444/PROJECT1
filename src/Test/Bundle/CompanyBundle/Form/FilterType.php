@@ -20,17 +20,27 @@ class FilterType extends AbstractType
     {
         $data = $builder->getData();
         $daysChoices = array_merge(["" => NULL], array_flip($data['daysInWeek']));
-        
+
         $builder
                 ->setMethod('GET')
-                ->add('title', TextType::class, array('required' => false))
+                ->add('title', TextType::class, ['required' => false])
                 ->add('day', ChoiceType::class, [
                     'required' => true,
                     'choices' => $daysChoices,
-                    'choices_as_values' => true]
+                    'choices_as_values' => true,
+                    'choice_translation_domain' => 'messages'
+                        ]
                 )
-                ->add('hour', TextType::class, array('required' => false))
-                ->add('filter', SubmitType::class);
+                ->add('hour', TextType::class, [
+                    'required' => false,
+                    'translation_domain' => 'messages'
+                        ]
+                )
+                ->add('filter', SubmitType::class, [
+                    'translation_domain' => 'messages'
+                        ]
+                )
+        ;
     }
 
 }

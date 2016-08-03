@@ -13,12 +13,23 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
  *
  * @author lubomir.ferenc
  */
-class OfficeType extends AbstractType {
+class OfficeType extends AbstractType
+{
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('address', TextType::class, array('required' => true));
-        $builder->add('add', SubmitType::class);
+        $builder->add('address', TextType::class, [
+            'required' => true,
+            'translation_domain' => 'messages'
+                ]
+        );
+        $builder
+                ->add('add_edit', SubmitType::class, [
+                    'translation_domain' => 'messages',
+                    'label' => 'add_edit'
+                        ]
+                )
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

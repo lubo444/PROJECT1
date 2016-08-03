@@ -13,17 +13,20 @@ use Doctrine\ORM\Query;
 class OfficeRepository extends EntityRepository
 {
 
-    public function getOfficeDetails($companyId, $containInactive = false)
+    public function getOfficeDetails($companyId, $showInactive = false)
     {
         $qb = $this->createQueryBuilder('o');
-        $qb->select('o, oh');
+        $qb->select('o, oh, c');
         $qb->leftJoin('o.openingHours', 'oh');
+        $qb->leftJoin('o.idCompany', 'c');
         $qb->where('o.idCompany = :idCompany');
         $qb->orderBy('o.address', 'ASC');
         $qb->addOrderBy('oh.dayInWeek', 'ASC');
         
         $parameters = ['idCompany' => $companyId];
-        if (!$containInactive) {
+        if (!$showInactive) {
+            $qb->andWhere('c.active=:active');
+            $qb->andWhere('o.active=:active');
             $qb->andWhere('oh.active=:active OR oh.active IS NULL');
             $parameters['active'] = 1;
         }

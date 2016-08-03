@@ -22,13 +22,12 @@ class OfficeController extends FOSRestController implements ClassResourceInterfa
     {
         $em = $this->getDoctrine()->getManager();
         
-        $criteria['idCompany'] = $companyId;
-        
-        if(!$this->get('test.authorization')->isUserLoggedIn() || !$this->isGranted('ROLE_ADMIN')){
-            $criteria['active'] = 1;
+        $showInactive = 0;
+        if($this->get('test.authorization')->isUserLoggedIn() && $this->isGranted('ROLE_ADMIN')){
+            $showInactive = 1;
         }
         
-        $offices = $em->getRepository('TestCompanyBundle:Office')->getOfficeDetails($companyId);
+        $offices = $em->getRepository('TestCompanyBundle:Office')->getOfficeDetails($companyId, $showInactive);
         
         $view = $this->view($offices, 200);
         return $this->handleView($view);

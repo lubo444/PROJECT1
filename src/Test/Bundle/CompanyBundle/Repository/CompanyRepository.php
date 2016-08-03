@@ -62,6 +62,8 @@ class CompanyRepository extends EntityRepository
             }
         }
 
+        //only active items for not admin account
+        //show companies although company hasn't office or openingHours(is NULL)
         if (!isset($filters['roleAdmin']) || !$filters['roleAdmin']) {
             $qb->andWhere('c.active = 1');
             $qb->andWhere('o.active = 1 OR o.idOffice IS NULL');

@@ -48,7 +48,7 @@ class OpeningHours {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $idOpnngHrs;
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="Office", cascade={"persist"}, inversedBy="openingHours")
      * @ORM\JoinColumn(name="id_office", referencedColumnName="id_office")
@@ -206,7 +206,7 @@ class OpeningHours {
     {
         return $this->idOpnngHrs;
     }
-
+    
     /**
      * Set idOffice
      *

@@ -86,7 +86,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
             $em->persist($company);
             $em->flush();
 
-            $view = $this->view(['id' => $company->getIdCompany()], Codes::HTTP_CREATED);
+            $view = $this->view(['id' => $company->getIdCompany()], Codes::HTTP_OK);
             return $this->handleView($view);
         }
 
@@ -111,7 +111,7 @@ class CompanyController extends FOSRestController implements ClassResourceInterf
             $em->persist($company);
             $em->flush();
 
-            $view = $this->view(['id' => $company->getIdCompany()], Codes::HTTP_CREATED);
+            $view = $this->view(['id' => $company->getIdCompany()], Codes::HTTP_OK);
             return $this->handleView($view);
         }
 

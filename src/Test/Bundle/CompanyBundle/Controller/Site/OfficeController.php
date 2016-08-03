@@ -35,6 +35,7 @@ class OfficeController extends Controller
                 ->from('TestCompanyBundle:Office', 'o')
                 ->innerJoin('o.idCompany', 'c')
                 ->where('o.idCompany = :idCompany')
+                ->orderBy('o.address', 'ASC')
                 ->setParameter('idCompany', $companyId);
 
         if (!$this->isGranted('ROLE_ADMIN')) {
@@ -79,6 +80,8 @@ class OfficeController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($office);
             $em->flush();
+            
+            $this->get('test.cache_manager')->updateCachedObject('TestCompanyBundle:Company', $companyId);
 
             return $this->redirectToRoute('test_office_list', ['companyId' => $companyId], 301);
         }

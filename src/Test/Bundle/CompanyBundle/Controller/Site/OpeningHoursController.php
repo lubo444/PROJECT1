@@ -71,6 +71,8 @@ class OpeningHoursController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($opnngHours);
             $em->flush();
+            
+            $this->get('test.cache_manager')->updateCachedObject('TestCompanyBundle:Office', $officeId);
 
             $this->get('test.cache_manager')->updateCachedObject('Test\Bundle\CompanyBundle\Entity\Office', $officeId);
 

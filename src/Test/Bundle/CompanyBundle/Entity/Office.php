@@ -11,7 +11,8 @@ use DateTime;
  * @ORM\Entity(repositoryClass="Test\Bundle\CompanyBundle\Repository\OfficeRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Office {
+class Office
+{
 
     /**
      * @ORM\Column(type="string", nullable=false, length=255)
@@ -43,18 +44,18 @@ class Office {
      * @Assert\NotBlank
      */
     private $createdBy;
-    
+
     /**
      * @ORM\Column(type="integer", nullable=false, options={"unsigned":true})
      * @Assert\NotBlank
      */
     private $active;
-    
+
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
-    
+
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -121,7 +122,7 @@ class Office {
     {
         return $this->idCompany;
     }
-
+    
     /**
      * Get openingHours
      *
@@ -131,7 +132,7 @@ class Office {
     {
         return $this->openingHours;
     }
-    
+
     /**
      * Set openingHours
      *
@@ -153,19 +154,20 @@ class Office {
     {
         return $this->createdBy;
     }
-    
+
     /**
      * Set createdBy
      *
      * @param string $userId
-     * @return Company
+     * @return Office
      */
-    public function setCreatedBy($userId){
+    public function setCreatedBy($userId)
+    {
         $this->createdBy = $userId;
-        
+
         return $this;
     }
-    
+
     /**
      * Get active
      *
@@ -175,19 +177,20 @@ class Office {
     {
         return $this->active;
     }
-    
+
     /**
      * Set active
      *
      * @param string $active
-     * @return Company
+     * @return Office
      */
-    public function setActive($active){
+    public function setActive($active)
+    {
         $this->active = $active;
-        
+
         return $this;
     }
-    
+
     /**
      *
      * @ORM\PrePersist
@@ -201,7 +204,7 @@ class Office {
             $this->setCreatedAt(new DateTime('now'));
         }
     }
-    
+
     /**
      * Get updatedAt
      *
@@ -216,7 +219,7 @@ class Office {
      * Set updatedAt
      *
      * @param DateTime $updatedAt
-     * @return Company
+     * @return Office
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -224,7 +227,7 @@ class Office {
 
         return $this;
     }
-    
+
     /**
      * Get createdAt
      *
@@ -239,7 +242,7 @@ class Office {
      * Set createdAt
      *
      * @param DateTime $createdAt
-     * @return Company
+     * @return Office
      */
     public function setCreatedAt($createdAt)
     {

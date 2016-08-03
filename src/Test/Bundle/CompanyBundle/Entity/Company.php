@@ -106,7 +106,7 @@ class Company
     {
         return $this->offices;
     }
-    
+
     /**
      * Get createdBy
      *

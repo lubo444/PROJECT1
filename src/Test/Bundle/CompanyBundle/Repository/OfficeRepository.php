@@ -56,7 +56,13 @@ class OfficeRepository extends EntityRepository
         $query = $qb->getQuery();
         $query->setParameters($parameters);
 
-        $result = $query->getSingleResult(Query::HYDRATE_ARRAY);
+        try{
+            $result = $query->getSingleResult(Query::HYDRATE_ARRAY);
+        }
+        catch(\Exception $e){
+            $result = false;
+        }
+        
 
         return $result;
     }

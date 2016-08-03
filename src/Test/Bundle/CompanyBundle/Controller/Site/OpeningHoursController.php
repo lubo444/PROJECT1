@@ -24,11 +24,15 @@ class OpeningHoursController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $showInactive = 0;
-        if (!$this->isGranted('ROLE_ADMIN')) {
+        if ($this->isGranted('ROLE_ADMIN')) {
             $showInactive = 1;
         }
 
         $office = $em->getRepository('TestCompanyBundle:Office')->getOpeningHours($officeId, $showInactive);
+
+        if (!$office) {
+            return $this->get('test.error_manager')->getFlashBagError("Inactive or none office", ['office' => $officeId]);
+        }
 
         return [
             'daysInWeek' => Week::getDaysInWeek(),
@@ -71,7 +75,7 @@ class OpeningHoursController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($opnngHours);
             $em->flush();
-            
+
             $this->get('test.cache_manager')->updateCachedObject('TestCompanyBundle:Office', $officeId);
 
             $this->get('test.cache_manager')->updateCachedObject('Test\Bundle\CompanyBundle\Entity\Office', $officeId);

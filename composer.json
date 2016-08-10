@@ -23,8 +23,9 @@
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "friendsofsymfony/rest-bundle": "1.6.*",
         "nelmio/api-doc-bundle": "2.10.*",
-        "friendsofsymfony/oauth-server-bundle": "1.4.*",
-        "jms/serializer-bundle": "dev-master"
+        "friendsofsymfony/oauth-server-bundle": "1.5.*",
+        "jms/serializer-bundle": "dev-master",
+        "codeception/codeception": "^2.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

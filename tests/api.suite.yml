@@ -1,0 +1,13 @@
+class_name: ApiTester
+modules:
+    config:
+        Symfony:
+            app_path: 'app'
+            var_path: 'app'
+        PhpBrowser:
+            url: http://project1.lh/app_dev.php/
+            port: json
+        REST:
+            url: /api/
+            depends: Symfony
+    enabled: [REST, Helper\ApiHelper]

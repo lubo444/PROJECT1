@@ -24,7 +24,8 @@
         "friendsofsymfony/rest-bundle": "1.6.*",
         "nelmio/api-doc-bundle": "2.10.*",
         "friendsofsymfony/oauth-server-bundle": "1.4.*",
-        "jms/serializer-bundle": "dev-master"
+        "jms/serializer-bundle": "dev-master",
+        "phpunit/phpunit": "5.5.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

@@ -3,11 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/project1/app/config/parameters.yml</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/config.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Api/CompanyController.php</file>
-            <file>file:/C:/xampp/htdocs/project1/app/config/routing.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/composer.json</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Site/OfficeController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/translations/main.en.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/DependencyInjection/TestCompanyExtension.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Site/OpeningHoursController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/TestCompanyBundle.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Form/FilterType.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Site/CompanyController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/translations/main.sk.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Api/OfficeController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Service/ErrorManager.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/DependencyInjection/Configuration.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Form/CompanyType.php</file>
         </group>
     </open-files>
 </project-private>

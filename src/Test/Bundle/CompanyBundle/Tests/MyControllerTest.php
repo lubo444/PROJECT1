@@ -7,12 +7,15 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Nelmio\ApiDocBundle\Tests\WebTestCase as ApiWebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Test\Bundle\CompanyBundle\Entity\Office;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\BrowserKit\Cookie;
 
 class MyControllerTest extends WebTestCase
 {
 
+    private $client = null;
     private $company;
-    
+
     /**
      * @Route("/test", name="test_routes")
      */
@@ -24,51 +27,50 @@ class MyControllerTest extends WebTestCase
         $response = $client->getResponse();
         $data = json_decode($response->getContent());
         $this->company = $data[0]->idCompany;
-        /*
-        $this->assertTrue(
-                $response->headers->contains(
-                        'Content-Type', 'application/json'
-                ), 'the "Content-Type" header is "application/json"'
-        );
-/***/
+
         $this->assertSame(200, $client->getResponse()->getStatusCode());
 
-        
+
         $request = $client->request('GET', '/api/companies/' . $this->company . '/offices');
         $this->assertSame(200, $client->getResponse()->getStatusCode());
-        
+
         $request = $client->request('GET', '/api/companies/' . $data[1]->idCompany . '/offices');
         $this->assertSame(200, $client->getResponse()->getStatusCode());
-/**/
     }
-    
+
     /**
      * @Route, name="test_routes2")
      */
-    public function testShowOffice()
-    {/*
-        var_dump (1);
+    public function testCreateCompany()
+    {
+        //$this->logIn();
         
-        $idCompany = $this->company;
         $client = static::createClient();
+        
+        $crawler = $client->request('GET', '/login');
+        
+        $form = $crawler->selectButton('_submit')->form();
+        
+        $form['_username'] = 'admin';
+        $form['_password'] = 'aaaAAA111';
 
-        $crawler = $client->request('GET', 'api/companies/' . $idCompany . '/offices');
+        // submit the form
+        $crawler = $client->submit($form);
         $response = $client->getResponse();
-        $data = json_decode($response->getContent());
         
-        var_dump ($this->company);
-        
-        var_dump ('------------------------------------------------------');
-        if(isset($data[0])){
-            var_dump ('------------------------------------------------------');
-            var_dump($data[0]->idOffice);
-        }
-        
-        if(isset($data[1])){
-            var_dump ('------------------------------------------------------');
-            var_dump($data[1]->idOffice);
-        }/**/
+        $token = self::$kernel->getContainer()->get('security.context')->getToken();
 
+        $this->assertSame(302, $response->getStatusCode());
+        
+        $crawler = $client->request('POST', '/api/companies', ['title'=>"test123"]);
+                
+        $this->assertSame(201, $client->getResponse()->getStatusCode());
+
+    }
+    
+    public function setUp()
+    {
+        $this->client = static::createClient();
     }
 
     protected function getKernelConfiguration()
@@ -77,5 +79,7 @@ class MyControllerTest extends WebTestCase
             'environment' => 'dev',
         );
     }
+    
+    
 
 }

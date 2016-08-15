@@ -1,0 +1,18 @@
+class_name: ApiTester
+modules:
+    enabled:
+        - Symfony:
+            var_path: '../project1/app'
+            app_path: '../project1/app'
+            
+        - REST:
+            url: http://www.project1.lh/
+            depends: Symfony2
+            part: Json
+        
+    config:
+        - var_path: '../project1/app'
+        
+        - Symfony:
+            var_path: '../project1/app'
+            app_path: '../project1/app'

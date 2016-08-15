@@ -1,0 +1,39 @@
+# Codeception Test Suite Configuration
+#
+# Suite for functional (integration) tests
+# Emulate web requests and make application process them
+# Include one of framework modules (Symfony2, Yii2, Laravel5) to use it
+
+class_name: FunctionalTester
+modules:
+    enabled:
+        - PhpBrowser
+        - REST:
+            depends: PhpBrowser
+            url: http://www.project1.lh/api/
+        - \Helper\Functional
+        - Asserts
+    config:
+      PhpBrowser:
+        url: http://www.project1.lh/api/
+    REST:
+        url: http://www.project1.lh/api/
+#modules:
+#    enabled: 
+#        - REST:
+#            depends: PhpBrowser
+#            url: 'http://project1.lh/api/'
+#        - PhpBrowser:
+#            url: 'http://project1.lh/api/'
+#        - \Helper\Functional
+#env:
+#    browser:
+#        modules:
+#            enabled: 
+#                - WebDriver:
+#                    url: 'http://project1.lh/api/'
+#                    port: 80
+#                    browser: chrome
+#                    capabilities:
+#                        platform: 'Windows 10' 
+#                - \Helper\Functional

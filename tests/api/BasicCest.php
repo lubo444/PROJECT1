@@ -18,16 +18,14 @@ class BasicCest
     {
         
         $I->amHttpAuthenticated("admin", "aaaAAA111");
-        
+        /*
         $I->submitForm('#loginForm', [
             'login' => 'admin', 
             'password' => 'aaaAAA111'
-        ]);
+        ]);/**/
         
-        $I->see('admin', '.navbar');
          // saving snapshot
-        $I->saveSessionSnapshot('login');
-        
+        /*
         $I->submitForm('#loginForm', [
             'login' => $name, 
             'password' => $password
@@ -90,7 +88,7 @@ class BasicCest
         //$I->sendGET($examples['routes']['route']);
         //$I->sendPOST($example[0], ['title'=>'tttt']);
 
-        $I->sendGET('api/companies');
+        $I->sendGET('companies');
         $I->seeResponseCodeIs(200);
 
         //$I->seeResponseCodeIs($examples['response']);

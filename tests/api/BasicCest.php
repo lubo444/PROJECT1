@@ -3,6 +3,8 @@
 class BasicCest
 {
 
+    const TOKEN = 'NDU1OWZkYmJkODNmZTQwNzE3YTA0MThkYjk4ZDg5MzNkOGY2Yjc5MjEzYWQwZGE5YzM3ZTg4ZTIxNTI0ZjIyMw';
+    
     public function _before(ApiTester $I)
     {
         
@@ -13,88 +15,76 @@ class BasicCest
         
     }
 
-    // tests
-    public function tryToTest(ApiTester $I)
+    /**
+     * @example {"method":"POST", "route":"companies", "responseCode":"201", "title":"New Main Company" }
+     * @example {"method":"PUT", "route":"companies/54", "responseCode":"200", "title":"Second Name Company" }
+     * @example {"method":"PATCH", "route":"companies/54", "responseCode":"200", "title":"Third Name Company" }
+     * @example {"method":"DELETE", "route":"companies/54", "responseCode":"200" }
+     * @example {"method":"PUT", "route":"companies/54/undelete", "responseCode":"200" }
+     */
+    public function checkEndpointsWithAuth(ApiTester $I, \Codeception\Example $params)
     {
-        
-        $I->amHttpAuthenticated("admin", "aaaAAA111");
-        /*
-        $I->submitForm('#loginForm', [
-            'login' => 'admin', 
-            'password' => 'aaaAAA111'
-        ]);/**/
-        
-         // saving snapshot
-        /*
-        $I->submitForm('#loginForm', [
-            'login' => $name, 
-            'password' => $password
-        ]);/**/
-    }
+        $I->wantTo('Check endpoints method: ' . $params['method']);
+        $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
+        $I->amBearerAuthenticated(self::TOKEN);
 
-    public function checkEndpointsWithAuth(ApiTester $I)
-    {
-        $params = [];
-        $params[] = ['method' => 'POST', 'route' => 'companies', 'parameters' => ['title' => 't'], 'responseCode' => 201];
+        //$I->amHttpAuthenticated("admin", "aaaAAA111");
 
-        $a = [1, 2, 3, 4, 5];
-        foreach ($params as $param) {
-            $token = 'NDU1OWZkYmJkODNmZTQwNzE3YTA0MThkYjk4ZDg5MzNkOGY2Yjc5MjEzYWQwZGE5YzM3ZTg4ZTIxNTI0ZjIyMw';
+        $parameters = [];
 
-            $I->wantTo('Check endpoints');
-            //$I->amHttpAuthenticated("admin", "aaaAAA111");
-            $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
-            $I->amBearerAuthenticated($token);
-
-
-
-            switch ($param['method']) {
-                case 'GET':
-                    $I->sendGET($param['route']);
-                    break;
-                case 'POST':
-                    $I->sendPOST($param['route'], $param['parameters']);
-                    break;
-                case 'PUT':
-                    $I->sendPUT($param['route'], $param['parameters']);
-                    break;
-                case 'PATCH':
-                    $I->sendPATCH($param['route'], $param['parameters']);
-                    break;
-                case 'DELETE':
-                    $I->sendDELETE($param['route'], $param['parameters']);
-                    break;
-            }
-
-            $I->seeResponseCodeIs($param['responseCode']);
-
-            $I->deleteHeader('Content-Type');
+        if (isset($params['title'])) {
+            $parameters = ['title' => $params['title']];
         }
-    }
 
-/* */
+        switch ($params['method']) {
+            case 'GET':
+                $I->sendGET($params['route']);
+                break;
+            case 'POST':
+                $I->sendPOST($params['route'], $parameters);
+                break;
+            case 'PUT':
+                $I->sendPUT($params['route'], $parameters);
+                break;
+            case 'PATCH':
+                $I->sendPATCH($params['route'], $parameters);
+                break;
+            case 'DELETE':
+                $I->sendDELETE($params['route']);
+                break;
+            default:
+                break;
+        }
+
+        $I->seeResponseCodeIs($params['responseCode']);
+
+        $I->deleteHeader('Content-Type');
+    }
 
     /**
-     * @example {"routes":"companies", "response":{"a":"c"} }
+     * @example {"route":"companiess", "responseCode":"200" }
      */
-    public function checkEndpoints(ApiTester $I, \Codeception\Example $examples)
+    public function checkGetEndpoint(ApiTester $I, \Codeception\Example $example)
     {
-
-        $I->wantTo('Check endpoints');
-        //$token = 'NDU1OWZkYmJkODNmZTQwNzE3YTA0MThkYjk4ZDg5MzNkOGY2Yjc5MjEzYWQwZGE5YzM3ZTg4ZTIxNTI0ZjIyMw';
-        //$I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
-        //$I->amBearerAuthenticated($token);
-        //$I->sendGET('companies');
-        //$I->sendGET($examples['routes']['route']);
-        //$I->sendPOST($example[0], ['title'=>'tttt']);
-
-        $I->sendGET('companies');
-        $I->seeResponseCodeIs(200);
-
-        //$I->seeResponseCodeIs($examples['response']);
+        $I->wantTo('Check GET method');
+        $I->sendGET($example['route']);
+        $I->seeResponseCodeIs($example['responseCode']);
+    }
+    
+    /**
+     * @example {"method":"POST", "route":"companies", "responseCode":"201", "title":"New Main Company" }
+     */
+    public function checkPostEndpoint(ApiTester $I, \Codeception\Example $example)
+    {
+        $I->wantTo('Check POST method');
+        
+        $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
+        $I->amBearerAuthenticated(self::TOKEN);
+        
+        $I->sendPOST($example['route'], ['title' => $example['title']]);
+        $I->seeResponseCodeIs($example['responseCode']);
+        
+        $I->deleteHeader('Content-Type');
     }
 
-    //@example( response="200", routes= {"companies", "companies/54/offices"}  )
-
-    /* */
 }

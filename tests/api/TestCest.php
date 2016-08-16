@@ -18,14 +18,14 @@ class TestCest
     
     /**
      * 
-     * @example ["/companies", 200]
+     * @example ["/companies", 200, [201, 404]]
      * @example ["/companies/54/offices", 200]
      * @example ["/companies/54/offices/49/openinghours", 200]
      */
     public function tryToSecondTest(ApiTester $I, \Codeception\Example $example)
     {
         $I->wantTo('This is test of multiple executes');
-
+$I->comment($example[2][0].':'.$example[2][1]);
         $I->sendGET($example[0]);
 
         $I->seeResponseCodeIs($example[1]);

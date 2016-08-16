@@ -15,9 +15,6 @@ class RestCest
 
     public function tryToTest(ApiTester $I)
     {
-        $I->sendGET('/companies/54/offices', []);
-        $I->seeResponseCodeIs(200);
-
         $token = 'NDU1OWZkYmJkODNmZTQwNzE3YTA0MThkYjk4ZDg5MzNkOGY2Yjc5MjEzYWQwZGE5YzM3ZTg4ZTIxNTI0ZjIyMw';
 
         $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -48,6 +45,46 @@ class RestCest
           $I->seeResponseIsJson();
           $I->seeResponseContains('{"result":"ok"}');
           /* */
+    }
+
+    public function getRandomOffices(ApiTester $I)
+    {
+        $I->sendGET('/companies');
+        //$I->seeResponseCodeIs(200);
+        $companyIds = [];
+        $companies = $I->grabDataFromResponseByJsonPath("$")[0];
+        foreach ($companies as $company){
+            $companyIds[] = $company['idCompany'];
+        }
+            
+        $companiesRandIds = array_rand($companyIds, 2);
+        
+        $I->sendGET('/companies/'.$companiesRandIds[0].'/offices');
+        $offices = $I->grabDataFromResponseByJsonPath("$")[0];
+        
+        $address = 'no office';
+        if(count($offices) > 0){
+            $officesRandomIds = array_rand($offices);
+            var_dump($officesRandomIds);
+            $address = $offices[$officesRandomIds]['address'];
+        }
+        
+        $I->comment($address);
+        
+        
+        
+        $I->sendGET('/companies/'.$companiesRandIds[1].'/offices');
+        $offices = $I->grabDataFromResponseByJsonPath("$")[0];
+        
+        $address = 'no office';
+        if(count($offices) > 0){
+            $officesRandomIds = array_rand($offices);
+            var_dump($officesRandomIds);
+            $address = $offices[$officesRandomIds]['address'];
+        }/**/
+        
+        $I->comment($address);
+        
     }
 
 }

@@ -57,3 +57,4 @@ web/app_dev.php
 web/app.php
 
 tests/_output/*
+tests/_output/*

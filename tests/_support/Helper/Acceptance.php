@@ -1,5 +1,4 @@
 <?php
-
 namespace Helper;
 
 // here you can define custom actions
@@ -7,10 +6,5 @@ namespace Helper;
 
 class Acceptance extends \Codeception\Module
 {
-/*
-    public function openCheckoutFormStep2()
-    {
-        return $this->getModule('PhpBrowser')->_loadPage('GET', '/api/companies');
-    }/**/
 
 }

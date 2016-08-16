@@ -6,14 +6,6 @@
 
 class_name: FunctionalTester
 modules:
-    config:
-        PhpBrowser:
-            url: 'http://project1.lh:80'
-            headers:
-                env: test
-    enabled: 
-        - Symfony
-        - Doctrine2:
-            depends: Symfony
+    enabled:
+        # add framework module here
         - \Helper\Functional
-    

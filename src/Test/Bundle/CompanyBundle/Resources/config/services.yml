@@ -18,6 +18,6 @@ services:
     command.oauth_create_client:
         class: Test\Bundle\CompanyBundle\Command\OAuthCreateClientCommand
         arguments:
-            - @fos_oauth_server.client_manager.default
+            - '@fos_oauth_server.client_manager.default'
         tags:
             -  { name: console.command }

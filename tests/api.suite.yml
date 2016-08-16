@@ -1,0 +1,11 @@
+class_name: ApiTester
+modules:
+    config:
+        Symfony2:
+            url: 'http://project1.lh/app_web.php'
+        REST:
+            url: '/api'
+            depends: Symfony2
+    enabled:
+        - REST
+        - \Helper\Api

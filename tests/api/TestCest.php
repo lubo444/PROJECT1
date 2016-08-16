@@ -19,9 +19,8 @@ class TestCest
     /**
      * 
      * @example ["/companies", 200]
-     * @example ["/companies", 201]
-     * @example ["/companies", 200]
-     * @example ["/companies", 200]
+     * @example ["/companies/54/offices", 200]
+     * @example ["/companies/54/offices/49/openinghours", 200]
      */
     public function tryToSecondTest(ApiTester $I, \Codeception\Example $example)
     {

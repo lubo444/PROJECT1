@@ -25,7 +25,7 @@ class TestCest
     public function tryToSecondTest(ApiTester $I, \Codeception\Example $example)
     {
         $I->wantTo('This is test of multiple executes');
-$I->comment($example[2][0].':'.$example[2][1]);
+
         $I->sendGET($example[0]);
 
         $I->seeResponseCodeIs($example[1]);

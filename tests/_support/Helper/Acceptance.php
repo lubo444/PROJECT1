@@ -1,4 +1,5 @@
 <?php
+
 namespace Helper;
 
 // here you can define custom actions
@@ -6,5 +7,11 @@ namespace Helper;
 
 class Acceptance extends \Codeception\Module
 {
+
+    public function getContent()
+    {
+        $content = $this->getModule('Symfony2')->_getResponseContent();
+        return $content;
+    }
 
 }

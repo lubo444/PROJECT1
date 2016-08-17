@@ -63,25 +63,25 @@ class RestCest
         $offices = $I->grabDataFromResponseByJsonPath("$")[0];
         
         $address = 'no office';
-        if(count($offices) > 0){
-            $officesRandomIds = array_rand($offices);
+        $officesCount = count($offices);
+        if($officesCount > 0){
+            $officesRandomIds = rand(0, $officesCount-1);
             var_dump($officesRandomIds);
             $address = $offices[$officesRandomIds]['address'];
         }
         
         $I->comment($address);
         
-        
-        
         $I->sendGET('/companies/'.$companiesRandIds[1].'/offices');
         $offices = $I->grabDataFromResponseByJsonPath("$")[0];
         
         $address = 'no office';
-        if(count($offices) > 0){
-            $officesRandomIds = array_rand($offices);
+        $officesCount = count($offices);
+        if($officesCount > 0){
+            $officesRandomIds = rand(0, $officesCount-1);
             var_dump($officesRandomIds);
             $address = $offices[$officesRandomIds]['address'];
-        }/**/
+        }
         
         $I->comment($address);
         

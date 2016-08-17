@@ -12,35 +12,21 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/xampp/htdocs/project1/app/config/parameters.yml</file>
+            <file>file:/C:/xampp/htdocs/project1/tests/api/RestCest.php</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/config_test.yml</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/routing.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/testing/tests/functional/MyTestCest.php</file>
-            <file>file:/C:/xampp/htdocs/project1/tests/acceptance/LoginCest.php</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/config_dev.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/testing/codeception.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/tests/api/ViewCompaniesCept.php</file>
+            <file>file:/C:/xampp/htdocs/project1/tests/api/TestCest.php</file>
             <file>file:/C:/xampp/htdocs/project1/app/config/security.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/app/autoload.php</file>
-            <file>file:/C:/xampp/htdocs/project1/tests/functional/_bootstrap.php</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Site/CompanyController.php</file>
-            <file>file:/C:/xampp/htdocs/project1/tests/functional/LoginCest.php</file>
-            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Service/Authorization.php</file>
-            <file>file:/C:/xampp/htdocs/project1/tests/functional.suite.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/tests/api/_bootstrap.php</file>
-            <file>file:/C:/xampp/htdocs/project1/app/config/parameters.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/tests/api/BasicCest.php</file>
-            <file>file:/C:/xampp/htdocs/project1/app/config/config.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/testing/tests/api.suite.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/tests/_support/Helper/Acceptance.php</file>
-            <file>file:/C:/xampp/htdocs/project1/testing/tests/api/MainTestCept.php</file>
             <file>file:/C:/xampp/htdocs/project1/composer.json</file>
+            <file>file:/C:/xampp/htdocs/project1/app/autoload.php</file>
             <file>file:/C:/xampp/htdocs/project1/app/AppKernel.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Site/CompanyController.php</file>
+            <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Service/Authorization.php</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Controller/Api/CompanyController.php</file>
             <file>file:/C:/xampp/htdocs/project1/tests/api.suite.yml</file>
             <file>file:/C:/xampp/htdocs/project1/src/Test/Bundle/CompanyBundle/Resources/config/services.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/testing/tests/functional.suite.yml</file>
-            <file>file:/C:/xampp/htdocs/project1/testing/tests/functional/RestApiTestCept.php</file>
-            <file>file:/C:/xampp/htdocs/project1/tests/acceptance.suite.yml</file>
         </group>
     </open-files>
 </project-private>

@@ -31,11 +31,13 @@ class MultiDataCest
     }
     
     /**
-     * @example {"method":"POST", "route":"/companies", "responseCode":"201", "title":"New Main Company" }
-     * @example {"method":"PUT", "route":"/companies/54", "responseCode":"200", "title":"Second Name Company" }
-     * @example {"method":"PATCH", "route":"/companies/54", "responseCode":"200", "title":"Third Name Company" }
-     * @example {"method":"DELETE", "route":"/companies/54", "responseCode":"200" }
-     * @example {"method":"PUT", "route":"/companies/54/undelete", "responseCode":"200" }
+     * complete test of rest api methods
+     * 
+     * @example {"method":"POST", "route":"/companies", "responseCode":"201", "parameters":{"title":"New Main Company"} }
+     * @example {"method":"PUT", "route":"/companies/54", "responseCode":"200", "parameters":{"title":"Second Name Company"} }
+     * @example {"method":"PATCH", "route":"/companies/54", "responseCode":"200", "parameters":{"title":"Third Name Company"} }
+     * @example {"method":"DELETE", "route":"/companies/54", "responseCode":"200", "parameters":{}}
+     * @example {"method":"PUT", "route":"/companies/54/undelete", "responseCode":"200", "parameters":{}}
      */
     public function checkEndpointsWithAuth(ApiTester $I, \Codeception\Example $params)
     {
@@ -43,11 +45,7 @@ class MultiDataCest
         $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
         $I->amBearerAuthenticated(self::AUTH_TOKEN);
 
-        $parameters = [];
-
-        if (isset($params['title'])) {
-            $parameters = ['title' => $params['title']];
-        }
+        $parameters = $params['parameters'];
 
         switch ($params['method']) {
             case 'GET':
